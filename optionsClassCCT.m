@@ -25,7 +25,7 @@ classdef optionsClassCCT
 % bKeepTrees = (true) | false       % If true the individual trees are not
 %       % kept in order to save memory
 %
-% TR 10/06/15
+% 10/06/15
     
     
     properties            

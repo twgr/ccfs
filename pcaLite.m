@@ -14,7 +14,7 @@ function [coeff,muX,vals] = pcaLite(X,bScale,bMakeFullRank)
 % ensure that they are full rank.
 %   Default = true;
 %
-% TR 21/05/15
+% 21/05/15
 
 if ~exist('bScale','var') || isempty(bScale)
     bScale = false;

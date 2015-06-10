@@ -41,7 +41,7 @@ function [CCF,forestPredictsTest,treePredictsTest,cumulativeForestPredictsTest] 
 %     cumForPred = Predictions of forest for XTest cumulative in the
 %                  individual trees.  cumForPred(:,end)==forPred
 %
-% TR 10/06/15
+% 10/06/15
 
 
 if ~isnumeric(XTrain) || any(isnan(XTrain(:))) || any(isnan(XTest(:)))

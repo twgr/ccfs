@@ -23,7 +23,7 @@ function [projMat, U] = componentAnalysis(X,Y,processes)
 %    projMat = Projection matrix
 %          U = X*projMat
 %
-% TR 10/06/15
+% 10/06/15
 
 if ~exist('processes','var') || isempty(processes)
     processes = {'CCA'};
