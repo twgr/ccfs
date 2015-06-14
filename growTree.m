@@ -37,7 +37,7 @@ if ~all(bXVaries)
         bInMat(iInNew(~bXVaries)) = false;
         bRemainsSelected = any(bInMat,2);
         nSelected = nSelected+sum(bRemainsSelected);
-        iCanBeSelected(iFeatIn) = [];
+        iCanBeSelected(indFeatIn) = [];
         lambdaProjBoot = min(numel(iCanBeSelected),options.lambdaProjBoot-nSelected);
         if lambdaProjBoot<1
             break
@@ -87,7 +87,7 @@ end
 if ~isempty(options.projections) && ((size(XTrainBag,1)==2) || queryIfOnlyTwoUniqueRows(XTrainBag))
     % If there are only two points setup a maximum marginal split between the points
     
-    error('Old code had bug in split and also used all features to split, check this was not weirdly helpful');
+    %error('Old code had bug in split and also used all features to split, check this was not weirdly helpful');
     
     [bSplit,projMat,partitionPoint] = twoPointMaxMarginSplit(XTrainBag,YTrainBag,options.XVariationTol);
     if ~bSplit
@@ -274,7 +274,7 @@ makeSubTrees;
         else
             nRecur = size(options.ancestralProbs,1);
             while nRecur>0
-                maxCounts = max(countsNode+options.ancestralProbs/1e9);
+                maxCounts = max(countsNode+options.ancestralProbs(nRecur,:)/1e9);
                 bEqualMaxCounts = maxCounts == countsNode;
                 if sum(bEqualMaxCounts)==1
                     label = find(bEqualMaxCounts);
