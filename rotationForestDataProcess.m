@@ -1,4 +1,6 @@
-function [R, muX, U] = setupRotationForestData(X,M,pS)
+function [R, muX, U] = rotationForestDataProcess(X,M,pS)
+
+error('Update so as to always ignore some class');
 
 if ~exist('pS','var') || isempty(pS)
     pS = 0.5;

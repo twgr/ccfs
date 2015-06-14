@@ -44,7 +44,7 @@ function [CCF,forestPredictsTest,treePredictsTest,cumulativeForestPredictsTest] 
 % 10/06/15
 
 
-if ~isnumeric(XTrain) || any(isnan(XTrain(:))) || any(isnan(XTest(:)))
+if ~isnumeric(XTrain) || any(isnan(XTrain(:)))
     error('Data is not processed, please use processInputData function');
 end
 
@@ -52,6 +52,25 @@ if ~exist('iFeatureNum','var') || isempty(iFeatureNum)
     % If no grouping of columns to individual features is given presume
     % each is an independent feature.
     iFeatureNum = 1:size(XTrain,2);
+end
+
+% Perform binary expansion on YTrain if required
+if size(YTrain,2)==1 && ~islogical(YTrain)
+    classes = unique(YTrain);
+    YVec = YTrain;
+    YTrain = false(size(YVec,1),numel(classes));
+    if iscell(YVec)
+        for k=1:numel(classes)
+            YTrain(:,k) = cellfun(@(x) strcmpi(x,classes{k}) || (x==classes{k}), YVec);
+        end
+    else
+        for k=1:numel(classes)
+            YTrain(:,k) = YVec==classes(k);
+        end
+    end
+else
+    % Make sure YTrain is logical to minimize memory in recursion
+    YTrain = logical(YTrain);
 end
 
 N = size(XTrain,1);
@@ -68,7 +87,7 @@ if ~exist('optionsFor','var') || isempty(optionsFor)
     optionsFor = optionsClassCCT(D,baseCounts);
 else
     optionsFor = optionsFor.updateForD(D);
-    optionsFor = optionsFor.updateForpWhenEven(baseCounts);
+    optionsFor = optionsFor.updateForAncestralProbs(baseCounts);
 end
 
 nOut = nargout;
@@ -83,7 +102,9 @@ if nOut>1 && (~exist('XTest','var') || isempty(XTest))
 end
 
 CCF = cell(1,nTrees);
-treePredictsTest = NaN(size(XTest,1),nTrees);
+if nOut>1
+    treePredictsTest = NaN(size(XTest,1),nTrees);
+end
 
 if optionsFor.bUseParallel == true    
     parfor nT = 1:nTrees
@@ -130,7 +151,7 @@ end
 
 function [tree,predicts] = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N,nOut)
 
-if options.bBagTrees
+if optionsFor.bBagTrees
     iTrainThis = datasample(1:N,N);
 else
     iTrainThis = 1:N;

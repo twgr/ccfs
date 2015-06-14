@@ -14,7 +14,7 @@ classdef optionsClassCCT
 % minPointsForSplit = 2;            % Minimum number of points at which a
 %       % node is allowed to split
 %
-% dirIfEqual = ('maxCorr') | 'rand'   % Direction to choose when multiple
+% dirIfEqual = ('first') | 'rand'   % Direction to choose when multiple
 %       % projections can deliver same criterion score
 % 
 % bBagTrees = (false) | true        % Whether to use Breiman's bagging and 
@@ -25,7 +25,12 @@ classdef optionsClassCCT
 % bKeepTrees = (true) | false       % If true the individual trees are not
 %       % kept in order to save memory
 %
-% 10/06/15
+% bContinueProjBootDegenerate = (true) | false   %  In the scenario where 
+%    % the projection bootstrap makes the local data pure or have no X
+%    % variation, the algorithm can either set the node to be a leaf or
+%    % resort to using the original data for the CCA
+%
+% 14/06/15
     
     
     properties            
@@ -48,11 +53,17 @@ classdef optionsClassCCT
         
         % When multiple projection vectors can give equivalent split
         % criterion scores, one can either choose which to use randomly
-        % ('rand') or take the direction which gave the maximal correlation
-        % during the CCA ('maxCorr', default).  In the case of also
-        % including search of the original axes, 'maxCorr' is recommended
-        dirIfEqual = 'maxCorr';
+        % ('rand') or take the first ('first') on the basis that the 
+        % components are in decreasing order of correlation for CCA.  If
+        % using more than just CCA for projections, using 'first' also
+        % allows preferential treatment to certain projections
+        dirIfEqual = 'first';
         
+        % In the scenario where the projection bootstrap makes the local
+        % data pure or have no X variation, the algorithm can either set
+        % the node to be a leaf or resort to using the original data for
+        % the CCA
+        bContinueProjBootDegenerate = true;
         
         %% COMMON FOREST OPTIONS
         
@@ -109,7 +120,7 @@ classdef optionsClassCCT
         
         %% Properties that are not set but used as a store point for passing down algorithm
         
-        pWhenEven         
+        ancestralProbs         
          
     end
 
@@ -123,7 +134,7 @@ classdef optionsClassCCT
             end
             
             if exist('parentCounts','var') && ~isempty(parentCounts)
-                obj = obj.updateForpWhenEven(parentCounts);
+                obj = obj.updateForAncestralProbs(parentCounts);
             end
         end
         
@@ -140,11 +151,11 @@ classdef optionsClassCCT
             end
         end
         
-        function obj = updateForpWhenEven(obj,parentCounts)
+        function obj = updateForAncestralProbs(obj,parentCounts)
             % Updates field used for storing details of parents for making
             % decisions when class assignment is a tie.
             
-            obj.pWhenEven = parentCounts/sum(parentCounts);
+            obj.ancestralProbs = parentCounts/sum(parentCounts);
         end
         
     end

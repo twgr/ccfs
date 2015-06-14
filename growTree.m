@@ -3,86 +3,128 @@ function tree = growTree(XTrain,YTrain,options,iFeatureNum,depth)
 %% First do checks for whether we should immediately terminate
 
 N = size(XTrain,1);
-if (N<options.minPointsForSplit) || (sum(abs(sum(YTrain,1))<1e-12)<2) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit)
+if (N<(max(2,options.minPointsForSplit))) || (sum(abs(sum(YTrain,1))>1e-12)<2) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit)
     % Return if one training point, pure node or if options for returning fulfilled
-    setupLeaf
+    setupLeaf;
     return
 elseif depth>490 && strcmpi(options.maxDepthSplit,'stack')
     error('Tree is too deep and causing stack issues');
 end
 
+%% Subsample features as required for hyperplane sampling
 
-%% Bootstrap for the projection bootstrap if required
+iCanBeSelected = unique(iFeatureNum);
+iCanBeSelected(isnan(iCanBeSelected))=[];
+lambdaProjBoot = min(numel(iCanBeSelected),options.lambdaProjBoot);
+indFeatIn = randperm(numel(iCanBeSelected),lambdaProjBoot);
+iFeatIn = iCanBeSelected(indFeatIn);
 
-% Bag
-if options.bBootForCanonCorr
+bInMat = bsxfun(@eq,iFeatureNum(:)',iFeatIn(:));
+
+iIn = find(any(bInMat,1));
+
+
+% Check for variation along selected dimensions and resample features that
+% have no variation
+bXVaries = queryIfColumnsVary(XTrain(:,iIn),options.XVariationTol);
+
+if ~all(bXVaries)
+    iInNew = iIn;
+    nSelected = 0;
+    iIn = iIn(bXVaries);
+    while ~all(bXVaries) && lambdaProjBoot>0
+        iFeatureNum(iInNew(~bXVaries)) = NaN;
+        bInMat(iInNew(~bXVaries)) = false;
+        bRemainsSelected = any(bInMat,2);
+        nSelected = nSelected+sum(bRemainsSelected);
+        iCanBeSelected(iFeatIn) = [];
+        lambdaProjBoot = min(numel(iCanBeSelected),options.lambdaProjBoot-nSelected);
+        if lambdaProjBoot<1
+            break
+        end
+        indFeatIn = randperm(numel(iCanBeSelected),lambdaProjBoot);
+        iFeatIn = iCanBeSelected(indFeatIn);
+        bInMat = bsxfun(@eq,iFeatureNum(:)',iFeatIn(:));
+        iInNew = find(any(bInMat,1));
+        bXVaries = queryIfColumnsVary(XTrain(:,iInNew),options.XVariationTol);
+        iIn = sort([iIn,iInNew(bXVaries)]);
+    end
+end
+
+if isempty(iIn)
+    % This means that there was no variation along any feature, therefore
+    % exit.
+    setupLeaf;
+    return
+end
+
+
+%% Projection bootstrap if required
+
+if options.bProjBoot
     iTrainThis = datasample(1:size(XTrain,1),size(XTrain,1));
-    XTrainBag = XTrain(iTrainThis,:);
+    XTrainBag = XTrain(iTrainThis,iIn);
     YTrainBag = YTrain(iTrainThis,:);
 else
-    XTrainBag = XTrain;
+    XTrainBag = XTrain(:,iIn);
     YTrainBag = YTrain;
 end
 
 bXBagVaries = queryIfColumnsVary(XTrainBag,options.XVariationTol);
-if (sum(abs(sum(YTrainBag,1))<1e-12)<2)  || ~any(bXBagVaries)
-    setupLeaf
-    error('Need to check that setting up a leaf here rather than just resetting the original data when the original XTrain varies does not harm the results');
-    return
+if (sum(abs(sum(YTrainBag,1))>1e-12)<2)  || ~any(bXBagVaries)
+    if ~options.bContinueProjBootDegenerate
+        setupLeaf;
+        return
+    else
+        XTrainBag = XTrain(:,iIn);
+        YTrainBag = YTrain;
+    end
 end
 
 
 %% Check for only having two points
 
-if ~isempty(options.projections) && queryIfOnlyTwoUniqueRows(XTrainBag)
+if ~isempty(options.projections) && ((size(XTrainBag,1)==2) || queryIfOnlyTwoUniqueRows(XTrainBag))
     % If there are only two points setup a maximum marginal split between the points
-    [bSplit, projMat, partitionPoint, bLeftTrain] = twoPointMaxMarginSplit(XTrainBag,YVecTrainBag);
-    iDir = 1;
-    iIn = 1:size(XTrainBag,2);
+    
+    error('Old code had bug in split and also used all features to split, check this was not weirdly helpful');
+    
+    [bSplit,projMat,partitionPoint] = twoPointMaxMarginSplit(XTrainBag,YTrainBag,options.XVariationTol);
     if ~bSplit
-        setupLeaf
+        setupLeaf;
     else
-        makeSubTrees();
+        bLessThanTrain = (XTrain(:,iIn)*projMat)<=partitionPoint;
+        iDir = 1;
+        makeSubTrees;
     end
     return
 end
 
-%% Subsample features as required for hyperplane sampling
-
-iCanBeSelected = unique(iFeatureNum(bXBagVaries));
-nIncludeCC = min(numel(iCanBeSelected),options.nIncludeCC);
-indFeatIn = randperm(numel(iCanBeSelected),nIncludeCC);
-iFeatIn = iCanBeSelected(indFeatIn);
-
-bIn = any(bsxfun(@eq,iFeatureNum(:)',iFeatIn(:)),1);
-iIn = find(bIn);
-
 %% Generate the new features as required
 
-if ~isemtpy(options.projections)
-    projMat = componentAnalysis(XTrainBag(:,iIn),YTrainBag,options.projections);
+if ~isempty(options.projections)
+    projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections);
 end
 
 %% Choose the features to use
 
-if ~ischar(includeOriginalAxes) && ~includeOriginalAxes
+if ~ischar(options.includeOriginalAxes) && ~options.includeOriginalAxes
     if isempty(projMat)
         error('Must make new features to have includeOriginalAxes false');
     end
-elseif strcmpi(includeOriginalAxes,'sampled')
+elseif strcmpi(options.includeOriginalAxes,'sampled')
     projMat = [projMat,eye(size(projMat,1))];
-elseif strcmpi(includeOriginalAxes,'all')
+elseif strcmpi(options.includeOriginalAxes,'all')
     projMatNew = zeros(size(XTrain,2),size(projMat,2));
     projMatNew(iIn,iIn) = projMat;
-    iIn = find(bXBagVaries);
+    iIn = find(~isnan(iFeatureNum));
     projMat = [projMatNew(iIn,iIn),eye(numel(iIn))];
 else
     error('Invalid option for includeOriginalAxes');
 end
 
 UTrain = XTrain(:,iIn)*projMat;
-% This step is important as it catches splits based on no significant
-% variation
+% This step catches splits based on no significant variation
 bUTrainVaries = queryIfColumnsVary(UTrain,options.XVariationTol);
 
 if ~any(bUTrainVaries)
@@ -101,18 +143,22 @@ iSplits = NaN(nProjDirs,1);
 
 for nVarAtt = 1:nProjDirs
     
+    % Calculate the probabilities of being at each class in each of child
+    % nodes based on proportion of training data for each of possible
+    % splits using current projection
     [UTrainSort,iUTrainSort] = sort(UTrain(:,nVarAtt));
     YTrainSort = YTrain(iUTrainSort,:);
     if size(YTrain,2)==1
-        CumCounts = [(1:numel(YTrainSort))'-cumsum(YTrainSort),cumsum(YTrainSort)];
+        LeftCumCounts = [(1:numel(YTrainSort))'-cumsum(YTrainSort),cumsum(YTrainSort)];
     else
-        CumCounts = cumsum(YTrainSort,1);
+        LeftCumCounts = cumsum(YTrainSort,1);
     end
-    OtherCumCounts = bsxfun(@minus,CumCounts(end,:),CumCounts);
+    RightCumCounts = bsxfun(@minus,LeftCumCounts(end,:),LeftCumCounts);
     bUniquePoints = [diff(UTrainSort,[],1)>1e-10;false];
+    pL = bsxfun(@rdivide,LeftCumCounts,sum(LeftCumCounts,2));
+    pR = bsxfun(@rdivide,RightCumCounts,sum(RightCumCounts,2));
     
-    pL = bsxfun(@rdivide,CumCounts,sum(CumCounts,2));
-    pR = bsxfun(@rdivide,OtherCumCounts,sum(OtherCumCounts,2));
+    % Calculate the metric values of the current node and two child nodes
     if strcmpi(options.splitCriterion,'gini')
         metricLeft = 1-sum(pL.^2,2);
         metricRight = 1-sum(pR.^2,2);
@@ -127,81 +173,84 @@ for nVarAtt = 1:nProjDirs
         error('Invalid split criterion');
     end
     metricCurrent = metricLeft(end);
-    metricLeft(~bUniquePoints) = 1e6;
-    metricRight(~bUniquePoints) = 1e6;
-    giniGain = metricCurrent-((1:N)'.*metricLeft+(N-1:-1:0)'.*metricRight)/N;
+    metricLeft(~bUniquePoints) = inf;
+    metricRight(~bUniquePoints) = inf;
     
-    [splitGains(nVarAtt),iSplits(nVarAtt)] = max(giniGain(1:end-1));
-    iEqualMax = find(abs(giniGain(1:end-1)-splitGains(nVarAtt))<(10*eps));
-    % Randomly same from equally best.  Add one as was max from 2 to
-    % end
-    try
-        iSplits(nVarAtt) = iEqualMax(randi(numel(iEqualMax)));
-    catch
-        disp(['GiniGains ' num2str(splitGains(nVarAtt)) ' iSplits ' num2str(iSplits(nVarAtt))]);
-    end
+    % Calculate gain in metric for each of possible splits based on current
+    % metric value minus metric value of child weighted by number of terms
+    % in each child
+    metricGain = metricCurrent-((1:N)'.*metricLeft+(N-1:-1:0)'.*metricRight)/N;
+    
+    % Randomly sample from equally best splits
+    [splitGains(nVarAtt),iSplits(nVarAtt)] = max(metricGain(1:end-1));
+    iEqualMax = find(abs(metricGain(1:end-1)-splitGains(nVarAtt))<(10*eps));
+    iSplits(nVarAtt) = iEqualMax(randi(numel(iEqualMax)));
     
 end
 
-
+% If no split gives a positive gain then stop
 if max(splitGains)<0
     setupLeaf
     return
 end
+
+% Establish between projection direction 
+maxGain = max(splitGains);
+iEqualMax = find(abs(splitGains-maxGain)<(10*eps));
+% Use given method to break ties
 if strcmpi(options.dirIfEqual,'rand')
-    maxGain = max(splitGains);
-    iEqualMax = find(abs(splitGains-maxGain)<(10*eps));
-    % Randomly same from the all gains equal to the best gain
     iDir = iEqualMax(randi(numel(iEqualMax)));
-elseif strcmpi(options.dirIfEqual,'maxCorr')    
-    [~,iDir] = max(splitGains);
-    error('In truth need to be more careful here');
+elseif strcmpi(options.dirIfEqual,'first')
+    iDir = iEqualMax(1);
 else
     error('invalid dirIfEqual');
 end
 iSplit = iSplits(iDir);
 
 
-%% Setup Finish
+%% Establish partition point and assign to child
+
 UTrain = UTrain(:,iDir);
 UTrainSort = sort(UTrain);
 
-% The convoluted nature of the below is to avoid numerical errors if the
-% parition point is taken direct
+% The convoluted nature of the below is to avoid numerical errors
 uTrainSortLeftPart = UTrainSort(iSplit);
 UTrainSort = UTrainSort-uTrainSortLeftPart;
 partitionPoint = UTrainSort(iSplit)*0.5+UTrainSort(iSplit+1)*0.5;
 partitionPoint = partitionPoint+uTrainSortLeftPart;
 UTrainSort = UTrainSort+uTrainSortLeftPart; %#ok<NASGU>
 
-bLeftTrain = UTrain<=partitionPoint;
+bLessThanTrain = UTrain<=partitionPoint;
 
-if ~any(bLeftTrain) || all(bLeftTrain)
-    warning('Suggested split with empty');
-    setupLeaf;
-    return;
+if ~any(bLessThanTrain) || all(bLessThanTrain)
+    error('Suggested split with empty');
 end
 
-makeSubTrees();
+makeSubTrees;
 
 %% Nested Functions after here
 
     function makeSubTrees
+        % Recurs tree growth to child nodes and constructs tree struct
+        % to return
+        
+        % Update ancestral counts for breaking ties if needed
         if size(YTrain,2)==1
             countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
         else
             countsNode = sum(YTrain,1);
         end
-        [~,label] = max(countsNode+options.pWhenEven/100+1e-8*rand(size(countsNode)));
-        maxCounts = max(countsNode);
-        nEqualMax = sum(maxCounts==countsNode);
-        if nEqualMax<2
-            options.pWhenEven = countsNode/sum(countsNode);
+        nNonZeroCounts = sum(countsNode>0);
+        nUniqueNonZeroCounts = numel(unique(nNonZeroCounts));
+        if nUniqueNonZeroCounts==nNonZeroCounts
+            options.ancestralProbs = countsNode/sum(countsNode);
+        else
+            options.ancestralProbs = [options.ancestralProbs;countsNode/sum(countsNode)];
         end
-        treeLeft = growTree(XTrain(bLeftTrain,:),YTrain(bLeftTrain,:),options,iFeatureNum,depth+1);
-        treeRight = growTree(XTrain(~bLeftTrain,:),YTrain(~bLeftTrain,:),options,iFeatureNum,depth+1);
+        
+        treeLeft = growTree(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),options,iFeatureNum,depth+1);
+        treeRight = growTree(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),options,iFeatureNum,depth+1);
         tree.bLeaf = false;
-        tree.label = label;
         tree.trainingCounts = countsNode;
         tree.iIn = iIn;
         tree.decisionProjection = projMat(:,iDir);
@@ -211,57 +260,71 @@ makeSubTrees();
     end
 
     function setupLeaf
+        % Update tree struct to make node a leaf
+        
         if size(YTrain,2)==1
             countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
         else
             countsNode = sum(YTrain,1);
         end
-        [~,label] = max(countsNode+options.pWhenEven/100+1e-8*rand(size(countsNode)));
+        maxCounts = max(countsNode);
+        bEqualMaxCounts = maxCounts == countsNode;
+        if sum(bEqualMaxCounts)==1
+            label = find(bEqualMaxCounts);
+        else
+            nRecur = size(options.ancestralProbs,1);
+            while nRecur>0
+                maxCounts = max(countsNode+options.ancestralProbs/1e9);
+                bEqualMaxCounts = maxCounts == countsNode;
+                if sum(bEqualMaxCounts)==1
+                    label = find(bEqualMaxCounts);
+                    break
+                else
+                    nRecur = nRecur-1;
+                end
+                if nRecur==0
+                    [~,label] = max(countsNode+rand(size(countsNode))/1e9);
+                end
+            end
+        end
         countsTrain = countsNode;
         tree.bLeaf = true;
         tree.label = label;
         tree.trainingCounts = countsTrain;
     end
 
-    function [bSp, rmm, cmm, bLeft] = twoPointMaxMarginSplit(X,Y)
-        % This should only be done if X has exactly 2 unique rows
-        bType1 = all(abs(bsxfun(@minus,X,X(1,:)))<options.XVariationTol,2);
-        if size(Y,2)==1
-            YLeft = Y;
-            YRight = ~Y;
-        else
-            YLeft = Y(bType1,:);
-            YRight = Y(~bType1,:);
-        end
-        if all(sum(YLeft,1)==sum(YRight,1))
-            % Here the two unique points have identical sets of class
-            % labels and so we can't split
-            bSp = false;
-            rmm = [];
-            cmm = [];
-            bLeft = [];
-            return
-        else
-            bSp = true;
-        end
-        % Otherwise the optimal spliting plane is the plane perpendicular
-        % to the vector between the two points (rmm) and the maximal
-        % marginal split point (cmm) is halway between the two points on
-        % this line.
-        iType2 = find(~bType1,1);
-        rmm = (X(iType2,:)-X(1,:))';
-        cmm = 0.5*(X(iType2,:)*rmm+X(1,:)*rmm);
-        if isnan(cmm) || isinf(cmm)
-            error('Suggested split point at infitity / nan');
-        end
-        % Setup for left right
-        if X(1,:)*rmm<cmm
-            bLeft = bType1;
-        else
-            bLeft = ~bType1;
-        end
-    end
+end
 
+function [bSp, rmm, cmm] = twoPointMaxMarginSplit(X,Y,tol)
+% This should only be done if X has exactly 2 unique rows
+bType1 = all(abs(bsxfun(@minus,X,X(1,:)))<tol,2);
+if size(Y,2)==1
+    YLeft = Y;
+    YRight = ~Y;
+else
+    YLeft = Y(bType1,:);
+    YRight = Y(~bType1,:);
+end
+if all(sum(YLeft,1)==sum(YRight,1))
+    % Here the two unique points have identical sets of class
+    % labels and so we can't split
+    bSp = false;
+    rmm = [];
+    cmm = [];
+    return
+else
+    bSp = true;
+end
+% Otherwise the optimal spliting plane is the plane perpendicular
+% to the vector between the two points (rmm) and the maximal
+% marginal split point (cmm) is halway between the two points on
+% this line.
+iType2 = find(~bType1,1);
+rmm = (X(iType2,:)-X(1,:))';
+cmm = 0.5*(X(iType2,:)*rmm+X(1,:)*rmm);
+if isnan(cmm) || isinf(cmm)
+    error('Suggested split point at infitity / nan');
+end
 end
 
 function bVar = queryIfColumnsVary(XvarToTest,tol)
