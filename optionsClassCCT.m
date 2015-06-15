@@ -3,7 +3,7 @@ classdef optionsClassCCT
 % complete options.  Common options are given below, default option is in
 % parens.
 % 
-% bProjBoot = (false) | true        % Whether to use projection bootstrapping
+% bProjBoot = (true) | false        % Whether to use projection bootstrapping
 %
 % lambdaProjBoot = ('log') | 'sqrt' | +ve integer  % Number of features to 
 %       % subsample at each node or 'log' for ceil(log2(D)+1)) or 'sqrt'
@@ -37,7 +37,7 @@ classdef optionsClassCCT
         %% COMMON TREE OPTIONS
         
         % Whether to use projection bootstrapping
-        bProjBoot = false;
+        bProjBoot = true;
                 
         % Number of features to subsample at each node.  Should be positive
         % integer or 'log' (equating to ceil(log2(D)+1)) or 'sqrt'
@@ -63,7 +63,7 @@ classdef optionsClassCCT
         % data pure or have no X variation, the algorithm can either set
         % the node to be a leaf or resort to using the original data for
         % the CCA
-        bContinueProjBootDegenerate = true;
+        bContinueProjBootDegenerate = false;
         
         %% COMMON FOREST OPTIONS
         
@@ -97,9 +97,9 @@ classdef optionsClassCCT
         % Options allowing each tree to be trained on a different rotation
         % of the dataset in accordance with the rotation forest algorithm  
         bApplyRotForPreprocess = false;
-        RotForM = 3;
-        RotForpS = 0.5;   
-        RotForpClassLeaveOut = 0.25;
+        RotForM = 3; % Note these three options are not usually active but
+        RotForpS = 0.5; % are suggested defaults when RotForPreprocess is
+        RotForpClassLeaveOut = 0.25; % used
         
         % Option allowing random starting rotation
         bRandomRotationStart = false;

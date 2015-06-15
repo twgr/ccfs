@@ -13,13 +13,18 @@ end
 
 %% Subsample features as required for hyperplane sampling
 
+% FIXME check what happens if have a dynamic number of features included
+% such that options.lambdaProjBoot is adjusted if features with no
+% variation are found.  Would also be useful to adjust to now bag if we get
+% down to having only two features.
+
 iCanBeSelected = unique(iFeatureNum);
 iCanBeSelected(isnan(iCanBeSelected))=[];
 lambdaProjBoot = min(numel(iCanBeSelected),options.lambdaProjBoot);
 indFeatIn = randperm(numel(iCanBeSelected),lambdaProjBoot);
 iFeatIn = iCanBeSelected(indFeatIn);
 
-bInMat = bsxfun(@eq,iFeatureNum(:)',iFeatIn(:));
+bInMat = bsxfun(@eq,iFeatureNum(:)',sort(iFeatIn(:)));
 
 iIn = find(any(bInMat,1));
 
@@ -34,7 +39,7 @@ if ~all(bXVaries)
     iIn = iIn(bXVaries);
     while ~all(bXVaries) && lambdaProjBoot>0
         iFeatureNum(iInNew(~bXVaries)) = NaN;
-        bInMat(iInNew(~bXVaries)) = false;
+        bInMat(:,iInNew(~bXVaries)) = false;
         bRemainsSelected = any(bInMat,2);
         nSelected = nSelected+sum(bRemainsSelected);
         iCanBeSelected(indFeatIn) = [];
@@ -241,7 +246,7 @@ makeSubTrees;
             countsNode = sum(YTrain,1);
         end
         nNonZeroCounts = sum(countsNode>0);
-        nUniqueNonZeroCounts = numel(unique(nNonZeroCounts));
+        nUniqueNonZeroCounts = numel(unique(countsNode));
         if nUniqueNonZeroCounts==nNonZeroCounts
             options.ancestralProbs = countsNode/sum(countsNode);
         else
@@ -274,8 +279,9 @@ makeSubTrees;
         else
             nRecur = size(options.ancestralProbs,1);
             while nRecur>0
-                maxCounts = max(countsNode+options.ancestralProbs(nRecur,:)/1e9);
-                bEqualMaxCounts = maxCounts == countsNode;
+                countsTieBreak = countsNode+options.ancestralProbs(nRecur,:)/1e9;
+                maxCounts = max(countsTieBreak);
+                bEqualMaxCounts = maxCounts == countsTieBreak;
                 if sum(bEqualMaxCounts)==1
                     label = find(bEqualMaxCounts);
                     break
@@ -287,10 +293,9 @@ makeSubTrees;
                 end
             end
         end
-        countsTrain = countsNode;
         tree.bLeaf = true;
         tree.label = label;
-        tree.trainingCounts = countsTrain;
+        tree.trainingCounts = countsNode;
     end
 
 end

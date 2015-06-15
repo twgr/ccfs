@@ -77,6 +77,8 @@ N = size(XTrain,1);
 D = numel(unique(iFeatureNum)); % Note that setting of number of features to subsample is based only 
                                 % number of features before expansion of categoricals.
 
+% FIXME if only two features adjust to automatically bag.                                
+                                
 if size(YTrain,2)==1
     baseCounts = [sum(~YTrain),sum(YTrain)];
 else
@@ -111,12 +113,12 @@ if optionsFor.bUseParallel == true
         warning('off','MATLAB:nearlySingularMatrix');
         warning('off','MATLAB:singularMatrix');
         
-        [tree,predicts] = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N,nOut);        
+        tree = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N);        
         if optionsFor.bKeepTrees
             CCF{nT} = tree;
         end        
         if nOut>1
-            treePredictsTest(:,nT) = predicts;
+            treePredictsTest(:,nT) = predictFromCCT(tree,XTest);
         end        
     end
 else
@@ -124,12 +126,12 @@ else
     warning('off','MATLAB:singularMatrix');
     
     for nT = 1:nTrees
-        [tree,predicts] = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N,nOut);        
+        tree = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N);        
         if optionsFor.bKeepTrees
             CCF{nT} = tree;
         end        
         if nOut>1
-            treePredictsTest(:,nT) = predicts;
+            treePredictsTest(:,nT) = predictFromCCT(tree,XTest);
         end
     end
 end
@@ -138,9 +140,12 @@ if nOut<2
     return
 end
 
+error('Update this for consistency with predictFromCCF, can include voteFactor option in options structure');
+
+
 % If requested, calculate the forest predictions for XTest.  This is based
 % on an equally weighted voting system.
-K = min(2,size(YTrain,2));
+K = max(2,size(YTrain,2));
 treePredThis = bsxfun(@eq,treePredictsTest,reshape(1:K,[1,1,K]));
 YcumProbs = bsxfun(@rdivide,cumsum(treePredThis,2),reshape(1:nTrees,[1,nTrees,1]));
 [~,iMax] = max(YcumProbs,[],3);
@@ -149,7 +154,7 @@ forestPredictsTest = cumulativeForestPredictsTest(:,end);
 
 end
 
-function [tree,predicts] = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N,nOut)
+function tree = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N)
 
 if optionsFor.bBagTrees
     iTrainThis = datasample(1:N,N);
@@ -172,12 +177,6 @@ tree = growTree(XTrainBag,YTrainBag,optionsFor,iFeatureNum,0);
 
 if optionsFor.bApplyRotForPreprocess
     tree.rotForDetails = rotForDetails;
-end
-
-if nOut>1
-    predicts = predictFromCCT(tree,XTest);
-else
-    predicts = [];
 end
 
 end
