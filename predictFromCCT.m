@@ -4,7 +4,7 @@ function [classLabelIds, countsLeaf] = predictFromCCT(tree,X)
 % [classLabelIds, classLabels, countsLeaf] = predictFromCCT(tree,X)
 %
 % Inputs:   tree = output strcut from growTree
-%              X = input features, each row should be a seperate data point
+%              X = processed input features
 % Outputs:  classLabelIds = Vector of numeric predictions corresponding to
 %                         the class label ids.  Note this is not
 %                         necessarily the class itself, e.g. if the classes

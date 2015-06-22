@@ -139,7 +139,7 @@ classdef optionsClassCCT
         XVariationTol = 1e-10;
         
         
-        %% Properties that are not set but used as a store point for passing down algorithm
+        %% Properties that are not set but used as a place to store info
         
         ancestralProbs
         classNames

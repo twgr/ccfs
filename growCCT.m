@@ -1,4 +1,32 @@
-function tree = growTree(XTrain,YTrain,options,iFeatureNum,depth)
+function tree = growCCT(XTrain,YTrain,options,iFeatureNum,depth)
+%growTree grows a CCT, recursively calling itself until leaves are reached
+%
+% function CCT = growCCT(XTrain,YTrain,options,iFeatureNum,depth)
+%
+% Function applies greedy splitting according to the CCT algorithm and the
+% provided options structure.  This is equivalent to alogrithm 2 in the
+% paper if the options structure is default.  Algorithm either returns a
+% leaf or forms an internal splitting node in which case the function
+% recursively calls itself for each of the children.
+%
+% Inputs:
+%    XTrain      = Array giving training features.  Data should be
+%                  processed using processInputData before being passed to
+%                  CCT
+%    YTrain      = Class data formatted as per output of classExpansion
+%    options     = Options class of type optionsClassCCT.  Some fields are
+%                  updated during recursion
+%    iFeatureNum = Grouping of features as per processInputData.  During
+%                  recursion if a feature is found to be identical across
+%                  data points, the corresponding values in iFeatureNum are
+%                  replaced with NaNs.
+%    depth       = Current tree depth (zero based)
+%
+% Outputs
+%   tree         = Structure containing learnt tree.  Prediction can be
+%                  made using predictFromCCT
+%
+% TR 22/06/15
 
 %% First do checks for whether we should immediately terminate
 
@@ -32,11 +60,6 @@ end
 % end
 
 %% Subsample features as required for hyperplane sampling
-
-% FIXME check what happens if have a dynamic number of features included
-% such that options.lambdaProjBoot is adjusted if features with no
-% variation are found.  Would also be useful to adjust to now bag if we get
-% down to having only two features.
 
 iCanBeSelected = fastUnique(iFeatureNum);
 iCanBeSelected(isnan(iCanBeSelected))=[];
@@ -273,8 +296,8 @@ makeSubTrees;
             options.ancestralProbs = [options.ancestralProbs;countsNode/sum(countsNode)];
         end
         
-        treeLeft = growTree(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),options,iFeatureNum,depth+1);
-        treeRight = growTree(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),options,iFeatureNum,depth+1);
+        treeLeft = growCCT(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),options,iFeatureNum,depth+1);
+        treeRight = growCCT(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),options,iFeatureNum,depth+1);
         tree.bLeaf = false;
         tree.trainingCounts = countsNode;
         tree.iIn = iIn;

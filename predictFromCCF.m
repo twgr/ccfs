@@ -18,6 +18,8 @@ function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts
 %
 % 14/06/15
 
+X = CCF.inputProcess(X);
+
 nTrees = numel(CCF.Trees);
 treePredictions = NaN(size(X,1),nTrees);
 
@@ -26,20 +28,6 @@ for n=1:nTrees
 end
 
 K = numel(CCF.Trees{1}.trainingCounts);
-
-
-% if ~exist('voteFactor','var') || isempty(voteFactor)
-%     voteFactor = 1 + (CCF.Trees{1}.trainingCounts+rand(1,K))./(1e5*nTrees*sum(CCF.Trees{1}.trainingCounts));
-% elseif isa('voteFactor','optionsClassCCT')
-%     voteFactor = optionsClassCCT.voteFactor;
-%     if ~isnumeric(voteFactor)
-%         error('Only valid to pass in a optionsClassCCT object if the voteFactor property is numeric');
-%     end
-% elseif isnumeric(voteFactor)
-%     voteFactor = voteFactor(:)';
-% else
-%     error('Third argument should either be a numerical voteFactor or a optionsClassCCT object');
-% end
 
 if nargout>3
    cumVotes = bsxfun(@rdivide,cumsum(bsxfun(@eq,treePredictions,reshape(1:K,[1,1,K])),2),reshape(1:nTrees,[1,nTrees,1]));
