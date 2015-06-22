@@ -3,13 +3,33 @@ function tree = growTree(XTrain,YTrain,options,iFeatureNum,depth)
 %% First do checks for whether we should immediately terminate
 
 N = size(XTrain,1);
-if (N<(max(2,options.minPointsForSplit))) || (sum(abs(sum(YTrain,1))>1e-12)<2) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit)
-    % Return if one training point, pure node or if options for returning fulfilled
+% Return if one training point, pure node or if options for returning 
+% fulfilled.  A little case to deal with a binary YTrain is required.
+bStop = (N<(max(2,options.minPointsForSplit))) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit);
+if bStop
     setupLeaf;
     return
-elseif depth>490 && strcmpi(options.maxDepthSplit,'stack')
+elseif size(YTrain,2)>1
+    if (sum(abs(sum(YTrain,1))>1e-12)<2)
+        setupLeaf;
+        return
+    end
+elseif any(sum(YTrain)==[0,size(YTrain,1)])
+    setupLeaf;
+    return
+end
+
+if depth>490 && strcmpi(options.maxDepthSplit,'stack')
     error('Tree is too deep and causing stack issues');
 end
+
+% 
+% if (N<(max(2,options.minPointsForSplit))) || (sum(abs(sum(YTrain,1))>1e-12)<2) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit)
+%     setupLeaf;
+%     return
+% elseif depth>490 && strcmpi(options.maxDepthSplit,'stack')
+%     error('Tree is too deep and causing stack issues');
+% end
 
 %% Subsample features as required for hyperplane sampling
 
@@ -18,7 +38,7 @@ end
 % variation are found.  Would also be useful to adjust to now bag if we get
 % down to having only two features.
 
-iCanBeSelected = unique(iFeatureNum);
+iCanBeSelected = fastUnique(iFeatureNum);
 iCanBeSelected(isnan(iCanBeSelected))=[];
 lambdaProjBoot = min(numel(iCanBeSelected),options.lambdaProjBoot);
 indFeatIn = randperm(numel(iCanBeSelected),lambdaProjBoot);
@@ -67,7 +87,7 @@ end
 %% Projection bootstrap if required
 
 if options.bProjBoot
-    iTrainThis = datasample(1:size(XTrain,1),size(XTrain,1));
+    iTrainThis = randi(size(XTrain,1),size(XTrain,1),1);
     XTrainBag = XTrain(iTrainThis,iIn);
     YTrainBag = YTrain(iTrainThis,:);
 else
@@ -76,7 +96,7 @@ else
 end
 
 bXBagVaries = queryIfColumnsVary(XTrainBag,options.XVariationTol);
-if (sum(abs(sum(YTrainBag,1))>1e-12)<2)  || ~any(bXBagVaries)
+if ~any(bXBagVaries) || (size(YTrainBag,2)>1 && (sum(abs(sum(YTrainBag,1))>1e-12)<2)) || (size(YTrainBag,2)==1 && any(sum(YTrainBag)==[0,size(YTrainBag,1)]))
     if ~options.bContinueProjBootDegenerate
         setupLeaf;
         return
@@ -199,7 +219,7 @@ if max(splitGains)<0
     return
 end
 
-% Establish between projection direction 
+% Establish between projection direction
 maxGain = max(splitGains);
 iEqualMax = find(abs(splitGains-maxGain)<(10*eps));
 % Use given method to break ties
@@ -246,7 +266,7 @@ makeSubTrees;
             countsNode = sum(YTrain,1);
         end
         nNonZeroCounts = sum(countsNode>0);
-        nUniqueNonZeroCounts = numel(unique(countsNode));
+        nUniqueNonZeroCounts = numel(fastUnique(countsNode));
         if nUniqueNonZeroCounts==nNonZeroCounts
             options.ancestralProbs = countsNode/sum(countsNode);
         else
@@ -294,7 +314,7 @@ makeSubTrees;
             end
         end
         tree.bLeaf = true;
-        tree.label = label;
+        tree.labelClassId = label;
         tree.trainingCounts = countsNode;
     end
 
@@ -334,7 +354,7 @@ end
 
 function bVar = queryIfColumnsVary(XvarToTest,tol)
 % Function that says whether columns are constant or not
-bVar = abs(XvarToTest(1,:)-XvarToTest(2,:))>tol;
+bVar = max(abs(diff(XvarToTest(1:min(5,size(XvarToTest,1)),:),[],1)),[],1)>tol;
 bVar(~bVar) = max(abs(diff(XvarToTest(:,~bVar),[],1)),[],1)>tol;
 end
 

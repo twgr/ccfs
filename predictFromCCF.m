@@ -1,15 +1,14 @@
-function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts] = predictFromCCF(forest,X,voteFactor)
-%predictFromCCT predicts class using trained tree
+function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts] = predictFromCCF(CCF,X)
+%predictFromCCF predicts class using trained forest
 %
-% [prediction, countsLeaf] = predictFromCCT(tree,X)
+% [prediction, countsLeaf] = predictFromCCF(CCF,X)
 %
-% Inputs:              forest = cell array of CCTs
+% Inputs:                 CCF = output from genCCF.  This is a structure
+%                               with a field Trees, giving a cell array of
+%                               tree structures, and options which is an
+%                               object of type optionsClassCCT
 %                           X = input features, each row should be a 
 %                               seperate data point
-% Optional Input:  voteFactor = factor applied to votes of each class. By
-%                               default this has no effect when there is a
-%                               clear winner an breaks ties towards the
-%                               most globally popular class in tie breaks
 % Outputs:  forestPredictions = Vector of numeric predictions corresponding to
 %                               the class label
 %                 forestProbs = Assigned probability to each class
@@ -19,29 +18,38 @@ function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts
 %
 % 14/06/15
 
-nTrees = numel(forest);
+nTrees = numel(CCF.Trees);
 treePredictions = NaN(size(X,1),nTrees);
 
 for n=1:nTrees
-    treePredictions(:,n) = predictFromCCT(forest{n},X);
+    treePredictions(:,n) = predictFromCCT(CCF.Trees{n},X);
 end
 
-K = numel(forest{1}.trainingCounts);
+K = numel(CCF.Trees{1}.trainingCounts);
 
 
-if ~exist('voteFactor','var') || isempty(voteFactor)
-    voteFactor = 1 + 1./((1e6+nTrees)*(forest{1}.trainingCounts+rand(1,K)));
-end
+% if ~exist('voteFactor','var') || isempty(voteFactor)
+%     voteFactor = 1 + (CCF.Trees{1}.trainingCounts+rand(1,K))./(1e5*nTrees*sum(CCF.Trees{1}.trainingCounts));
+% elseif isa('voteFactor','optionsClassCCT')
+%     voteFactor = optionsClassCCT.voteFactor;
+%     if ~isnumeric(voteFactor)
+%         error('Only valid to pass in a optionsClassCCT object if the voteFactor property is numeric');
+%     end
+% elseif isnumeric(voteFactor)
+%     voteFactor = voteFactor(:)';
+% else
+%     error('Third argument should either be a numerical voteFactor or a optionsClassCCT object');
+% end
 
 if nargout>3
    cumVotes = bsxfun(@rdivide,cumsum(bsxfun(@eq,treePredictions,reshape(1:K,[1,1,K])),2),reshape(1:nTrees,[1,nTrees,1]));
-   forestProbs = squeeze(cumVotes(:,end,:))/nTrees;
-   voteFactor = reshape(voteFactor/mean(voteFactor),[1,1,K]);
+   forestProbs = squeeze(cumVotes(:,end,:));
+   voteFactor = reshape(CCF.options.voteFactor/mean(CCF.options.voteFactor),[1,1,K]);
    [~,cumulativeForestPredicts] = max(bsxfun(@times,cumVotes,voteFactor),[],3);
    forestPredicts = cumulativeForestPredicts(:,end);
 else
    forestProbs = squeeze(sum(bsxfun(@eq,treePredictions,reshape(1:K,[1,1,K])),2))/nTrees;
-   [~,forestPredicts] = max(bsxfun(@times,forestProbs,voteFactor(:)'),[],2);
+   [~,forestPredicts] = max(bsxfun(@times,forestProbs,CCF.options.voteFactor(:)'),[],2);
 end
 
 end

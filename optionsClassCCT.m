@@ -3,7 +3,9 @@ classdef optionsClassCCT
 % complete options.  Common options are given below, default option is in
 % parens.
 % 
-% bProjBoot = (true) | false        % Whether to use projection bootstrapping
+% bProjBoot = ('default') | true | false  % Whether to use projection 
+%       % bootstrapping.  Default is false when there are only two features
+%       % and true otherwise.
 %
 % lambdaProjBoot = ('log') | 'sqrt' | +ve integer  % Number of features to 
 %       % subsample at each node or 'log' for ceil(log2(D)+1)) or 'sqrt'
@@ -17,18 +19,17 @@ classdef optionsClassCCT
 % dirIfEqual = ('first') | 'rand'   % Direction to choose when multiple
 %       % projections can deliver same criterion score
 % 
-% bBagTrees = (false) | true        % Whether to use Breiman's bagging and 
-%       % train each tree on a bootstrap sample
+% bBagTrees = ('default') | true | false  % Whether to use Breiman's bagging 
+%       % and train each tree on a bootstrap sample  Default is true when 
+%       % there are only two features and false otherwise.
 % 
-% bUseParallel = (false) | true     % If true then trees are learnt in parallel
-% 
-% bKeepTrees = (true) | false       % If true the individual trees are not
-%       % kept in order to save memory
+% bUseParallel = (false) | true     % If true then trees are learnt in 
+%       % parallel
 %
 % bContinueProjBootDegenerate = (true) | false   %  In the scenario where 
-%    % the projection bootstrap makes the local data pure or have no X
-%    % variation, the algorithm can either set the node to be a leaf or
-%    % resort to using the original data for the CCA
+%       % the projection bootstrap makes the local data pure or have no X
+%       % variation, the algorithm can either set the node to be a leaf or
+%       % resort to using the original data for the CCA
 %
 % 14/06/15
     
@@ -36,8 +37,15 @@ classdef optionsClassCCT
     properties            
         %% COMMON TREE OPTIONS
         
-        % Whether to use projection bootstrapping
-        bProjBoot = true;
+        % Whether to use projection bootstrapping.  Should be 'default',
+        % true or false.  The 'default' is true unless there are only two
+        % input features in which case the algorithm by default uses
+        % bagging rather than projection bootstrapping.  The rational for
+        % this is that with 2 features, one must either resort to axis
+        % aligned splits or all the features for each split in which case
+        % the projection bootstrap gives insufficient decorrelation to 
+        % avoid overfitting.  In both cases bagging is preferable.
+        bProjBoot = 'default';
                 
         % Number of features to subsample at each node.  Should be positive
         % integer or 'log' (equating to ceil(log2(D)+1)) or 'sqrt'
@@ -63,12 +71,14 @@ classdef optionsClassCCT
         % data pure or have no X variation, the algorithm can either set
         % the node to be a leaf or resort to using the original data for
         % the CCA
-        bContinueProjBootDegenerate = false;
+        bContinueProjBootDegenerate = true;
         
         %% COMMON FOREST OPTIONS
         
-        % Whether to use bagging
-        bBagTrees = false;
+        % Whether to use bagging.  Should be 'default', true or false.
+        % 'default' is true when only 2 features and false otherwise.  See
+        % bProjBoot
+        bBagTrees = 'default';
         
         % If true then trees are learnt in parallel      
         bUseParallel = false;
@@ -104,6 +114,17 @@ classdef optionsClassCCT
         % Option allowing random starting rotation
         bRandomRotationStart = false;
         
+        % Option that allows non-equal weighting of votes for each class
+        % such that a prior can be placed on the classes.  Further work
+        % would be required to establish the exact nature of this prior and
+        % its consistency.  There is also likely to be better ways of apply
+        % such a prior.  By default the vote factor is constant across
+        % classes except that ties are broken by giving preference to
+        % classes that occur more commonly in training data.  For non
+        % default vector should be set to a row vector of weights for each
+        % class.
+        voteFactor = 'default';
+        
         % TODO An option for the RF-Ensemble of Zhang might be useful
         
         %% NUMERICAL OPTIONS
@@ -120,21 +141,22 @@ classdef optionsClassCCT
         
         %% Properties that are not set but used as a store point for passing down algorithm
         
-        ancestralProbs         
+        ancestralProbs
+        classNames
          
     end
 
 %%
 
     methods    
-        function obj = optionsClassCCT(D,parentCounts)
+        function obj = optionsClassCCT(D,baseCounts)
             
             if exist('D','var') && ~isempty(D)
                 obj = obj.updateForD(D);
             end
             
-            if exist('parentCounts','var') && ~isempty(parentCounts)
-                obj = obj.updateForAncestralProbs(parentCounts);
+            if exist('baseCounts','var') && ~isempty(baseCounts)
+                obj = obj.updateForBaseCounts(baseCounts);
             end
         end
         
@@ -149,15 +171,46 @@ classdef optionsClassCCT
             elseif ~isnumeric(obj.lambdaProjBoot)
                 error('Invalid option set for nIncludeCC');
             end
-        end
-        
-        function obj = updateForAncestralProbs(obj,parentCounts)
-            % Updates field used for storing details of parents for making
-            % decisions when class assignment is a tie.
             
-            obj.ancestralProbs = parentCounts/sum(parentCounts);
+            if strcmpi(obj.bProjBoot,'default')
+                if D==2
+                    obj.bProjBoot = false;
+                else
+                    obj.bProjBoot = true;
+                end
+            end
+            
+            if strcmpi(obj.bBagTrees,'default')
+                if D==2
+                    obj.bBagTrees = true;
+                else
+                    obj.bBagTrees = false;
+                end
+            end
+            
         end
         
+        function obj = updateForBaseCounts(obj,baseCounts)
+            % Updates field used for storing details of parents for making
+            % decisions when class assignment is a tie. Also updates the
+            % options for tie breaks 
+            
+            obj.ancestralProbs = baseCounts/sum(baseCounts);
+            
+            if strcmpi(obj.voteFactor,'default')
+                % By default use only a tie breaker based on selecting the
+                % most populous class in a tie.  The rand is to ensure we
+                % don't give unwanted to preference to earlier classes over
+                % random splitting when there is a tie in both the votes
+                % and base counts.  Note at the base counts are integers
+                % then the random factor is always smaller.  The
+                % denominator is setup such that an extra vote always
+                % predominates over the difference in the vote factors
+                % provided there is less than 1e7 trees.
+                obj.voteFactor = 1 + (baseCounts+rand(size(baseCounts)))/(1e7*sum(baseCounts));
+            end
+            
+        end
     end
     
 end

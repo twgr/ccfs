@@ -1,8 +1,8 @@
-function [CCF,forestPredictsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(XTrain,YTrain,nTrees,optionsFor,iFeatureNum,XTest)
+function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(XTrain,YTrain,nTrees,optionsFor,iFeatureNum,XTest,bKeepTrees)
 %genCCF Generate a canonical correlation forest
 %
-% [CCF, forPred, treePred, cumForPred] = genCCF(XTrain,YTrain,nTrees,...
-%                                             options,iFeatureNum,XTest)
+% [CCF, forPred, forProbs, treePred, cumForPred] = 
+%         genCCF(XTrain,YTrain,nTrees,options,iFeatureNum,XTest,bKeepTrees)
 %
 % Creates a canonical correlation forest (CCF) comprising of nTrees
 % canonical correlation trees (CCT) containing splits based on the a CCA
@@ -14,9 +14,13 @@ function [CCF,forestPredictsTest,treePredictsTest,cumulativeForestPredictsTest] 
 %                  seperate data point and each column a seperate feature.
 %                  Categorical features must be processed before calling
 %                  genCCF using the processInputData function.
-%         YTrain = Binary representation of classes.  Each row is a
-%                  seperate data point and contains only a single non zero
-%                  term, the column of which indicates the class.
+%         YTrain = Class data.  Three formats are accepted: a binary
+%                  represenetation where each row is a seperate data point 
+%                  and contains only a single non zero term, the column of 
+%                  which indicates the class, a numeric vector with unique
+%                  values taken as seperate class labels or a cell array of
+%                  either class labels which can be either numeric or
+%                  strings.
 %         nTrees = Number of trees to create
 %
 % Options Inputs:
@@ -31,11 +35,17 @@ function [CCF,forestPredictsTest,treePredictsTest,cumulativeForestPredictsTest] 
 %                  features for the test data are known at test time then
 %                  using this input with the option bKeepTrees = false can
 %                  significantly reduce the memory requirement.
+%     bKeepTrees = If false and XTest is given then the individual trees
+%                  are not stored in order to save memory.  Default = true
 %
 % Outputs:
-%            CCF = Cell array of CCTs.  Forest prediction can be made using
-%                  predictFromCCF function or individual trees using the
-%                  predictFromCCT function.
+%            CCF = Structure with two fields, trees giving a Cell array of 
+%                  CCTs and options giving the options structure. Forest
+%                  Prediction can be made using predictFromCCF function or 
+%                  individual trees using the predictFromCCT function.
+%                  Note that some of options, e.g. voteFactor, are used in
+%                  prediction and some options are changed during the
+%                  generation if they are initially set to 'default' values
 %        forPred = Complete forest predictions for XTest
 %       treePred = Individual tree predictiosn for XTest
 %     cumForPred = Predictions of forest for XTest cumulative in the
@@ -54,31 +64,47 @@ if ~exist('iFeatureNum','var') || isempty(iFeatureNum)
     iFeatureNum = 1:size(XTrain,2);
 end
 
+if ~exist('bKeepTrees','var') || isempty(bKeepTrees)
+    bKeepTrees = true;
+end
+
 % Perform binary expansion on YTrain if required
 if size(YTrain,2)==1 && ~islogical(YTrain)
     classes = unique(YTrain);
-    YVec = YTrain;
-    YTrain = false(size(YVec,1),numel(classes));
-    if iscell(YVec)
-        for k=1:numel(classes)
-            YTrain(:,k) = cellfun(@(x) strcmpi(x,classes{k}) || (x==classes{k}), YVec);
+    if numel(classes)==2
+        YVec = YTrain;
+        if iscell(YVec)
+            YTrain = cellfun(@(x) strcmpi(x,classes{2}) || (x==classes{2}), YVec);
+        else
+            YTrain = YVec==classes(2);
         end
     else
-        for k=1:numel(classes)
-            YTrain(:,k) = YVec==classes(k);
+        YVec = YTrain;
+        YTrain = false(size(YVec,1),numel(classes));
+        if iscell(YVec)
+            for k=1:numel(classes)
+                YTrain(:,k) = cellfun(@(x) strcmpi(x,classes{k}) || (x==classes{k}), YVec);
+            end
+        else
+            for k=1:numel(classes)
+                YTrain(:,k) = YVec==classes(k);
+            end
         end
     end
 else
     % Make sure YTrain is logical to minimize memory in recursion
     YTrain = logical(YTrain);
+    if size(YTrain,2)
+        classes = [false,true];
+    else
+        classes = 1:size(YTrain,2);
+    end
 end
 
 N = size(XTrain,1);
-D = numel(unique(iFeatureNum)); % Note that setting of number of features to subsample is based only 
+D = numel(fastUnique(iFeatureNum)); % Note that setting of number of features to subsample is based only 
                                 % number of features before expansion of categoricals.
-
-% FIXME if only two features adjust to automatically bag.                                
-                                
+                                                         
 if size(YTrain,2)==1
     baseCounts = [sum(~YTrain),sum(YTrain)];
 else
@@ -89,21 +115,23 @@ if ~exist('optionsFor','var') || isempty(optionsFor)
     optionsFor = optionsClassCCT(D,baseCounts);
 else
     optionsFor = optionsFor.updateForD(D);
-    optionsFor = optionsFor.updateForAncestralProbs(baseCounts);
+    optionsFor = optionsFor.updateForBaseCounts(baseCounts);
 end
+
+optionsFor.classNames = classes;
 
 nOut = nargout;
 
-if nOut<2 && ~optionsFor.bKeepTrees
-    optionsFor.bKeepTrees = true;
-    warning('Selected not to keep trees but only requested a single output of the trees, reseting optionsFor.bKeepTrees to true');
+if nOut<2 && bKeepTrees
+    bKeepTrees = true;
+    warning('Selected not to keep trees but only requested a single output of the trees, reseting bKeepTrees to true');
 end
 
 if nOut>1 && (~exist('XTest','var') || isempty(XTest))
     error('To return more than just the trees themselves, must input the test points');
 end
 
-CCF = cell(1,nTrees);
+forest = cell(1,nTrees);
 if nOut>1
     treePredictsTest = NaN(size(XTest,1),nTrees);
 end
@@ -114,8 +142,8 @@ if optionsFor.bUseParallel == true
         warning('off','MATLAB:singularMatrix');
         
         tree = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N);        
-        if optionsFor.bKeepTrees
-            CCF{nT} = tree;
+        if bKeepTrees
+            forest{nT} = tree;
         end        
         if nOut>1
             treePredictsTest(:,nT) = predictFromCCT(tree,XTest);
@@ -127,8 +155,8 @@ else
     
     for nT = 1:nTrees
         tree = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N);        
-        if optionsFor.bKeepTrees
-            CCF{nT} = tree;
+        if bKeepTrees
+            forest{nT} = tree;
         end        
         if nOut>1
             treePredictsTest(:,nT) = predictFromCCT(tree,XTest);
@@ -136,21 +164,33 @@ else
     end
 end
 
+CCF.Trees = forest;
+CCF.options = optionsFor;
+
 if nOut<2
     return
 end
 
-error('Update this for consistency with predictFromCCF, can include voteFactor option in options structure');
-
-
-% If requested, calculate the forest predictions for XTest.  This is based
-% on an equally weighted voting system.
 K = max(2,size(YTrain,2));
-treePredThis = bsxfun(@eq,treePredictsTest,reshape(1:K,[1,1,K]));
-YcumProbs = bsxfun(@rdivide,cumsum(treePredThis,2),reshape(1:nTrees,[1,nTrees,1]));
-[~,iMax] = max(YcumProbs,[],3);
-cumulativeForestPredictsTest = squeeze(iMax);
-forestPredictsTest = cumulativeForestPredictsTest(:,end);
+
+if nargout>4
+   cumVotes = bsxfun(@rdivide,cumsum(bsxfun(@eq,treePredictsTest,reshape(1:K,[1,1,K])),2),reshape(1:nTrees,[1,nTrees,1]));
+   forestProbsTest = squeeze(cumVotes(:,end,:));
+   voteFactor = reshape(optionsFor.voteFactor/mean(optionsFor.voteFactor),[1,1,K]);
+   [~,cumulativeForestPredictsTest] = max(bsxfun(@times,cumVotes,voteFactor),[],3);
+   forestPredictsTest = cumulativeForestPredictsTest(:,end);
+else
+   forestProbsTest = squeeze(sum(bsxfun(@eq,treePredictsTest,reshape(1:K,[1,1,K])),2))/nTrees;
+   [~,forestPredictsTest] = max(bsxfun(@times,forestProbsTest,optionsFor.voteFactor(:)'),[],2);
+end
+
+forestPredictsTest = optionsFor.classNames(forestPredictsTest);
+if nargout>3
+    treePredictsTest = optionsFor.classNames(treePredictsTest);
+    if nargout>4
+        cumulativeForestPredictsTest= optionsFor.classNames(cumulativeForestPredictsTest);
+    end
+end
 
 end
 
