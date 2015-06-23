@@ -1,7 +1,7 @@
-function [c,h] = plotTreebaggerDecisionSurface(Bag,xLims,yLims,nxRes,nyRes)
+function [c,h] = plotCCTDecisionSurface(CCT,xLims,yLims,nxRes,nyRes)
 
     [x,y] = meshgrid(linspace(xLims(1),xLims(2),nxRes),linspace(yLims(1),yLims(2),nyRes));
-    preds = predict(Bag,[x(:),y(:)]);
+    preds = predictFromCCT(CCT,[x(:),y(:)]);
     uniquePreds = unique(preds);
     nVals = numel(uniquePreds);
     numericPreds = NaN(numel(x),1);

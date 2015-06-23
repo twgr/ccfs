@@ -129,9 +129,11 @@ XTrain(isnan(XTrain)) = 0;
 
 % If required, generate function for converting additional data and
 % calculate conversion for any test data provided.
-if nargout>3
+if nargout>2
     inputProcess = createFutureConverterFunc(bOrdinal,Cats,mu_XTrain,std_XTrain);
-    XTest = inputProcess(XTestRC);
+    if nargout>3
+        XTest = inputProcess(XTestRC);
+    end
 end
     
 end
@@ -150,6 +152,10 @@ end
 function X = futureConvert(Xrc,bOrdinal,Cats,mu_XTrain,std_XTrain)
 % This can be used to create an anonymous function that applies the same
 % data transformation as was done by on the training data to new data
+
+if size(Xrc,2)~=numel(bOrdinal)
+    error('Incorrect number of features');
+end
 
 if istable(Xrc)
     try

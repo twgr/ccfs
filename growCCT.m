@@ -51,20 +51,12 @@ if depth>490 && strcmpi(options.maxDepthSplit,'stack')
     error('Tree is too deep and causing stack issues');
 end
 
-% 
-% if (N<(max(2,options.minPointsForSplit))) || (sum(abs(sum(YTrain,1))>1e-12)<2) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit)
-%     setupLeaf;
-%     return
-% elseif depth>490 && strcmpi(options.maxDepthSplit,'stack')
-%     error('Tree is too deep and causing stack issues');
-% end
-
 %% Subsample features as required for hyperplane sampling
 
 iCanBeSelected = fastUnique(iFeatureNum);
 iCanBeSelected(isnan(iCanBeSelected))=[];
-lambdaProjBoot = min(numel(iCanBeSelected),options.lambdaProjBoot);
-indFeatIn = randperm(numel(iCanBeSelected),lambdaProjBoot);
+lambda = min(numel(iCanBeSelected),options.lambda);
+indFeatIn = randperm(numel(iCanBeSelected),lambda);
 iFeatIn = iCanBeSelected(indFeatIn);
 
 bInMat = bsxfun(@eq,iFeatureNum(:)',sort(iFeatIn(:)));
@@ -80,17 +72,17 @@ if ~all(bXVaries)
     iInNew = iIn;
     nSelected = 0;
     iIn = iIn(bXVaries);
-    while ~all(bXVaries) && lambdaProjBoot>0
+    while ~all(bXVaries) && lambda>0
         iFeatureNum(iInNew(~bXVaries)) = NaN;
         bInMat(:,iInNew(~bXVaries)) = false;
         bRemainsSelected = any(bInMat,2);
         nSelected = nSelected+sum(bRemainsSelected);
         iCanBeSelected(indFeatIn) = [];
-        lambdaProjBoot = min(numel(iCanBeSelected),options.lambdaProjBoot-nSelected);
-        if lambdaProjBoot<1
+        lambda = min(numel(iCanBeSelected),options.lambda-nSelected);
+        if lambda<1
             break
         end
-        indFeatIn = randperm(numel(iCanBeSelected),lambdaProjBoot);
+        indFeatIn = randperm(numel(iCanBeSelected),lambda);
         iFeatIn = iCanBeSelected(indFeatIn);
         bInMat = bsxfun(@eq,iFeatureNum(:)',iFeatIn(:));
         iInNew = find(any(bInMat,1));

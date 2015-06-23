@@ -1,11 +1,21 @@
-function plotHierarchicalObliqueSplits(starts,ends,labels,minX,maxX,bPlotEdges)
+function plotHierarchicalObliqueSplits(starts,ends,labels,minX,maxX,bPlotEdges,colors,alpha)
+
+figure
 
 if ~exist('bPlotEdges','var') || isempty(bPlotEdges)
     bPlotEdges = true;
 end
 
-edgesMin = minX-(maxX-minX)*0.05;
-edgesMax = maxX+(maxX-minX)*0.05;
+if ~exist('alpha','var') || isempty(alpha)
+    alpha = 0.1;
+end
+
+if ~exist('colors','var') || isempty(colors)
+    colors = {'b','r','k','c','g','w','b','r'};
+end
+
+edgesMin = minX;
+edgesMax = maxX;
 
 pX = [edgesMin(:,1);edgesMax(:,1);edgesMax(:,1);edgesMin(:,1);edgesMin(:,1)];
 pY = [edgesMin(:,2);edgesMin(:,2);edgesMax(:,2);edgesMax(:,2);edgesMin(:,2)];
@@ -15,18 +25,16 @@ plot(pX,pY,'k');
 hold on;
 axis([edgesMin(1)-0.05 edgesMax(1)+0.05 edgesMin(2)-0.05 edgesMax(2)+0.05])
 
-colors = {'b','r','k','c','g','w','b','r'};
-
-plotSplitRec(starts,ends,labels,pX,pY,colors,bPlotEdges);
+plotSplitRec(starts,ends,labels,pX,pY,colors,bPlotEdges,alpha);
 
 end
 
-function plotSplitRec(sp,ep,la,polyx,polyy,colors,bPlotEdges)
+function plotSplitRec(sp,ep,la,polyx,polyy,colors,bPlotEdges,alpha)
 if isempty(sp)
     if bPlotEdges
-        fill(polyx,polyy,colors{la},'FaceAlpha',0.1)
+        fill(polyx,polyy,colors{la},'FaceAlpha',alpha)
     else
-        fill(polyx,polyy,colors{la},'FaceAlpha',0.1,'EdgeColor','none')
+        fill(polyx,polyy,colors{la},'FaceAlpha',alpha,'EdgeColor','none')
     end
     return
 end
@@ -50,10 +58,10 @@ maxAwayLeft = max([polyleftx,polylefty]*projVec');
 maxAwayRight = max([polyrightx,polyrighty]*projVec');
 
 if maxAwayLeft<maxAwayRight
-    plotSplitRec(sp{2},ep{2},la{2},polyleftx,polylefty,colors,bPlotEdges)
-    plotSplitRec(sp{3},ep{3},la{3},polyrightx,polyrighty,colors,bPlotEdges)
+    plotSplitRec(sp{2},ep{2},la{2},polyleftx,polylefty,colors,bPlotEdges,alpha)
+    plotSplitRec(sp{3},ep{3},la{3},polyrightx,polyrighty,colors,bPlotEdges,alpha)
 else
-    plotSplitRec(sp{3},ep{3},la{3},polyleftx,polylefty,colors,bPlotEdges)
-    plotSplitRec(sp{2},ep{2},la{2},polyrightx,polyrighty,colors,bPlotEdges)
+    plotSplitRec(sp{3},ep{3},la{3},polyleftx,polylefty,colors,bPlotEdges,alpha)
+    plotSplitRec(sp{2},ep{2},la{2},polyrightx,polyrighty,colors,bPlotEdges,alpha)
 end
 end

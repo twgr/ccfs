@@ -1,15 +1,15 @@
 function [XTrain,YTrain,XTest,YTest] = genSpiralsData(NTrain,NTest,nClasses,startRadius,endRadius,sigR,bPlot)
 
 if ~exist('NTrain','var') || isempty(NTrain)
-    NTrain = 1000;
+    NTrain = 10000;
 end
 
 if ~exist('NTest','var') || isempty(NTest)
-    NTest = 1000;
+    NTest = 10000;
 end
 
 if ~exist('nClasses','var') || isempty(nClasses)
-    nClasses = 2;
+    nClasses = 3;
 end
 
 if ~exist('startRadius','var') || isempty(startRadius)

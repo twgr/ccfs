@@ -110,7 +110,7 @@ optionsFor.classNames = classes;
 
 nOut = nargout;
 
-if nOut<2 && bKeepTrees
+if nOut<2 && ~bKeepTrees
     bKeepTrees = true;
     warning('Selected not to keep trees but only requested a single output of the trees, reseting bKeepTrees to true');
 end
@@ -148,7 +148,7 @@ end
 
 CCF.Trees = forest;
 CCF.options = optionsFor;
-CCF.expansionFunction = inputProcess;
+CCF.inputProcess = inputProcess;
 
 if nOut<2
     return

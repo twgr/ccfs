@@ -7,7 +7,7 @@ classdef optionsClassCCT
 %       % bootstrapping.  Default is false when there are only two features
 %       % and true otherwise.
 %
-% lambdaProjBoot = ('log') | 'sqrt' | +ve integer  % Number of features to 
+% lambda    = ('log') | 'sqrt' | +ve integer  % Number of features to 
 %       % subsample at each node or 'log' for ceil(log2(D)+1)) or 'sqrt'
 %       % for ceil(sqrt(D)) 
 %
@@ -36,7 +36,7 @@ classdef optionsClassCCT
     
     properties            
         %% COMMON TREE OPTIONS
-        
+        % FIXME change this description and others -> its when lambda=D
         % Whether to use projection bootstrapping.  Should be 'default',
         % true or false.  The 'default' is true unless there are only two
         % input features in which case the algorithm by default uses
@@ -50,7 +50,7 @@ classdef optionsClassCCT
         % Number of features to subsample at each node.  Should be positive
         % integer or 'log' (equating to ceil(log2(D)+1)) or 'sqrt'
         % (equating to ceil(sqrt(D))).  This is lambda in the paper.
-        lambdaProjBoot = 'log';       
+        lambda = 'log';       
                 
         % Criterion for choosing the best split.  Valid options are are
         % 'gini' and 'info'
@@ -82,11 +82,6 @@ classdef optionsClassCCT
         
         % If true then trees are learnt in parallel      
         bUseParallel = false;
-        
-        % If the test data is passed to CCF then memory can be saved by not
-        % storing the trees themselves
-        bKeepTrees = true;
-        
         
         %% OPTIONS FOR POSSIBLE EXTENSIONS
         
@@ -161,19 +156,19 @@ classdef optionsClassCCT
         end
         
         function obj = updateForD(obj,D)            
-            % Updates the options for a particular D when lambdaProjBoot
+            % Updates the options for a particular D when lambda
             % has been set to 'sqrt' or 'log'
             
-            if strcmpi(obj.lambdaProjBoot,'sqrt')
-                obj.lambdaProjBoot = ceil(sqrt(D));
-            elseif strcmpi(obj.lambdaProjBoot,'log')
-                obj.lambdaProjBoot = ceil(log2(D)+1);
-            elseif ~isnumeric(obj.lambdaProjBoot)
+            if strcmpi(obj.lambda,'sqrt')
+                obj.lambda = ceil(sqrt(D));
+            elseif strcmpi(obj.lambda,'log')
+                obj.lambda = ceil(log2(D)+1);
+            elseif ~isnumeric(obj.lambda)
                 error('Invalid option set for nIncludeCC');
             end
             
             if strcmpi(obj.bProjBoot,'default')
-                if D==2
+                if D>=obj.lambda
                     obj.bProjBoot = false;
                 else
                     obj.bProjBoot = true;
@@ -181,7 +176,7 @@ classdef optionsClassCCT
             end
             
             if strcmpi(obj.bBagTrees,'default')
-                if D==2
+                if D>=obj.lambda
                     obj.bBagTrees = true;
                 else
                     obj.bBagTrees = false;
@@ -211,6 +206,22 @@ classdef optionsClassCCT
             end
             
         end
+    end
+    
+    methods (Static)
+        function obj = defaultOptionsForSingleCCTUsage(D,baseCounts)
+           % Allows easy calling of a default options set for when growing
+           % a single CCT tree for individual use rather than as part of a
+           % forest.  First input is number of features prior to expansion
+           % D and second is the baseCounts of each class           
+           
+            obj = optionsClassCCT(D,baseCounts);
+            obj.bProjBoot = false;
+            obj.lambda = D;
+            obj.minPointsForSplit = 10;
+            obj.bBagTrees = false;
+        end
+        
     end
     
 end
