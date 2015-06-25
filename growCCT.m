@@ -31,19 +31,19 @@ function tree = growCCT(XTrain,YTrain,options,iFeatureNum,depth)
 %% First do checks for whether we should immediately terminate
 
 N = size(XTrain,1);
-% Return if one training point, pure node or if options for returning 
+% Return if one training point, pure node or if options for returning
 % fulfilled.  A little case to deal with a binary YTrain is required.
 bStop = (N<(max(2,options.minPointsForSplit))) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit);
 if bStop
-    setupLeaf;
+    tree = setupLeaf(YTrain,options);
     return
 elseif size(YTrain,2)>1
     if (sum(abs(sum(YTrain,1))>1e-12)<2)
-        setupLeaf;
+        tree = setupLeaf(YTrain,options);
         return
     end
 elseif any(sum(YTrain)==[0,size(YTrain,1)])
-    setupLeaf;
+    tree = setupLeaf(YTrain,options);
     return
 end
 
@@ -94,7 +94,7 @@ end
 if isempty(iIn)
     % This means that there was no variation along any feature, therefore
     % exit.
-    setupLeaf;
+    tree = setupLeaf(YTrain,options);
     return
 end
 
@@ -113,7 +113,7 @@ end
 bXBagVaries = queryIfColumnsVary(XTrainBag,options.XVariationTol);
 if ~any(bXBagVaries) || (size(YTrainBag,2)>1 && (sum(abs(sum(YTrainBag,1))>1e-12)<2)) || (size(YTrainBag,2)==1 && any(sum(YTrainBag)==[0,size(YTrainBag,1)]))
     if ~options.bContinueProjBootDegenerate
-        setupLeaf;
+        tree = setupLeaf(YTrain,options);
         return
     else
         XTrainBag = XTrain(:,iIn);
@@ -127,212 +127,204 @@ end
 if ~isempty(options.projections) && ((size(XTrainBag,1)==2) || queryIfOnlyTwoUniqueRows(XTrainBag))
     % If there are only two points setup a maximum marginal split between the points
     
-    %error('Old code had bug in split and also used all features to split, check this was not weirdly helpful');
-    
     [bSplit,projMat,partitionPoint] = twoPointMaxMarginSplit(XTrainBag,YTrainBag,options.XVariationTol);
     if ~bSplit
-        setupLeaf;
+        tree = setupLeaf(YTrain,options);
+        return
     else
         bLessThanTrain = (XTrain(:,iIn)*projMat)<=partitionPoint;
         iDir = 1;
-        makeSubTrees;
     end
-    return
-end
-
-%% Generate the new features as required
-
-if ~isempty(options.projections)
-    projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections);
-end
-
-%% Choose the features to use
-
-if ~ischar(options.includeOriginalAxes) && ~options.includeOriginalAxes
-    if isempty(projMat)
-        error('Must make new features to have includeOriginalAxes false');
-    end
-elseif strcmpi(options.includeOriginalAxes,'sampled')
-    projMat = [projMat,eye(size(projMat,1))];
-elseif strcmpi(options.includeOriginalAxes,'all')
-    projMatNew = zeros(size(XTrain,2),size(projMat,2));
-    projMatNew(iIn,iIn) = projMat;
-    iIn = find(~isnan(iFeatureNum));
-    projMat = [projMatNew(iIn,iIn),eye(numel(iIn))];
 else
-    error('Invalid option for includeOriginalAxes');
-end
-
-UTrain = XTrain(:,iIn)*projMat;
-% This step catches splits based on no significant variation
-bUTrainVaries = queryIfColumnsVary(UTrain,options.XVariationTol);
-
-if ~any(bUTrainVaries)
-    setupLeaf;
-    return
-end
-
-UTrain = UTrain(:,bUTrainVaries);
-projMat = projMat(:,bUTrainVaries);
-
-%% Search over splits using provided method
-
-nProjDirs = size(UTrain,2);
-splitGains = NaN(nProjDirs,1);
-iSplits = NaN(nProjDirs,1);
-
-for nVarAtt = 1:nProjDirs
+    % Generate the new features as required
     
-    % Calculate the probabilities of being at each class in each of child
-    % nodes based on proportion of training data for each of possible
-    % splits using current projection
-    [UTrainSort,iUTrainSort] = sort(UTrain(:,nVarAtt));
-    YTrainSort = YTrain(iUTrainSort,:);
-    if size(YTrain,2)==1
-        LeftCumCounts = [(1:numel(YTrainSort))'-cumsum(YTrainSort),cumsum(YTrainSort)];
-    else
-        LeftCumCounts = cumsum(YTrainSort,1);
+    if ~isempty(options.projections)
+        projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections);
     end
-    RightCumCounts = bsxfun(@minus,LeftCumCounts(end,:),LeftCumCounts);
-    bUniquePoints = [diff(UTrainSort,[],1)>1e-10;false];
-    pL = bsxfun(@rdivide,LeftCumCounts,sum(LeftCumCounts,2));
-    pR = bsxfun(@rdivide,RightCumCounts,sum(RightCumCounts,2));
     
-    % Calculate the metric values of the current node and two child nodes
-    if strcmpi(options.splitCriterion,'gini')
-        metricLeft = 1-sum(pL.^2,2);
-        metricRight = 1-sum(pR.^2,2);
-    elseif strcmpi(options.splitCriterion,'info')
-        pLProd = pL.*log2(pL);
-        pLProd(pL==0) = 0;
-        metricLeft = -sum(pLProd,2);
-        pRProd = pR.*log2(pR);
-        pRProd(pR==0) = 0;
-        metricRight = -sum(pRProd,2);
+    %% Choose the features to use
+    
+    if ~ischar(options.includeOriginalAxes) && ~options.includeOriginalAxes
+        if isempty(projMat)
+            error('Must make new features to have includeOriginalAxes false');
+        end
+    elseif strcmpi(options.includeOriginalAxes,'sampled')
+        projMat = [projMat,eye(size(projMat,1))];
+    elseif strcmpi(options.includeOriginalAxes,'all')
+        projMatNew = zeros(size(XTrain,2),size(projMat,2));
+        projMatNew(iIn,iIn) = projMat;
+        iIn = find(~isnan(iFeatureNum));
+        projMat = [projMatNew(iIn,iIn),eye(numel(iIn))];
     else
-        error('Invalid split criterion');
+        error('Invalid option for includeOriginalAxes');
     end
-    metricCurrent = metricLeft(end);
-    metricLeft(~bUniquePoints) = inf;
-    metricRight(~bUniquePoints) = inf;
     
-    % Calculate gain in metric for each of possible splits based on current
-    % metric value minus metric value of child weighted by number of terms
-    % in each child
-    metricGain = metricCurrent-((1:N)'.*metricLeft+(N-1:-1:0)'.*metricRight)/N;
+    UTrain = XTrain(:,iIn)*projMat;
+    % This step catches splits based on no significant variation
+    bUTrainVaries = queryIfColumnsVary(UTrain,options.XVariationTol);
     
-    % Randomly sample from equally best splits
-    [splitGains(nVarAtt),iSplits(nVarAtt)] = max(metricGain(1:end-1));
-    iEqualMax = find(abs(metricGain(1:end-1)-splitGains(nVarAtt))<(10*eps));
-    iSplits(nVarAtt) = iEqualMax(randi(numel(iEqualMax)));
+    if ~any(bUTrainVaries)
+        tree = setupLeaf(YTrain,options);
+        return
+    end
+    
+    UTrain = UTrain(:,bUTrainVaries);
+    projMat = projMat(:,bUTrainVaries);
+    
+    %% Search over splits using provided method
+    
+    nProjDirs = size(UTrain,2);
+    splitGains = NaN(nProjDirs,1);
+    iSplits = NaN(nProjDirs,1);
+    
+    for nVarAtt = 1:nProjDirs
+        
+        % Calculate the probabilities of being at each class in each of child
+        % nodes based on proportion of training data for each of possible
+        % splits using current projection
+        [UTrainSort,iUTrainSort] = sort(UTrain(:,nVarAtt));
+        YTrainSort = YTrain(iUTrainSort,:);
+        if size(YTrain,2)==1
+            LeftCumCounts = [(1:numel(YTrainSort))'-cumsum(YTrainSort),cumsum(YTrainSort)];
+        else
+            LeftCumCounts = cumsum(YTrainSort,1);
+        end
+        RightCumCounts = bsxfun(@minus,LeftCumCounts(end,:),LeftCumCounts);
+        bUniquePoints = [diff(UTrainSort,[],1)>1e-10;false];
+        pL = bsxfun(@rdivide,LeftCumCounts,sum(LeftCumCounts,2));
+        pR = bsxfun(@rdivide,RightCumCounts,sum(RightCumCounts,2));
+        
+        % Calculate the metric values of the current node and two child nodes
+        if strcmpi(options.splitCriterion,'gini')
+            metricLeft = 1-sum(pL.^2,2);
+            metricRight = 1-sum(pR.^2,2);
+        elseif strcmpi(options.splitCriterion,'info')
+            pLProd = pL.*log2(pL);
+            pLProd(pL==0) = 0;
+            metricLeft = -sum(pLProd,2);
+            pRProd = pR.*log2(pR);
+            pRProd(pR==0) = 0;
+            metricRight = -sum(pRProd,2);
+        else
+            error('Invalid split criterion');
+        end
+        metricCurrent = metricLeft(end);
+        metricLeft(~bUniquePoints) = inf;
+        metricRight(~bUniquePoints) = inf;
+        
+        % Calculate gain in metric for each of possible splits based on current
+        % metric value minus metric value of child weighted by number of terms
+        % in each child
+        metricGain = metricCurrent-((1:N)'.*metricLeft+(N-1:-1:0)'.*metricRight)/N;
+        
+        % Randomly sample from equally best splits
+        [splitGains(nVarAtt),iSplits(nVarAtt)] = max(metricGain(1:end-1));
+        iEqualMax = find(abs(metricGain(1:end-1)-splitGains(nVarAtt))<(10*eps));
+        iSplits(nVarAtt) = iEqualMax(randi(numel(iEqualMax)));
+        
+    end
+    
+    % If no split gives a positive gain then stop
+    if max(splitGains)<0
+        tree = setupLeaf(YTrain,options);
+        return
+    end
+    
+    % Establish between projection direction
+    maxGain = max(splitGains);
+    iEqualMax = find(abs(splitGains-maxGain)<(10*eps));
+    % Use given method to break ties
+    if strcmpi(options.dirIfEqual,'rand')
+        iDir = iEqualMax(randi(numel(iEqualMax)));
+    elseif strcmpi(options.dirIfEqual,'first')
+        iDir = iEqualMax(1);
+    else
+        error('invalid dirIfEqual');
+    end
+    iSplit = iSplits(iDir);
+    
+    
+    %% Establish partition point and assign to child
+    
+    UTrain = UTrain(:,iDir);
+    UTrainSort = sort(UTrain);
+    
+    % The convoluted nature of the below is to avoid numerical errors
+    uTrainSortLeftPart = UTrainSort(iSplit);
+    UTrainSort = UTrainSort-uTrainSortLeftPart;
+    partitionPoint = UTrainSort(iSplit)*0.5+UTrainSort(iSplit+1)*0.5;
+    partitionPoint = partitionPoint+uTrainSortLeftPart;
+    UTrainSort = UTrainSort+uTrainSortLeftPart; %#ok<NASGU>
+    
+    bLessThanTrain = UTrain<=partitionPoint;
+    
+    if ~any(bLessThanTrain) || all(bLessThanTrain)
+        error('Suggested split with empty');
+    end
     
 end
 
-% If no split gives a positive gain then stop
-if max(splitGains)<0
-    setupLeaf
-    return
-end
+%% Recur tree growth to child nodes and constructs tree struct
+% to return
 
-% Establish between projection direction
-maxGain = max(splitGains);
-iEqualMax = find(abs(splitGains-maxGain)<(10*eps));
-% Use given method to break ties
-if strcmpi(options.dirIfEqual,'rand')
-    iDir = iEqualMax(randi(numel(iEqualMax)));
-elseif strcmpi(options.dirIfEqual,'first')
-    iDir = iEqualMax(1);
+% Update ancestral counts for breaking ties if needed
+if size(YTrain,2)==1
+    countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
 else
-    error('invalid dirIfEqual');
+    countsNode = sum(YTrain,1);
 end
-iSplit = iSplits(iDir);
-
-
-%% Establish partition point and assign to child
-
-UTrain = UTrain(:,iDir);
-UTrainSort = sort(UTrain);
-
-% The convoluted nature of the below is to avoid numerical errors
-uTrainSortLeftPart = UTrainSort(iSplit);
-UTrainSort = UTrainSort-uTrainSortLeftPart;
-partitionPoint = UTrainSort(iSplit)*0.5+UTrainSort(iSplit+1)*0.5;
-partitionPoint = partitionPoint+uTrainSortLeftPart;
-UTrainSort = UTrainSort+uTrainSortLeftPart; %#ok<NASGU>
-
-bLessThanTrain = UTrain<=partitionPoint;
-
-if ~any(bLessThanTrain) || all(bLessThanTrain)
-    error('Suggested split with empty');
+nNonZeroCounts = sum(countsNode>0);
+nUniqueNonZeroCounts = numel(fastUnique(countsNode));
+if nUniqueNonZeroCounts==nNonZeroCounts
+    options.ancestralProbs = countsNode/sum(countsNode);
+else
+    options.ancestralProbs = [options.ancestralProbs;countsNode/sum(countsNode)];
 end
 
-makeSubTrees;
+treeLeft = growCCT(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),options,iFeatureNum,depth+1);
+treeRight = growCCT(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),options,iFeatureNum,depth+1);
+tree.bLeaf = false;
+tree.trainingCounts = countsNode;
+tree.iIn = iIn;
+tree.decisionProjection = projMat(:,iDir);
+tree.paritionPoint = partitionPoint;
+tree.lessthanChild = treeLeft;
+tree.greaterthanChild = treeRight;
 
-%% Nested Functions after here
+end
 
-    function makeSubTrees
-        % Recurs tree growth to child nodes and constructs tree struct
-        % to return
-        
-        % Update ancestral counts for breaking ties if needed
-        if size(YTrain,2)==1
-            countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
-        else
-            countsNode = sum(YTrain,1);
-        end
-        nNonZeroCounts = sum(countsNode>0);
-        nUniqueNonZeroCounts = numel(fastUnique(countsNode));
-        if nUniqueNonZeroCounts==nNonZeroCounts
-            options.ancestralProbs = countsNode/sum(countsNode);
-        else
-            options.ancestralProbs = [options.ancestralProbs;countsNode/sum(countsNode)];
-        end
-        
-        treeLeft = growCCT(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),options,iFeatureNum,depth+1);
-        treeRight = growCCT(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),options,iFeatureNum,depth+1);
-        tree.bLeaf = false;
-        tree.trainingCounts = countsNode;
-        tree.iIn = iIn;
-        tree.decisionProjection = projMat(:,iDir);
-        tree.paritionPoint = partitionPoint;
-        tree.lessthanChild = treeLeft;
-        tree.greaterthanChild = treeRight;
-    end
+function tree = setupLeaf(YTrain,options)
+% Update tree struct to make node a leaf
 
-    function setupLeaf
-        % Update tree struct to make node a leaf
-        
-        if size(YTrain,2)==1
-            countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
-        else
-            countsNode = sum(YTrain,1);
-        end
-        maxCounts = max(countsNode);
-        bEqualMaxCounts = maxCounts == countsNode;
+if size(YTrain,2)==1
+    countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
+else
+    countsNode = sum(YTrain,1);
+end
+maxCounts = max(countsNode);
+bEqualMaxCounts = maxCounts == countsNode;
+if sum(bEqualMaxCounts)==1
+    label = find(bEqualMaxCounts);
+else
+    nRecur = size(options.ancestralProbs,1);
+    while nRecur>0
+        countsTieBreak = countsNode+options.ancestralProbs(nRecur,:)/1e9;
+        maxCounts = max(countsTieBreak);
+        bEqualMaxCounts = maxCounts == countsTieBreak;
         if sum(bEqualMaxCounts)==1
             label = find(bEqualMaxCounts);
+            break
         else
-            nRecur = size(options.ancestralProbs,1);
-            while nRecur>0
-                countsTieBreak = countsNode+options.ancestralProbs(nRecur,:)/1e9;
-                maxCounts = max(countsTieBreak);
-                bEqualMaxCounts = maxCounts == countsTieBreak;
-                if sum(bEqualMaxCounts)==1
-                    label = find(bEqualMaxCounts);
-                    break
-                else
-                    nRecur = nRecur-1;
-                end
-                if nRecur==0
-                    [~,label] = max(countsNode+rand(size(countsNode))/1e9);
-                end
-            end
+            nRecur = nRecur-1;
         end
-        tree.bLeaf = true;
-        tree.labelClassId = label;
-        tree.trainingCounts = countsNode;
+        if nRecur==0
+            [~,label] = max(countsNode+rand(size(countsNode))/1e9);
+        end
     end
-
+end
+tree.bLeaf = true;
+tree.labelClassId = label;
+tree.trainingCounts = countsNode;
 end
 
 function [bSp, rmm, cmm] = twoPointMaxMarginSplit(X,Y,tol)
