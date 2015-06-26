@@ -16,11 +16,11 @@ function [coeff,muX,vals] = pcaLite(X,bScale,bMakeFullRank)
 %
 % 21/05/15
 
-if ~exist('bScale','var') || isempty(bScale)
+if nargin<2 || isempty(bScale)
     bScale = false;
 end
 
-if ~exist('bMakeFullRank','var') || isempty(bMakeFullRank)
+if nargin<3 || isempty(bMakeFullRank)
     bMakeFullRank = true;
 end
 

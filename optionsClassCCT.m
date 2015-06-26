@@ -85,12 +85,13 @@ classdef optionsClassCCT
         
         %% OPTIONS FOR POSSIBLE EXTENSIONS
         
-        % Projections to consider for splitting at each node.  Valid
-        % options are 'CCA' (note equivalent to Fisher's LDA), 'PCA',
-        % 'CCAclasswise' or a cell array with any combination of the above 
-        % in which case multiple projection methods are considered.  Can
-        % also be empty with the alogrithm relying on axis aligned splits
-        projections = 'CCA';
+        % Projections to consider for splitting at each node.  Each field
+        % should be a logical.  Note 'CCA' is equivalent to the multiclass
+        % case of Fisher's LDA.  'Rand' will randomly select from the the
+        % indices of its input, e.g. 'Rand' = [1,2] will randomly select
+        % wether to do 'CCA' or 'PCA'.  Note this over-rides the values for
+        % the corresponding random fields.
+        projections = struct('CCA',true,'PCA',false,'CCAclasswise',false,'Rand',[]);
         
         % Allows original axes to also be considered for splitting in
         % addition to the generated projections.  Valid options are false,
