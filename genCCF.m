@@ -1,4 +1,4 @@
-function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(nTrees,XTrain,YTrain,optionsFor,XTest,bKeepTrees,bFeatureNum,bOrdinal)
+function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(nTrees,XTrain,YTrain,optionsFor,XTest,bKeepTrees,iFeatureNum,bOrdinal)
 %genCCF Generate a canonical correlation forest
 %
 % [CCF, forPred, forProbs, treePred, cumForPred] = 

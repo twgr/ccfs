@@ -1,19 +1,23 @@
-function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = compiledGenCCF(nTrees,XTrain,YTrain,optionsFor,iFeatureNum,XTest,bKeepTrees) %#ok<*INUSD,*STOUT>
+function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = compiledGenCCF(nTrees,XTrain,YTrain,optionsFor,XTest,bKeepTrees,iFeatureNum,bOrdinal) %#ok<*INUSD,*STOUT>
 
  if ~exist('optionsFor','var')
      optionsFor = []; %#ok<*NASGU>
  end
- 
- if ~exist('iFeatureNum','var')
-     iFeatureNum = [];
- end
- 
+  
  if ~exist('XTest','var')
      XTest = [];
  end
  
  if ~exist('bKeepTrees','var')
      bKeepTrees = true;
+ end
+ 
+ if ~exist('iFeatureNum','var')
+     iFeatureNum = [];
+ end
+ 
+ if ~exist('bOrdinal','var')
+     bOrdinal = [];
  end
  
  dt = datestr(now,30);
