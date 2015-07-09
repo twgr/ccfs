@@ -1,4 +1,4 @@
-function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = compiledGenCCF(XTrain,YTrain,nTrees,optionsFor,iFeatureNum,XTest,bKeepTrees) %#ok<*INUSD,*STOUT>
+function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = compiledGenCCF(nTrees,XTrain,YTrain,optionsFor,iFeatureNum,XTest,bKeepTrees) %#ok<*INUSD,*STOUT>
 
  if ~exist('optionsFor','var')
      optionsFor = []; %#ok<*NASGU>

@@ -20,8 +20,8 @@ function [classLabelIds, countsLeaf] = predictFromCCT(tree,X)
             countsLeaf = repmat(tree.trainingCounts,size(X,1),1);
         end
     else
-        if isfield(tree,'rotForDetails') && ~isempty(tree.rotForDetails)
-            X = bsxfun(@minus,X,tree.rotForDetails.muX)*tree.rotForDetails.R;
+        if isfield(tree,'rotDetails') && ~isempty(tree.rotDetails)
+            X = bsxfun(@minus,X,tree.rotDetails.muX)*tree.rotDetails.R;
         end
         
         bLessChild = (X(:,tree.iIn)*tree.decisionProjection)<=tree.paritionPoint;

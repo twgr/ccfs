@@ -43,7 +43,7 @@ else
     % Already in binary format but make sure Y is logical type to minimize 
     % memory requirement in recursion
     Y = logical(Y);
-    if size(Y,2)
+    if size(Y,2)==2
         classes = [false,true];
     else
         classes = 1:size(Y,2);

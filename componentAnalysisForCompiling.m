@@ -1,4 +1,4 @@
-function [projMat, U] = componentAnalysis(X,Y,processes,epsilon)
+function [projMat, U] = componentAnalysisForCompiling(X,Y,processes,epsilon)
 %componentAnalysis  Carries out a series of specified component analyses
 %
 % [projRot, U] = componentAnalysis(X,Y,processes,epsilon)
@@ -30,8 +30,6 @@ if ~isempty(processes.Rand)
     toDo(notSelected) = false;
 end
 
-bQRXdone = false;
-
 bYpresent = any(Y,1);
 Y = Y(:,bYpresent);
 
@@ -58,91 +56,85 @@ bDoingCCA = any(strcmpi(processes,'CCA'));
 
 projMat = NaN(size(X,2),0);
 
-if toDo(1)
+if toDo(2) && ~toDo(1) && ~toDo(3)
+    pcaCoeff = pcaLite(X);
+    projMat = [projMat,pcaCoeff];
+else
     
     % This code is a reduction of the function canoncorr.  This
     % method is explained in the supplementary material
-    
-    if ~bQRXdone
-        [q1,r1,p1] = qr(X,0);
-        % Reduce to full rank within some tolerance
-        rankX = sum(abs(diag(r1)) >= (epsilon*abs(r1(1))));
-        if rankX == 0
-            %warning('X doesnt vary so component analysis fails');
-            projMat = [1;zeros(size(X,2)-1,1)];
-            if nargout>1
-                U = X*projMat;
-            end
-            return
-        elseif rankX < x2
-            q1 = q1(:,1:rankX); r1 = r1(1:rankX,1:rankX);
-        end
-        bQRXdone = true;
-    end
-    
-    [q2,r2,~] = qr(Y,0);
+    [q1,r1,p1] = qr(X,0);
     % Reduce to full rank within some tolerance
-    rankY = sum(abs(diag(r2)) >= (epsilon*abs(r2(1))));
-    if rankY == 0
-        %warning('Y doesnt vary so component analysis fails');
+    rankX = sum(abs(diag(r1)) >= (epsilon*abs(r1(1))));
+    if rankX == 0
+        %warning('X doesnt vary so component analysis fails');
         projMat = [1;zeros(size(X,2)-1,1)];
         if nargout>1
             U = X*projMat;
         end
         return
-    elseif rankY < K
-        q2 = q2(:,1:rankY);
+    elseif rankX < x2
+        q1 = q1(:,1:rankX); r1 = r1(1:rankX,1:rankX);
     end
     
-    % Solve CCA using the decompositions
-    d = min(rankX,rankY);
-    [L,~,~] = svd(q1' * q2,0);
-    A = r1 \ L(:,1:d) * sqrt(x1-1);
     
-    % Put coefficients back to their full size and their correct order
-    A(p1,:) = [A; zeros(x2-rankX,d)];
-    
-    projMat = [projMat,A];
-end
-
-if toDo(2)
-    
-    pcaCoeff = pcaLite(X);
-    projMat = [projMat,pcaCoeff];
-    
-end
-
-if toDo(3)
-    % Consider each class in an in / out fashion to generate a set
-    % of K projections.
-    
-    if bDoingCCA && K==2
-        % No difference here to normal CCA
-        %continue
-    end
-    
-    if ~bQRXdone
-        [q1,r1,p1] = qr(X,0);
+    if toDo(1)
+        
+        % This code is a reduction of the function canoncorr.  This
+        % method is explained in the supplementary material
+        
+        
+        [q2,r2,~] = qr(Y,0);
         % Reduce to full rank within some tolerance
-        rankX = sum(abs(diag(r1)) >= (epsilon*abs(r1(1))));
-        if rankX == 0
-            %warning('X doesnt vary so component analysis fails');
+        rankY = sum(abs(diag(r2)) >= (epsilon*abs(r2(1))));
+        if rankY == 0
+            %warning('Y doesnt vary so component analysis fails');
             projMat = [1;zeros(size(X,2)-1,1)];
-            U = X*projMat;
+            if nargout>1
+                U = X*projMat;
+            end
             return
-        elseif rankX < x2
-            q1 = q1(:,1:rankX); r1 = r1(1:rankX,1:rankX);
+        elseif rankY < K
+            q2 = q2(:,1:rankY);
+        end
+        
+        % Solve CCA using the decompositions
+        d = min(rankX,rankY);
+        [L,~,~] = svd(q1' * q2,0);
+        A = r1 \ L(:,1:d) * sqrt(x1-1);
+        
+        % Put coefficients back to their full size and their correct order
+        A(p1,:) = [A; zeros(x2-rankX,d)];
+        
+        projMat = [projMat,A];
+    end
+    
+    if toDo(2)
+        
+        pcaCoeff = pcaLite(X);
+        projMat = [projMat,pcaCoeff];
+        
+    end
+    
+    if toDo(3)
+        % Consider each class in an in / out fashion to generate a set
+        % of K projections.
+        
+        if bDoingCCA && K==2
+            % No difference here to normal CCA
+            %continue
+        end
+        
+        for k=1:K
+            % Solve CCA using the X decomposition and the fact that the
+            % corresponding Y decomposition is itself
+            [L,~,~] = svd(q1' * Y(:,k),0);
+            A = r1 \ L(:,1) * sqrt(x1-1);
+            A(p1,:) = [A; zeros(x2-rankX,1)];
+            projMat = [projMat,A];       %#ok<AGROW>
         end
     end
     
-    for k=1:K
-        % Solve CCA using the X decomposition and the fact that the
-        % corresponding Y decomposition is itself
-        [L,~,~] = svd(q1' * Y(:,k),0);
-        A = r1 \ L(:,1) * sqrt(x1-1);
-        A(p1,:) = [A; zeros(x2-rankX,1)];
-        projMat = [projMat,A];       %#ok<AGROW>
-    end
 end
 
 %end

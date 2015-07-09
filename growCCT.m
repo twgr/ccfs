@@ -139,7 +139,7 @@ else
     % Generate the new features as required
     
     if ~isempty(options.projections)
-        projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections);
+        projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections,options.epsilonCCA);
     end
     
     %% Choose the features to use
@@ -190,7 +190,7 @@ else
             LeftCumCounts = cumsum(YTrainSort,1);
         end
         RightCumCounts = bsxfun(@minus,LeftCumCounts(end,:),LeftCumCounts);
-        bUniquePoints = [diff(UTrainSort,[],1)>1e-10;false];
+        bUniquePoints = [diff(UTrainSort,[],1)>options.XVariationTol;false];
         pL = bsxfun(@rdivide,LeftCumCounts,sum(LeftCumCounts,2));
         pR = bsxfun(@rdivide,RightCumCounts,sum(RightCumCounts,2));
         
@@ -220,6 +220,9 @@ else
         % Randomly sample from equally best splits
         [splitGains(nVarAtt),iSplits(nVarAtt)] = max(metricGain(1:end-1));
         iEqualMax = find(abs(metricGain(1:end-1)-splitGains(nVarAtt))<(10*eps));
+        if isempty(iEqualMax)
+            iEqualMax = 1;
+        end
         iSplits(nVarAtt) = iEqualMax(randi(numel(iEqualMax)));
         
     end

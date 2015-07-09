@@ -1,8 +1,8 @@
-function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(XTrain,YTrain,nTrees,optionsFor,iFeatureNum,XTest,bKeepTrees)
+function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(nTrees,XTrain,YTrain,optionsFor,iFeatureNum,XTest,bKeepTrees)
 %genCCF Generate a canonical correlation forest
 %
 % [CCF, forPred, forProbs, treePred, cumForPred] = 
-%         genCCF(XTrain,YTrain,nTrees,options,iFeatureNum,XTest,bKeepTrees)
+%         genCCF(nTrees,XTrain,YTrain,options,iFeatureNum,XTest,bKeepTrees)
 %
 % Creates a canonical correlation forest (CCF) comprising of nTrees
 % canonical correlation trees (CCT) containing splits based on the a CCA
@@ -10,6 +10,7 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 % class labels.
 %
 % Required Inputs: 
+%         nTrees = Number of trees to create
 %         XTrain = Array giving training features.  Each row should be a
 %                  seperate data point and each column a seperate feature.
 %                  Must be numerical array with missing values marked as
@@ -22,7 +23,6 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %                  values taken as seperate class labels or a cell array of
 %                  either class labels which can be either numeric or
 %                  strings.
-%         nTrees = Number of trees to create
 %
 % Options Inputs:
 %        options = Options object created by optionsClassCCT.  If left
@@ -169,7 +169,7 @@ else
    [~,forestPredictsTest] = max(bsxfun(@times,forestProbsTest,optionsFor.voteFactor(:)'),[],2);
 end
 
-forestPredictsTest = optionsFor.classNames(forestPredictsTest);
+forestPredictsTest = reshape(optionsFor.classNames(forestPredictsTest),[],1);
 if nargout>3
     treePredictsTest = optionsFor.classNames(treePredictsTest);
     if nargout>4
@@ -192,18 +192,22 @@ end
 XTrainBag = XTrain(iTrainThis,:);
 YTrainBag = YTrain(iTrainThis,:);
 
-if optionsFor.bApplyRotForPreprocess
+if strcmpi(optionsFor.treeRotation,'rotationForest')
     % This allows functionality to use the Rotation Forest algorithm as a
     % meta method for individual CCTs
-    [R,muX,XTrainRot] = rotationForestDataProcess(XTrainBag,optionsFor.RotForM,optionsFor.RotForpS,optionsFor.RotForpClassLeaveOut);
-    XTrainBag = XTrainRot;
-    rotForDetails = struct('R',R,'muX',muX);
+    [R,muX,XTrainBag] = rotationForestDataProcess(XTrainBag,optionsFor.RotForM,optionsFor.RotForpS,optionsFor.RotForpClassLeaveOut);
+elseif strcmpi(optionsFor.treeRotation,'random')
+    R = randomRotation(size(XTrain,2));
+    muX = mean(XTrain,1);
+    XTrainBag = bsxfun(@minus,XTrainBag,muX)*R;
+elseif strcmpi(optionsFor.treeRotation,'pca')
+    [R,muX,XTrainBag] = pcaLite(XTrainBag,false,false);
 end
 
 tree = growCCT(XTrainBag,YTrainBag,optionsFor,iFeatureNum,0);
 
-if optionsFor.bApplyRotForPreprocess
-    tree.rotForDetails = rotForDetails;
+if ~strcmpi(optionsFor.treeRotation,'none')
+    tree.rotDetails = struct('R',R,'muX',muX);
 end
 
 end

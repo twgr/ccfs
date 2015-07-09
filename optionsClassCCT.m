@@ -31,6 +31,9 @@ classdef optionsClassCCT
 %       % variation, the algorithm can either set the node to be a leaf or
 %       % resort to using the original data for the CCA
 %
+% epsilonCCA = (1e-4) | +ve real % Tolerance parameter for rank reduction 
+%       % during the CCA
+%
 % 14/06/15
     
     
@@ -73,6 +76,9 @@ classdef optionsClassCCT
         % the CCA
         bContinueProjBootDegenerate = true;
         
+        % Tolerance parameter for rank reduction during the CCA
+        epsilonCCA = 1e-4;
+        
         %% COMMON FOREST OPTIONS
         
         % Whether to use bagging.  Should be 'default', true or false.
@@ -100,12 +106,14 @@ classdef optionsClassCCT
         % is high dimensional.
         includeOriginalAxes = false;
         
-        % Options allowing each tree to be trained on a different rotation
-        % of the dataset in accordance with the rotation forest algorithm  
-        bApplyRotForPreprocess = false;
+        % Allows rotations of individual trees before training.  Valid
+        % options are 'none' (default), 'pca', 'random' and
+        % 'rotationForest'.
+        treeRotation = 'none';
+        
         RotForM = 3; % Note these three options are not usually active but
-        RotForpS = 0.5; % are suggested defaults when RotForPreprocess is
-        RotForpClassLeaveOut = 0.25; % used
+        RotForpS = 0.5; % are suggested defaults when Rotation Forest is
+        RotForpClassLeaveOut = 0.25; % used for treeRotation
         
         % Option allowing random starting rotation
         bRandomRotationStart = false;

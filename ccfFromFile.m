@@ -32,7 +32,7 @@ function ccfFromFile(inputLocation, outputLocation, nOut)
     end
     
     if isempty(XTest)
-        [CCF] = genCCF(XTrain,YTrain,nTrees,optionsFor,iFeatureNum,XTest,bKeepTrees);
+        [CCF] = genCCF(nTrees,XTrain,YTrain,optionsFor,iFeatureNum,XTest,bKeepTrees);
         save(outputLocation,'CCF');
     else        
         if nargout<2
@@ -40,7 +40,7 @@ function ccfFromFile(inputLocation, outputLocation, nOut)
         else
             nOut = str2double(nOut);
         end        
-        [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(XTrain,YTrain,nTrees,optionsFor,iFeatureNum,XTest,bKeepTrees); %#ok<NASGU,ASGLU>
+        [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(nTrees,XTrain,YTrain,optionsFor,iFeatureNum,XTest,bKeepTrees); %#ok<NASGU,ASGLU>
         names = {'CCF','forestPredictsTest','forestProbsTest','treePredictsTest','cumulativeForestPredictsTest'};
         save(outputLocation,names{1:nOut});
     end
