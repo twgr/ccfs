@@ -122,12 +122,7 @@ while ~bComplete && nIter<maxIter
             bLeaf = any(sum(YTrain)==[0,size(YTrain,1)]);
         end
     end
-    
-    if depth>490 && strcmpi(options.maxDepthSplit,'stack')
-        %FIXME
-        error('Tree is too deep and causing stack issues');
-    end
-    
+        
     %% Subsample features as required for hyperplane sampling
     
     iIn = zeros(1,0);
