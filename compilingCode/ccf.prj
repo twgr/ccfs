@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.matlabcoder" plugin-version="R2014a_nu">
-  <configuration build-checksum="4193184069" file="C:\Users\Tom\Documents\Git\CCF\compilingCode\ccf.prj" location="C:\Users\Tom\Documents\Git\CCF\compilingCode" name="ccf" target="target.matlab.coder" target-name="MEX, C, and C++ Code Generation">
+  <configuration build-checksum="1099995894" file="C:\Users\Tom\Documents\Git\CCF\compilingCode\ccf.prj" location="C:\Users\Tom\Documents\Git\CCF\compilingCode" name="ccf" target="target.matlab.coder" target-name="MEX, C, and C++ Code Generation">
     <profile key="profile.mex">
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
       <param.BuiltInstrumentedMex>true</param.BuiltInstrumentedMex>
@@ -313,11 +313,11 @@
         <param.UseECoderFeatures />
       </unset>
     </profile>
-    <param.outputfile>${PROJECT_ROOT}\growManyTreesCompileTest_mex.mexw64</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\codegen\lib\growManyTreesCompileTest\growManyTreesCompileTest.lib</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
     <param.mex.mainhtml>C:\Users\Tom\Documents\Git\CCF\codegen\mex\growManyTreesCompileTest\html\index.html</param.mex.mainhtml>
-    <param.grt.mainhtml>C:\Users\Tom\Documents\Git\CCF\codegen\mex\growManyTreesCompileTest\html\index.html</param.grt.mainhtml>
+    <param.grt.mainhtml>C:\Users\Tom\Documents\Git\CCF\compilingCode\codegen\lib\growManyTreesCompileTest\html\index.html</param.grt.mainhtml>
     <param.CallGeneratedCodeFromTest>true</param.CallGeneratedCodeFromTest>
     <param.VerificationMode>option.VerificationMode.None</param.VerificationMode>
     <param.SILDebugging>false</param.SILDebugging>
@@ -330,7 +330,7 @@
     <param.AnnotationChecksum>2996076824</param.AnnotationChecksum>
     <param.mex.outputfile>growManyTreesCompileTest_mex</param.mex.outputfile>
     <param.grt.outputfile>growManyTreesCompileTest</param.grt.outputfile>
-    <param.artifact>option.target.artifact.mex.instrumented</param.artifact>
+    <param.artifact>option.target.artifact.lib</param.artifact>
     <param.FixedPointTypeProposalMode>option.FixedPointTypeProposalMode.ProposeFractionLengths</param.FixedPointTypeProposalMode>
     <param.DefaultProposedFixedPointType>numerictype([],16,12)</param.DefaultProposedFixedPointType>
     <param.MinMaxSafetyMargin>0</param.MinMaxSafetyMargin>
@@ -648,7 +648,7 @@
     </fileset.testbench>
     <fileset.package />
     <build-deliverables>
-      <file location="C:\Users\Tom\Documents\Git\CCF\compilingCode" name="growManyTreesCompileTest_mex.mexw64" optional="false">C:\Users\Tom\Documents\Git\CCF\compilingCode\growManyTreesCompileTest_mex.mexw64</file>
+      <file location="${PROJECT_ROOT}\codegen\lib\growManyTreesCompileTest" name="growManyTreesCompileTest.lib" optional="false">C:\Users\Tom\Documents\Git\CCF\compilingCode\codegen\lib\growManyTreesCompileTest\growManyTreesCompileTest.lib</file>
     </build-deliverables>
     <workflow />
     <matlab>

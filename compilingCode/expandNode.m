@@ -71,9 +71,6 @@ if ~all(bXVaries)
     end
 end
 
-
-iIn = randomSubspace(iFeatureNum,options.lambda,options.XVariationTol,XTrain);
-
 if isempty(iIn)
     % This means that there was no variation along any feature, therefore
     % exit.
@@ -115,10 +112,8 @@ if ~isempty(options.projections) && ((size(XTrainBag,1)==2) || queryIfOnlyTwoUni
         iDir = 1;
     end
 else
-    %[projMat, partitionPoint, bLessThanTrain, bLeaf] = getProjAndPartPoint(XTrainBag,XTrain,YTrain,iIn,options.includeOriginalAxes,options.XVariationTol,options.splitCriterion,options.dirIfEqual,options.epsilonCCA);
     
     % Generate the new features as required
-    %projMat = componentAnalysisForCompiling(XTrainBag,XTrainBag,options.epsilonCCA);
     bYpresent = any(YTrainBag,1);
     YTrainBag = YTrainBag(:,bYpresent);
     

@@ -1,0 +1,11 @@
+<!-- saved from url=(0014)about:internet -->
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="72,1" id="srcline1">1</a></span><span class="line"><span class="keyword">function</span> <span class="var type1" id="S2T51U3">uX</span> = fastUnique(<span class="var type1" id="S3T51U6">X</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="72,2" id="srcline2">2</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="72,3" id="srcline3">3</a></span><span class="line"><span class="mxinfo" id="T51:U3"><span class="var type1" id="S2T51U9">uX</span> = <span class="mxinfo" id="T51:U5">sort(<span class="var type1" id="S3T51U12">X</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="72,4" id="srcline4">4</a></span><span class="line"><span class="keyword">if</span> isrow(<span class="var type1" id="S3T51U17">X</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="72,5" id="srcline5">5</a></span><span class="line">    <span class="mxinfo" id="T51:U8"><span class="var type1" id="S2T51U20">uX</span> = <span class="mxinfo" id="T51:U10"><span class="var type1" id="S2T51U22">uX</span>(<span class="mxinfo" id="T73:U12">[<span class="mxinfo" id="T6:U13">true</span>,<span class="mxinfo" id="T73:U14"><span class="mxinfo" id="T51:U15">diff(<span class="var type1" id="S3T51U30">X</span>)</span>~=<span class="mxinfo" id="T4:U17">0</span></span>]</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="72,6" id="srcline6">6</a></span><span class="line"><span class="keyword">else</span></span></span>
+<span class="srcline"><span class="lineno"><a href="72,7" id="srcline7">7</a></span><span class="line">    <span class="var type0" id="S2T0U35">uX</span> = <span class="var type0" id="S2T0U37">uX</span>([true;diff(<span class="var type0" id="S3T0U46">X</span>)~=0]);</span></span>
+<span class="srcline"><span class="lineno"><a href="72,8" id="srcline8">8</a></span><span class="line"><span class="keyword"><span class="keyword">end</span></span></span></span>
+</pre>
