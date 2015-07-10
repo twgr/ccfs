@@ -97,7 +97,7 @@ classdef optionsClassCCT
         % indices of its input, e.g. 'Rand' = [1,2] will randomly select
         % wether to do 'CCA' or 'PCA'.  Note this over-rides the values for
         % the corresponding random fields.
-        projections = struct('CCA',true,'PCA',false,'CCAclasswise',false,'Rand',[]);
+        projections = struct('CCA',true,'PCA',false,'CCAclasswise',false,'Rand',zeros(1,0));
         
         % Allows original axes to also be considered for splitting in
         % addition to the generated projections.  Valid options are false,
