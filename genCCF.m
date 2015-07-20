@@ -30,7 +30,7 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %
 % Options Inputs:
 %
-%        options = Options object created by optionsClassCCT.  If left
+%        options = Options object created by optionsClassCCF.  If left
 %                  blank then a default set of options corresponding to the
 %                  method detailed in the paper is used.
 %          XTest = Test data to make predictions for.  If the input
@@ -116,7 +116,7 @@ else
 end
     
 if ~exist('optionsFor','var') || isempty(optionsFor)
-    optionsFor = optionsClassCCT(D,baseCounts);
+    optionsFor = optionsClassCCF(D,baseCounts);
 else
     optionsFor = optionsFor.updateForD(D);
     optionsFor = optionsFor.updateForBaseCounts(baseCounts);

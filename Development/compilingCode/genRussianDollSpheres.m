@@ -158,7 +158,7 @@ writetable(fullTable,'doubleBalance.csv');
 
 %%
 
-optionsFor = optionsClassCCT;
+optionsFor = optionsClassCCF;
 %optionsFor.bUseParallel = true;
 optionsFor.epsilonCCA = 1e-12;
 optionsFor.XVariationTol = 1e-12;

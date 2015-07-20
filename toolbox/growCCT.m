@@ -14,7 +14,7 @@ function tree = growCCT(XTrain,YTrain,options,iFeatureNum,depth)
 %                  processed using processInputData before being passed to
 %                  CCT
 %    YTrain      = Class data formatted as per output of classExpansion
-%    options     = Options class of type optionsClassCCT.  Some fields are
+%    options     = Options class of type optionsClassCCF.  Some fields are
 %                  updated during recursion
 %    iFeatureNum = Grouping of features as per processInputData.  During
 %                  recursion if a feature is found to be identical across

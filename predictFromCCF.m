@@ -6,7 +6,7 @@ function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts
 % Inputs:                 CCF = output from genCCF.  This is a structure
 %                               with a field Trees, giving a cell array of
 %                               tree structures, and options which is an
-%                               object of type optionsClassCCT
+%                               object of type optionsClassCCF
 %                           X = input features, each row should be a 
 %                               seperate data point
 % Outputs:  forestPredictions = Vector of numeric predictions corresponding to

@@ -1,4 +1,4 @@
-classdef optionsClassCCT
+classdef optionsClassCCF
 % Options class for individual CCTs and CCF.  Please examine file for
 % complete options.  Common options are given below, default option is in
 % parens.
@@ -153,7 +153,7 @@ classdef optionsClassCCT
 %%
 
     methods    
-        function obj = optionsClassCCT(D,baseCounts)
+        function obj = optionsClassCCF(D,baseCounts)
             
             if exist('D','var') && ~isempty(D)
                 obj = obj.updateForD(D);
@@ -224,7 +224,7 @@ classdef optionsClassCCT
            % forest.  First input is number of features prior to expansion
            % D and second is the baseCounts of each class           
            
-            obj = optionsClassCCT(D,baseCounts);
+            obj = optionsClassCCF(D,baseCounts);
             obj.bProjBoot = false;
             obj.lambda = D;
             obj.minPointsForSplit = 10;

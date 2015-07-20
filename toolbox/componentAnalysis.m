@@ -12,7 +12,7 @@ function [projMat, U] = componentAnalysis(X,Y,processes,epsilon)
 %              converted to their binary expansion
 %          Y = Classes in binary expansion format.
 %  processes = Component analyses to carry out. This should be a structure
-%              of the form of the projections field in optionsClassCCT
+%              of the form of the projections field in optionsClassCCF
 %    epsilon = Tolerance parameter for rank reduction of QR decompositions
 %
 % Ouputs:

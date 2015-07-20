@@ -15,7 +15,7 @@ optionsCell = reshape(varargin,2,[]);
 optionsNames = optionsCell(1,:);
 optionsValues = optionsCell(2,:);
 
-optionsFor = optionsClassCCT;
+optionsFor = optionsClassCCF;
 for n=1:numel(optionsNames)
     value = str2double(optionsValues{n});
     if isnan(value)
