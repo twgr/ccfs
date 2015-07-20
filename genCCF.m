@@ -1,8 +1,7 @@
 function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = genCCF(nTrees,XTrain,YTrain,optionsFor,XTest,bKeepTrees,iFeatureNum,bOrdinal)
 %genCCF Generate a canonical correlation forest
 %
-% [CCF, forPred, forProbs, treePred, cumForPred] = 
-%         genCCF(nTrees,XTrain,YTrain,options,iFeatureNum,XTest,bKeepTrees)
+% CCF = genCCF(nTrees,XTrain,YTrain)
 %
 % Creates a canonical correlation forest (CCF) comprising of nTrees
 % canonical correlation trees (CCT) containing splits based on the a CCA
@@ -24,7 +23,13 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %                  either class labels which can be either numeric or
 %                  strings.
 %
+% Advanced usage:
+%
+% [CCF, forPred, forProbs, treePred, cumForPred] = 
+%  genCCF(nTrees,XTrain,YTrain,options,XTest,bKeepTrees,iFeatureNum,bOrdinal)
+%
 % Options Inputs:
+%
 %        options = Options object created by optionsClassCCT.  If left
 %                  blank then a default set of options corresponding to the
 %                  method detailed in the paper is used.
@@ -58,9 +63,16 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %     cumForPred = Predictions of forest for XTest cumulative in the
 %                  individual trees.  cumForPred(:,end)==forPred
 %
-% 22/06/15
+% Tom Rainforth 20/07/15 
 
+mypath = path;
+locToolbox = [regexprep(mfilename('fullpath'),'genCCF',''), 'toolbox'];
+bInPath = ~isempty(strfind(mypath,locToolbox));
 
+if ~bInPath
+    addpath(locToolbox);
+end
+    
 if ~isnumeric(XTrain) || any(isnan(XTrain(:)))
     error('Data is not processed, please use processInputData function');
 end

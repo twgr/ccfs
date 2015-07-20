@@ -109,7 +109,7 @@ classdef optionsClassCCT
         % Allows rotations of individual trees before training.  Valid
         % options are 'none' (default), 'pca', 'random' and
         % 'rotationForest'.
-        treeRotation = 'none';
+        treeRotation = 'none'; %FIXME limited support for anything but none at present
         
         RotForM = 3; % Note these three options are not usually active but
         RotForpS = 0.5; % are suggested defaults when Rotation Forest is
