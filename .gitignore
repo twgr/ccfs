@@ -24,7 +24,6 @@ data/*
 
 # default ignore binary files
 *.mat
-*.pdf
 *.avi
 *.mpg
 Thumbs.db
