@@ -1,5 +1,9 @@
-function plotClasses(X,Y)
+function plotClasses(X,Y,bNewPlot)
 % Plots data into seperate classes
+
+if ~exist('bNewPlot','var')
+    bNewPlot = true;
+end
 
 colors = {'b','r','k','c','g','y','m'};
 markers = {'x','+','o','*','square','diamond','pentagram','hexagram'};
@@ -10,7 +14,9 @@ elseif islogical(Y)
     Y = Y+1;
 end
 
-figure
+if bNewPlot
+    figure
+end
 hold on
 
 for k=1:max(Y)

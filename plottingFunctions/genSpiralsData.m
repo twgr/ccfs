@@ -26,7 +26,7 @@ if ~exist('sigR','var') || isempty(sigR)
 end
 
 if ~exist('bPlot','var') || isempty(bPlot)
-    bPlot = true;
+    bPlot = false;
 end
 
 if ~exist('dims','var') || isempty(dims)
