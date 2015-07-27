@@ -24,7 +24,7 @@
 <a name="12"><font color="#888888 "><i>   12   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;eml_error.h&quot;</font>
 <a name="13"><font color="#888888 "><i>   13   </i></font></a>
 <a name="14"><font color="#888888 "><i>   14   </i></font></a><font color="#117755"><i>/* Variable Definitions */</i></font>
-<a name="15"><font color="#888888 "><i>   15   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_rj_emlrtRSI">rj_emlrtRSI</a> = <b>{</b> 14, <font color="#1122ff">&quot;sqrt&quot;</font>,
+<a name="15"><font color="#888888 "><i>   15   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_wi_emlrtRSI">wi_emlrtRSI</a> = <b>{</b> 14, <font color="#1122ff">&quot;sqrt&quot;</font>,
 <a name="16"><font color="#888888 "><i>   16   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elfun\\sqrt.m&quot;</font>
 <a name="17"><font color="#888888 "><i>   17   </i></font></a><b>}</b>;
 <a name="18"><font color="#888888 "><i>   18   </i></font></a>
@@ -43,29 +43,29 @@
 <a name="31"><font color="#888888 "><i>   31   </i></font></a>  st.prev = sp;
 <a name="32"><font color="#888888 "><i>   32   </i></font></a>  st.tls = sp-&gt;tls;
 <a name="33"><font color="#888888 "><i>   33   </i></font></a>  <font color="#112266"><b>if</b></font> (*x &lt; 0.0) <b>{</b>
-<a name="34"><font color="#888888 "><i>   34   </i></font></a>    st.site = &amp;<a href="#var_rj_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rj_emlrtRSI');" target="_self"><font color="#1122aa">rj_emlrtRSI</font></a>;
+<a name="34"><font color="#888888 "><i>   34   </i></font></a>    st.site = &amp;<a href="#var_wi_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_wi_emlrtRSI');" target="_self"><font color="#1122aa">wi_emlrtRSI</font></a>;
 <a name="35"><font color="#888888 "><i>   35   </i></font></a>    <a href="eml_error_c.html#fcn_eml_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_eml_error');" target="_self"><font color="#1122aa">eml_error</font></a>(&amp;st);
 <a name="36"><font color="#888888 "><i>   36   </i></font></a>  <b>}</b>
 <a name="37"><font color="#888888 "><i>   37   </i></font></a>
 <a name="38"><font color="#888888 "><i>   38   </i></font></a>  *x = muDoubleScalarSqrt(*x);
 <a name="39"><font color="#888888 "><i>   39   </i></font></a><b>}</b>
 <a name="40"><font color="#888888 "><i>   40   </i></font></a>
-<a name="41"><font color="#888888 "><i>   41   </i></font></a><font color="#112266"><b>void</b></font> <a href="sqrt_h.html#var_d_sqrt" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_d_sqrt');" target="_self"><font color="#1122aa">d_sqrt</font></a>(<font color="#112266"><b>const</b></font> emlrtStack *sp, <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *x)
+<a name="41"><font color="#888888 "><i>   41   </i></font></a><font color="#112266"><b>void</b></font> <a name="fcn_d_sqrt">d_sqrt</a>(<font color="#112266"><b>const</b></font> emlrtStack *sp, <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *x)
 <a name="42"><font color="#888888 "><i>   42   </i></font></a><b>{</b>
 <a name="43"><font color="#888888 "><i>   43   </i></font></a>  int32_T k;
-<a name="44"><font color="#888888 "><i>   44   </i></font></a>  int32_T i91;
+<a name="44"><font color="#888888 "><i>   44   </i></font></a>  int32_T i60;
 <a name="45"><font color="#888888 "><i>   45   </i></font></a>  emlrtStack st;
 <a name="46"><font color="#888888 "><i>   46   </i></font></a>  st.prev = sp;
 <a name="47"><font color="#888888 "><i>   47   </i></font></a>  st.tls = sp-&gt;tls;
 <a name="48"><font color="#888888 "><i>   48   </i></font></a>  <font color="#112266"><b>for</b></font> (k = 0; k &lt; x-&gt;size[1]; k++) <b>{</b>
 <a name="49"><font color="#888888 "><i>   49   </i></font></a>    <font color="#112266"><b>if</b></font> (x-&gt;data[k] &lt; 0.0) <b>{</b>
-<a name="50"><font color="#888888 "><i>   50   </i></font></a>      st.site = &amp;<a href="#var_rj_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rj_emlrtRSI');" target="_self"><font color="#1122aa">rj_emlrtRSI</font></a>;
+<a name="50"><font color="#888888 "><i>   50   </i></font></a>      st.site = &amp;<a href="#var_wi_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_wi_emlrtRSI');" target="_self"><font color="#1122aa">wi_emlrtRSI</font></a>;
 <a name="51"><font color="#888888 "><i>   51   </i></font></a>      <a href="eml_error_c.html#fcn_eml_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_eml_error');" target="_self"><font color="#1122aa">eml_error</font></a>(&amp;st);
 <a name="52"><font color="#888888 "><i>   52   </i></font></a>    <b>}</b>
 <a name="53"><font color="#888888 "><i>   53   </i></font></a>  <b>}</b>
 <a name="54"><font color="#888888 "><i>   54   </i></font></a>
-<a name="55"><font color="#888888 "><i>   55   </i></font></a>  i91 = x-&gt;size[1];
-<a name="56"><font color="#888888 "><i>   56   </i></font></a>  <font color="#112266"><b>for</b></font> (k = 0; k &lt; i91; k++) <b>{</b>
+<a name="55"><font color="#888888 "><i>   55   </i></font></a>  i60 = x-&gt;size[1];
+<a name="56"><font color="#888888 "><i>   56   </i></font></a>  <font color="#112266"><b>for</b></font> (k = 0; k &lt; i60; k++) <b>{</b>
 <a name="57"><font color="#888888 "><i>   57   </i></font></a>    x-&gt;data[k] = muDoubleScalarSqrt(x-&gt;data[k]);
 <a name="58"><font color="#888888 "><i>   58   </i></font></a>  <b>}</b>
 <a name="59"><font color="#888888 "><i>   59   </i></font></a><b>}</b>

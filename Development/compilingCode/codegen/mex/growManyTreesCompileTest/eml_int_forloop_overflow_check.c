@@ -13,19 +13,19 @@
 #include "growManyTreesCompileTest_mexutil.h"
 
 /* Variable Definitions */
-static emlrtMCInfo g_emlrtMCI = { 75, 9, "eml_int_forloop_overflow_check",
+static emlrtMCInfo e_emlrtMCI = { 75, 9, "eml_int_forloop_overflow_check",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_int_forloop_overflow_check.m"
 };
 
-static emlrtMCInfo h_emlrtMCI = { 74, 15, "eml_int_forloop_overflow_check",
+static emlrtMCInfo f_emlrtMCI = { 74, 15, "eml_int_forloop_overflow_check",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_int_forloop_overflow_check.m"
 };
 
-static emlrtRSInfo kq_emlrtRSI = { 74, "eml_int_forloop_overflow_check",
+static emlrtRSInfo np_emlrtRSI = { 74, "eml_int_forloop_overflow_check",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_int_forloop_overflow_check.m"
 };
 
-static emlrtRSInfo mq_emlrtRSI = { 75, "eml_int_forloop_overflow_check",
+static emlrtRSInfo pp_emlrtRSI = { 75, "eml_int_forloop_overflow_check",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_int_forloop_overflow_check.m"
 };
 
@@ -33,7 +33,7 @@ static emlrtRSInfo mq_emlrtRSI = { 75, "eml_int_forloop_overflow_check",
 void check_forloop_overflow_error(const emlrtStack *sp)
 {
   const mxArray *y;
-  static const int32_T iv36[2] = { 1, 34 };
+  static const int32_T iv10[2] = { 1, 34 };
 
   const mxArray *m2;
   char_T cv8[34];
@@ -43,7 +43,7 @@ void check_forloop_overflow_error(const emlrtStack *sp)
     'p', '_', 'o', 'v', 'e', 'r', 'f', 'l', 'o', 'w' };
 
   const mxArray *b_y;
-  static const int32_T iv37[2] = { 1, 23 };
+  static const int32_T iv11[2] = { 1, 23 };
 
   char_T cv10[23];
   static const char_T cv11[23] = { 'c', 'o', 'd', 'e', 'r', '.', 'i', 'n', 't',
@@ -56,7 +56,7 @@ void check_forloop_overflow_error(const emlrtStack *sp)
   b_st.prev = sp;
   b_st.tls = sp->tls;
   y = NULL;
-  m2 = emlrtCreateCharArray(2, iv36);
+  m2 = emlrtCreateCharArray(2, iv10);
   for (i = 0; i < 34; i++) {
     cv8[i] = cv9[i];
   }
@@ -64,16 +64,16 @@ void check_forloop_overflow_error(const emlrtStack *sp)
   emlrtInitCharArrayR2013a(sp, 34, m2, cv8);
   emlrtAssign(&y, m2);
   b_y = NULL;
-  m2 = emlrtCreateCharArray(2, iv37);
+  m2 = emlrtCreateCharArray(2, iv11);
   for (i = 0; i < 23; i++) {
     cv10[i] = cv11[i];
   }
 
   emlrtInitCharArrayR2013a(sp, 23, m2, cv10);
   emlrtAssign(&b_y, m2);
-  st.site = &kq_emlrtRSI;
-  b_st.site = &mq_emlrtRSI;
-  f_error(&st, c_message(&b_st, y, b_y, &g_emlrtMCI), &h_emlrtMCI);
+  st.site = &np_emlrtRSI;
+  b_st.site = &pp_emlrtRSI;
+  f_error(&st, c_message(&b_st, y, b_y, &e_emlrtMCI), &f_emlrtMCI);
 }
 
 /* End of code generation (eml_int_forloop_overflow_check.c) */

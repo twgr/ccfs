@@ -9,22 +9,22 @@
 #include "rt_nonfinite.h"
 #include "growManyTreesCompileTest.h"
 #include "log2.h"
-#include "growManyTreesCompileTest_emxutil.h"
 #include "eml_error.h"
+#include "growManyTreesCompileTest_emxutil.h"
 
 /* Variable Definitions */
-static emlrtRSInfo bp_emlrtRSI = { 29, "log2",
+static emlrtRSInfo go_emlrtRSI = { 29, "log2",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elfun\\log2.m"
 };
 
-static emlrtRTEInfo fe_emlrtRTEI = { 33, 5, "log2",
+static emlrtRTEInfo sd_emlrtRTEI = { 33, 5, "log2",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elfun\\log2.m"
 };
 
 /* Function Definitions */
 void b_log2(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T *f)
 {
-  int32_T i39;
+  int32_T i36;
   int32_T k;
   real_T y;
   int32_T eint;
@@ -32,23 +32,23 @@ void b_log2(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T *f)
   emlrtStack st;
   st.prev = sp;
   st.tls = sp->tls;
-  i39 = x->size[0] * x->size[1];
-  for (k = 0; k < i39; k++) {
+  i36 = x->size[0] * x->size[1];
+  for (k = 0; k < i36; k++) {
     if (x->data[k] < 0.0) {
-      st.site = &bp_emlrtRSI;
+      st.site = &go_emlrtRSI;
       d_eml_error(&st);
     }
   }
 
-  for (i39 = 0; i39 < 2; i39++) {
+  for (i36 = 0; i36 < 2; i36++) {
     k = f->size[0] * f->size[1];
-    f->size[i39] = x->size[i39];
+    f->size[i36] = x->size[i36];
     emxEnsureCapacity(sp, (emxArray__common *)f, k, (int32_T)sizeof(real_T),
-                      &fe_emlrtRTEI);
+                      &sd_emlrtRTEI);
   }
 
-  i39 = x->size[0] * x->size[1];
-  for (k = 0; k < i39; k++) {
+  i36 = x->size[0] * x->size[1];
+  for (k = 0; k < i36; k++) {
     if (x->data[k] == 0.0) {
       y = rtMinusInf;
     } else if (x->data[k] < 0.0) {

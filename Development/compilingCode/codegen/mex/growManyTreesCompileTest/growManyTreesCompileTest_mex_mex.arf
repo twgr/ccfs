@@ -9,5 +9,3 @@ libmwmathutil.lib
 /export:growManyTreesCompileTest_initialize
 /export:growManyTreesCompileTest_terminate
 /export:growManyTreesCompileTest_atexit
-/export:emlrtLocationLoggingAccessor
-/export:emlrtLocationLoggingGetVersion

@@ -29,17 +29,17 @@
 <a name="17"><font color="#888888 "><i>   17   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;growManyTreesCompileTest_data.h&quot;</font>
 <a name="18"><font color="#888888 "><i>   18   </i></font></a>
 <a name="19"><font color="#888888 "><i>   19   </i></font></a><font color="#117755"><i>/* Variable Definitions */</i></font>
-<a name="20"><font color="#888888 "><i>   20   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_vf_emlrtRSI">vf_emlrtRSI</a> = <b>{</b> 15, <font color="#1122ff">&quot;any&quot;</font>,
+<a name="20"><font color="#888888 "><i>   20   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_uf_emlrtRSI">uf_emlrtRSI</a> = <b>{</b> 15, <font color="#1122ff">&quot;any&quot;</font>,
 <a name="21"><font color="#888888 "><i>   21   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\any.m&quot;</font> <b>}</b>;
 <a name="22"><font color="#888888 "><i>   22   </i></font></a>
-<a name="23"><font color="#888888 "><i>   23   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_wf_emlrtRSI">wf_emlrtRSI</a> = <b>{</b> 117, <font color="#1122ff">&quot;allOrAny&quot;</font>,
+<a name="23"><font color="#888888 "><i>   23   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_vf_emlrtRSI">vf_emlrtRSI</a> = <b>{</b> 117, <font color="#1122ff">&quot;allOrAny&quot;</font>,
 <a name="24"><font color="#888888 "><i>   24   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\shared\\coder\\coder\\+coder\\+internal\\allOrAny.m&quot;</font>
 <a name="25"><font color="#888888 "><i>   25   </i></font></a><b>}</b>;
 <a name="26"><font color="#888888 "><i>   26   </i></font></a>
-<a name="27"><font color="#888888 "><i>   27   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_lh_emlrtRSI">lh_emlrtRSI</a> = <b>{</b> 12, <font color="#1122ff">&quot;any&quot;</font>,
+<a name="27"><font color="#888888 "><i>   27   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_qg_emlrtRSI">qg_emlrtRSI</a> = <b>{</b> 12, <font color="#1122ff">&quot;any&quot;</font>,
 <a name="28"><font color="#888888 "><i>   28   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\any.m&quot;</font> <b>}</b>;
 <a name="29"><font color="#888888 "><i>   29   </i></font></a>
-<a name="30"><font color="#888888 "><i>   30   </i></font></a><font color="#112266"><b>static</b></font> emlrtRTEInfo <a name="var_ic_emlrtRTEI">ic_emlrtRTEI</a> = <b>{</b> 1, 14, <font color="#1122ff">&quot;any&quot;</font>,
+<a name="30"><font color="#888888 "><i>   30   </i></font></a><font color="#112266"><b>static</b></font> emlrtRTEInfo <a name="var_fc_emlrtRTEI">fc_emlrtRTEI</a> = <b>{</b> 1, 14, <font color="#1122ff">&quot;any&quot;</font>,
 <a name="31"><font color="#888888 "><i>   31   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\any.m&quot;</font> <b>}</b>;
 <a name="32"><font color="#888888 "><i>   32   </i></font></a>
 <a name="33"><font color="#888888 "><i>   33   </i></font></a><font color="#112266"><b>static</b></font> emlrtBCInfo <a name="var_le_emlrtBCI">le_emlrtBCI</a> = <b>{</b> -1, -1, 131, 46, <font color="#1122ff">&quot;&quot;</font>, <font color="#1122ff">&quot;allOrAny&quot;</font>,
@@ -79,7 +79,7 @@
 <a name="67"><font color="#888888 "><i>   67   </i></font></a>           *y)
 <a name="68"><font color="#888888 "><i>   68   </i></font></a><b>{</b>
 <a name="69"><font color="#888888 "><i>   69   </i></font></a>  uint32_T outsize[2];
-<a name="70"><font color="#888888 "><i>   70   </i></font></a>  int32_T i8;
+<a name="70"><font color="#888888 "><i>   70   </i></font></a>  int32_T i9;
 <a name="71"><font color="#888888 "><i>   71   </i></font></a>  int32_T i2;
 <a name="72"><font color="#888888 "><i>   72   </i></font></a>  int32_T iy;
 <a name="73"><font color="#888888 "><i>   73   </i></font></a>  boolean_T overflow;
@@ -92,31 +92,31 @@
 <a name="80"><font color="#888888 "><i>   80   </i></font></a>  emlrtStack c_st;
 <a name="81"><font color="#888888 "><i>   81   </i></font></a>  st.prev = sp;
 <a name="82"><font color="#888888 "><i>   82   </i></font></a>  st.tls = sp-&gt;tls;
-<a name="83"><font color="#888888 "><i>   83   </i></font></a>  st.site = &amp;<a href="#var_vf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_vf_emlrtRSI');" target="_self"><font color="#1122aa">vf_emlrtRSI</font></a>;
+<a name="83"><font color="#888888 "><i>   83   </i></font></a>  st.site = &amp;<a href="#var_uf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_uf_emlrtRSI');" target="_self"><font color="#1122aa">uf_emlrtRSI</font></a>;
 <a name="84"><font color="#888888 "><i>   84   </i></font></a>  b_st.prev = &amp;st;
 <a name="85"><font color="#888888 "><i>   85   </i></font></a>  b_st.tls = st.tls;
 <a name="86"><font color="#888888 "><i>   86   </i></font></a>  c_st.prev = &amp;b_st;
 <a name="87"><font color="#888888 "><i>   87   </i></font></a>  c_st.tls = b_st.tls;
-<a name="88"><font color="#888888 "><i>   88   </i></font></a>  <font color="#112266"><b>for</b></font> (i8 = 0; i8 &lt; 2; i8++) <b>{</b>
-<a name="89"><font color="#888888 "><i>   89   </i></font></a>    outsize[i8] = (uint32_T)x-&gt;size[i8];
+<a name="88"><font color="#888888 "><i>   88   </i></font></a>  <font color="#112266"><b>for</b></font> (i9 = 0; i9 &lt; 2; i9++) <b>{</b>
+<a name="89"><font color="#888888 "><i>   89   </i></font></a>    outsize[i9] = (uint32_T)x-&gt;size[i9];
 <a name="90"><font color="#888888 "><i>   90   </i></font></a>  <b>}</b>
 <a name="91"><font color="#888888 "><i>   91   </i></font></a>
-<a name="92"><font color="#888888 "><i>   92   </i></font></a>  i8 = y-&gt;size[0] * y-&gt;size[1];
+<a name="92"><font color="#888888 "><i>   92   </i></font></a>  i9 = y-&gt;size[0] * y-&gt;size[1];
 <a name="93"><font color="#888888 "><i>   93   </i></font></a>  y-&gt;size[0] = 1;
-<a name="94"><font color="#888888 "><i>   94   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(&amp;st, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i8, (int32_T)<font color="#112266"><b>sizeof</b></font>(boolean_T),
-<a name="95"><font color="#888888 "><i>   95   </i></font></a>                    &amp;<a href="#var_ic_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ic_emlrtRTEI');" target="_self"><font color="#1122aa">ic_emlrtRTEI</font></a>);
-<a name="96"><font color="#888888 "><i>   96   </i></font></a>  i8 = y-&gt;size[0] * y-&gt;size[1];
+<a name="94"><font color="#888888 "><i>   94   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(&amp;st, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i9, (int32_T)<font color="#112266"><b>sizeof</b></font>(boolean_T),
+<a name="95"><font color="#888888 "><i>   95   </i></font></a>                    &amp;<a href="#var_fc_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_fc_emlrtRTEI');" target="_self"><font color="#1122aa">fc_emlrtRTEI</font></a>);
+<a name="96"><font color="#888888 "><i>   96   </i></font></a>  i9 = y-&gt;size[0] * y-&gt;size[1];
 <a name="97"><font color="#888888 "><i>   97   </i></font></a>  y-&gt;size[1] = (int32_T)outsize[1];
-<a name="98"><font color="#888888 "><i>   98   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(&amp;st, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i8, (int32_T)<font color="#112266"><b>sizeof</b></font>(boolean_T),
-<a name="99"><font color="#888888 "><i>   99   </i></font></a>                    &amp;<a href="#var_ic_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ic_emlrtRTEI');" target="_self"><font color="#1122aa">ic_emlrtRTEI</font></a>);
+<a name="98"><font color="#888888 "><i>   98   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(&amp;st, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i9, (int32_T)<font color="#112266"><b>sizeof</b></font>(boolean_T),
+<a name="99"><font color="#888888 "><i>   99   </i></font></a>                    &amp;<a href="#var_fc_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_fc_emlrtRTEI');" target="_self"><font color="#1122aa">fc_emlrtRTEI</font></a>);
 <a name="100"><font color="#888888 "><i>  100   </i></font></a>  i2 = (int32_T)outsize[1];
-<a name="101"><font color="#888888 "><i>  101   </i></font></a>  <font color="#112266"><b>for</b></font> (i8 = 0; i8 &lt; i2; i8++) <b>{</b>
-<a name="102"><font color="#888888 "><i>  102   </i></font></a>    y-&gt;data[i8] = false;
+<a name="101"><font color="#888888 "><i>  101   </i></font></a>  <font color="#112266"><b>for</b></font> (i9 = 0; i9 &lt; i2; i9++) <b>{</b>
+<a name="102"><font color="#888888 "><i>  102   </i></font></a>    y-&gt;data[i9] = false;
 <a name="103"><font color="#888888 "><i>  103   </i></font></a>  <b>}</b>
 <a name="104"><font color="#888888 "><i>  104   </i></font></a>
 <a name="105"><font color="#888888 "><i>  105   </i></font></a>  i2 = 0;
 <a name="106"><font color="#888888 "><i>  106   </i></font></a>  iy = 0;
-<a name="107"><font color="#888888 "><i>  107   </i></font></a>  b_st.site = &amp;<a href="#var_wf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_wf_emlrtRSI');" target="_self"><font color="#1122aa">wf_emlrtRSI</font></a>;
+<a name="107"><font color="#888888 "><i>  107   </i></font></a>  b_st.site = &amp;<a href="#var_vf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_vf_emlrtRSI');" target="_self"><font color="#1122aa">vf_emlrtRSI</font></a>;
 <a name="108"><font color="#888888 "><i>  108   </i></font></a>  <font color="#112266"><b>if</b></font> (1 &gt; x-&gt;size[1]) <b>{</b>
 <a name="109"><font color="#888888 "><i>  109   </i></font></a>    overflow = false;
 <a name="110"><font color="#888888 "><i>  110   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
@@ -132,7 +132,7 @@
 <a name="120"><font color="#888888 "><i>  120   </i></font></a>    i1 = i2 + 1;
 <a name="121"><font color="#888888 "><i>  121   </i></font></a>    i2 += x-&gt;size[0];
 <a name="122"><font color="#888888 "><i>  122   </i></font></a>    iy++;
-<a name="123"><font color="#888888 "><i>  123   </i></font></a>    b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_xf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_xf_emlrtRSI');" target="_self"><font color="#1122aa">xf_emlrtRSI</font></a>;
+<a name="123"><font color="#888888 "><i>  123   </i></font></a>    b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_wf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_wf_emlrtRSI');" target="_self"><font color="#1122aa">wf_emlrtRSI</font></a>;
 <a name="124"><font color="#888888 "><i>  124   </i></font></a>    <font color="#112266"><b>if</b></font> (i1 &gt; i2) <b>{</b>
 <a name="125"><font color="#888888 "><i>  125   </i></font></a>      b_i1 = false;
 <a name="126"><font color="#888888 "><i>  126   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
@@ -146,19 +146,19 @@
 <a name="134"><font color="#888888 "><i>  134   </i></font></a>
 <a name="135"><font color="#888888 "><i>  135   </i></font></a>    exitg1 = false;
 <a name="136"><font color="#888888 "><i>  136   </i></font></a>    <font color="#112266"><b>while</b></font> ((!exitg1) &amp;&amp; (i1 &lt;= i2)) <b>{</b>
-<a name="137"><font color="#888888 "><i>  137   </i></font></a>      i8 = x-&gt;size[0] * x-&gt;size[1];
-<a name="138"><font color="#888888 "><i>  138   </i></font></a>      <font color="#112266"><b>if</b></font> (x-&gt;data[emlrtDynamicBoundsCheckFastR2012b(i1, 1, i8, &amp;<a href="#var_me_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_me_emlrtBCI');" target="_self"><font color="#1122aa">me_emlrtBCI</font></a>, &amp;st)
+<a name="137"><font color="#888888 "><i>  137   </i></font></a>      i9 = x-&gt;size[0] * x-&gt;size[1];
+<a name="138"><font color="#888888 "><i>  138   </i></font></a>      <font color="#112266"><b>if</b></font> (x-&gt;data[emlrtDynamicBoundsCheckFastR2012b(i1, 1, i9, &amp;<a href="#var_me_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_me_emlrtBCI');" target="_self"><font color="#1122aa">me_emlrtBCI</font></a>, &amp;st)
 <a name="139"><font color="#888888 "><i>  139   </i></font></a>          - 1] == 0) <b>{</b>
 <a name="140"><font color="#888888 "><i>  140   </i></font></a>        overflow = true;
 <a name="141"><font color="#888888 "><i>  141   </i></font></a>      <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
-<a name="142"><font color="#888888 "><i>  142   </i></font></a>        i8 = x-&gt;size[0] * x-&gt;size[1];
-<a name="143"><font color="#888888 "><i>  143   </i></font></a>        emlrtDynamicBoundsCheckFastR2012b(i1, 1, i8, &amp;<a href="#var_le_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_le_emlrtBCI');" target="_self"><font color="#1122aa">le_emlrtBCI</font></a>, &amp;st);
+<a name="142"><font color="#888888 "><i>  142   </i></font></a>        i9 = x-&gt;size[0] * x-&gt;size[1];
+<a name="143"><font color="#888888 "><i>  143   </i></font></a>        emlrtDynamicBoundsCheckFastR2012b(i1, 1, i9, &amp;<a href="#var_le_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_le_emlrtBCI');" target="_self"><font color="#1122aa">le_emlrtBCI</font></a>, &amp;st);
 <a name="144"><font color="#888888 "><i>  144   </i></font></a>        overflow = false;
 <a name="145"><font color="#888888 "><i>  145   </i></font></a>      <b>}</b>
 <a name="146"><font color="#888888 "><i>  146   </i></font></a>
 <a name="147"><font color="#888888 "><i>  147   </i></font></a>      <font color="#112266"><b>if</b></font> (!overflow) <b>{</b>
-<a name="148"><font color="#888888 "><i>  148   </i></font></a>        i8 = y-&gt;size[1];
-<a name="149"><font color="#888888 "><i>  149   </i></font></a>        y-&gt;data[emlrtDynamicBoundsCheckFastR2012b(iy, 1, i8, &amp;<a href="#var_ne_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ne_emlrtBCI');" target="_self"><font color="#1122aa">ne_emlrtBCI</font></a>, &amp;st)
+<a name="148"><font color="#888888 "><i>  148   </i></font></a>        i9 = y-&gt;size[1];
+<a name="149"><font color="#888888 "><i>  149   </i></font></a>        y-&gt;data[emlrtDynamicBoundsCheckFastR2012b(iy, 1, i9, &amp;<a href="#var_ne_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ne_emlrtBCI');" target="_self"><font color="#1122aa">ne_emlrtBCI</font></a>, &amp;st)
 <a name="150"><font color="#888888 "><i>  150   </i></font></a>          - 1] = true;
 <a name="151"><font color="#888888 "><i>  151   </i></font></a>        exitg1 = true;
 <a name="152"><font color="#888888 "><i>  152   </i></font></a>      <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
@@ -172,7 +172,7 @@
 <a name="160"><font color="#888888 "><i>  160   </i></font></a>           *y)
 <a name="161"><font color="#888888 "><i>  161   </i></font></a><b>{</b>
 <a name="162"><font color="#888888 "><i>  162   </i></font></a>  uint32_T outsize[2];
-<a name="163"><font color="#888888 "><i>  163   </i></font></a>  int32_T i11;
+<a name="163"><font color="#888888 "><i>  163   </i></font></a>  int32_T i12;
 <a name="164"><font color="#888888 "><i>  164   </i></font></a>  int32_T iy;
 <a name="165"><font color="#888888 "><i>  165   </i></font></a>  int32_T i1;
 <a name="166"><font color="#888888 "><i>  166   </i></font></a>  int32_T i2;
@@ -185,28 +185,28 @@
 <a name="173"><font color="#888888 "><i>  173   </i></font></a>  emlrtStack c_st;
 <a name="174"><font color="#888888 "><i>  174   </i></font></a>  st.prev = sp;
 <a name="175"><font color="#888888 "><i>  175   </i></font></a>  st.tls = sp-&gt;tls;
-<a name="176"><font color="#888888 "><i>  176   </i></font></a>  st.site = &amp;<a href="#var_vf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_vf_emlrtRSI');" target="_self"><font color="#1122aa">vf_emlrtRSI</font></a>;
+<a name="176"><font color="#888888 "><i>  176   </i></font></a>  st.site = &amp;<a href="#var_uf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_uf_emlrtRSI');" target="_self"><font color="#1122aa">uf_emlrtRSI</font></a>;
 <a name="177"><font color="#888888 "><i>  177   </i></font></a>  b_st.prev = &amp;st;
 <a name="178"><font color="#888888 "><i>  178   </i></font></a>  b_st.tls = st.tls;
 <a name="179"><font color="#888888 "><i>  179   </i></font></a>  c_st.prev = &amp;b_st;
 <a name="180"><font color="#888888 "><i>  180   </i></font></a>  c_st.tls = b_st.tls;
-<a name="181"><font color="#888888 "><i>  181   </i></font></a>  <font color="#112266"><b>for</b></font> (i11 = 0; i11 &lt; 2; i11++) <b>{</b>
-<a name="182"><font color="#888888 "><i>  182   </i></font></a>    outsize[i11] = (uint32_T)x-&gt;size[i11];
+<a name="181"><font color="#888888 "><i>  181   </i></font></a>  <font color="#112266"><b>for</b></font> (i12 = 0; i12 &lt; 2; i12++) <b>{</b>
+<a name="182"><font color="#888888 "><i>  182   </i></font></a>    outsize[i12] = (uint32_T)x-&gt;size[i12];
 <a name="183"><font color="#888888 "><i>  183   </i></font></a>  <b>}</b>
 <a name="184"><font color="#888888 "><i>  184   </i></font></a>
-<a name="185"><font color="#888888 "><i>  185   </i></font></a>  i11 = y-&gt;size[0];
+<a name="185"><font color="#888888 "><i>  185   </i></font></a>  i12 = y-&gt;size[0];
 <a name="186"><font color="#888888 "><i>  186   </i></font></a>  y-&gt;size[0] = (int32_T)outsize[0];
-<a name="187"><font color="#888888 "><i>  187   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(&amp;st, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i11, (int32_T)<font color="#112266"><b>sizeof</b></font>(boolean_T),
-<a name="188"><font color="#888888 "><i>  188   </i></font></a>                    &amp;<a href="#var_ic_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ic_emlrtRTEI');" target="_self"><font color="#1122aa">ic_emlrtRTEI</font></a>);
+<a name="187"><font color="#888888 "><i>  187   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(&amp;st, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i12, (int32_T)<font color="#112266"><b>sizeof</b></font>(boolean_T),
+<a name="188"><font color="#888888 "><i>  188   </i></font></a>                    &amp;<a href="#var_fc_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_fc_emlrtRTEI');" target="_self"><font color="#1122aa">fc_emlrtRTEI</font></a>);
 <a name="189"><font color="#888888 "><i>  189   </i></font></a>  iy = (int32_T)outsize[0];
-<a name="190"><font color="#888888 "><i>  190   </i></font></a>  <font color="#112266"><b>for</b></font> (i11 = 0; i11 &lt; iy; i11++) <b>{</b>
-<a name="191"><font color="#888888 "><i>  191   </i></font></a>    y-&gt;data[i11] = false;
+<a name="190"><font color="#888888 "><i>  190   </i></font></a>  <font color="#112266"><b>for</b></font> (i12 = 0; i12 &lt; iy; i12++) <b>{</b>
+<a name="191"><font color="#888888 "><i>  191   </i></font></a>    y-&gt;data[i12] = false;
 <a name="192"><font color="#888888 "><i>  192   </i></font></a>  <b>}</b>
 <a name="193"><font color="#888888 "><i>  193   </i></font></a>
 <a name="194"><font color="#888888 "><i>  194   </i></font></a>  iy = 0;
 <a name="195"><font color="#888888 "><i>  195   </i></font></a>  i1 = 0;
 <a name="196"><font color="#888888 "><i>  196   </i></font></a>  i2 = (x-&gt;size[1] - 1) * x-&gt;size[0];
-<a name="197"><font color="#888888 "><i>  197   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_lg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_lg_emlrtRSI');" target="_self"><font color="#1122aa">lg_emlrtRSI</font></a>;
+<a name="197"><font color="#888888 "><i>  197   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_kg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_kg_emlrtRSI');" target="_self"><font color="#1122aa">kg_emlrtRSI</font></a>;
 <a name="198"><font color="#888888 "><i>  198   </i></font></a>  <font color="#112266"><b>if</b></font> (1 &gt; x-&gt;size[0]) <b>{</b>
 <a name="199"><font color="#888888 "><i>  199   </i></font></a>    overflow = false;
 <a name="200"><font color="#888888 "><i>  200   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
@@ -222,7 +222,7 @@
 <a name="210"><font color="#888888 "><i>  210   </i></font></a>    i1++;
 <a name="211"><font color="#888888 "><i>  211   </i></font></a>    i2++;
 <a name="212"><font color="#888888 "><i>  212   </i></font></a>    iy++;
-<a name="213"><font color="#888888 "><i>  213   </i></font></a>    b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_xf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_xf_emlrtRSI');" target="_self"><font color="#1122aa">xf_emlrtRSI</font></a>;
+<a name="213"><font color="#888888 "><i>  213   </i></font></a>    b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_wf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_wf_emlrtRSI');" target="_self"><font color="#1122aa">wf_emlrtRSI</font></a>;
 <a name="214"><font color="#888888 "><i>  214   </i></font></a>    <font color="#112266"><b>if</b></font> ((x-&gt;size[0] == 0) || (i1 &gt; i2)) <b>{</b>
 <a name="215"><font color="#888888 "><i>  215   </i></font></a>      overflow = false;
 <a name="216"><font color="#888888 "><i>  216   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
@@ -237,19 +237,19 @@
 <a name="225"><font color="#888888 "><i>  225   </i></font></a>    ix = i1;
 <a name="226"><font color="#888888 "><i>  226   </i></font></a>    exitg1 = false;
 <a name="227"><font color="#888888 "><i>  227   </i></font></a>    <font color="#112266"><b>while</b></font> ((!exitg1) &amp;&amp; ((x-&gt;size[0] &gt; 0) &amp;&amp; (ix &lt;= i2))) <b>{</b>
-<a name="228"><font color="#888888 "><i>  228   </i></font></a>      i11 = x-&gt;size[0] * x-&gt;size[1];
-<a name="229"><font color="#888888 "><i>  229   </i></font></a>      <font color="#112266"><b>if</b></font> (x-&gt;data[emlrtDynamicBoundsCheckFastR2012b(ix, 1, i11, &amp;<a href="#var_me_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_me_emlrtBCI');" target="_self"><font color="#1122aa">me_emlrtBCI</font></a>,
+<a name="228"><font color="#888888 "><i>  228   </i></font></a>      i12 = x-&gt;size[0] * x-&gt;size[1];
+<a name="229"><font color="#888888 "><i>  229   </i></font></a>      <font color="#112266"><b>if</b></font> (x-&gt;data[emlrtDynamicBoundsCheckFastR2012b(ix, 1, i12, &amp;<a href="#var_me_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_me_emlrtBCI');" target="_self"><font color="#1122aa">me_emlrtBCI</font></a>,
 <a name="230"><font color="#888888 "><i>  230   </i></font></a>           &amp;st) - 1] == 0) <b>{</b>
 <a name="231"><font color="#888888 "><i>  231   </i></font></a>        overflow = true;
 <a name="232"><font color="#888888 "><i>  232   </i></font></a>      <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
-<a name="233"><font color="#888888 "><i>  233   </i></font></a>        i11 = x-&gt;size[0] * x-&gt;size[1];
-<a name="234"><font color="#888888 "><i>  234   </i></font></a>        emlrtDynamicBoundsCheckFastR2012b(ix, 1, i11, &amp;<a href="#var_le_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_le_emlrtBCI');" target="_self"><font color="#1122aa">le_emlrtBCI</font></a>, &amp;st);
+<a name="233"><font color="#888888 "><i>  233   </i></font></a>        i12 = x-&gt;size[0] * x-&gt;size[1];
+<a name="234"><font color="#888888 "><i>  234   </i></font></a>        emlrtDynamicBoundsCheckFastR2012b(ix, 1, i12, &amp;<a href="#var_le_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_le_emlrtBCI');" target="_self"><font color="#1122aa">le_emlrtBCI</font></a>, &amp;st);
 <a name="235"><font color="#888888 "><i>  235   </i></font></a>        overflow = false;
 <a name="236"><font color="#888888 "><i>  236   </i></font></a>      <b>}</b>
 <a name="237"><font color="#888888 "><i>  237   </i></font></a>
 <a name="238"><font color="#888888 "><i>  238   </i></font></a>      <font color="#112266"><b>if</b></font> (!overflow) <b>{</b>
-<a name="239"><font color="#888888 "><i>  239   </i></font></a>        i11 = y-&gt;size[0];
-<a name="240"><font color="#888888 "><i>  240   </i></font></a>        y-&gt;data[emlrtDynamicBoundsCheckFastR2012b(iy, 1, i11, &amp;<a href="#var_ne_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ne_emlrtBCI');" target="_self"><font color="#1122aa">ne_emlrtBCI</font></a>, &amp;st)
+<a name="239"><font color="#888888 "><i>  239   </i></font></a>        i12 = y-&gt;size[0];
+<a name="240"><font color="#888888 "><i>  240   </i></font></a>        y-&gt;data[emlrtDynamicBoundsCheckFastR2012b(iy, 1, i12, &amp;<a href="#var_ne_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ne_emlrtBCI');" target="_self"><font color="#1122aa">ne_emlrtBCI</font></a>, &amp;st)
 <a name="241"><font color="#888888 "><i>  241   </i></font></a>          - 1] = true;
 <a name="242"><font color="#888888 "><i>  242   </i></font></a>        exitg1 = true;
 <a name="243"><font color="#888888 "><i>  243   </i></font></a>      <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
@@ -264,51 +264,51 @@
 <a name="252"><font color="#888888 "><i>  252   </i></font></a>  boolean_T y;
 <a name="253"><font color="#888888 "><i>  253   </i></font></a>  boolean_T overflow;
 <a name="254"><font color="#888888 "><i>  254   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *b_y;
-<a name="255"><font color="#888888 "><i>  255   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv68[2] = <b>{</b> 1, 41 <b>}</b>;
+<a name="255"><font color="#888888 "><i>  255   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv40[2] = <b>{</b> 1, 41 <b>}</b>;
 <a name="256"><font color="#888888 "><i>  256   </i></font></a>
-<a name="257"><font color="#888888 "><i>  257   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *m13;
-<a name="258"><font color="#888888 "><i>  258   </i></font></a>  char_T cv45[41];
+<a name="257"><font color="#888888 "><i>  257   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *m12;
+<a name="258"><font color="#888888 "><i>  258   </i></font></a>  char_T cv44[41];
 <a name="259"><font color="#888888 "><i>  259   </i></font></a>  int32_T i;
-<a name="260"><font color="#888888 "><i>  260   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv46[41] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'o'</font>,
+<a name="260"><font color="#888888 "><i>  260   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv45[41] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'o'</font>,
 <a name="261"><font color="#888888 "><i>  261   </i></font></a>    <font color="#1122ff">'l'</font>, <font color="#1122ff">'b'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'x'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'r'</font>,
 <a name="262"><font color="#888888 "><i>  262   </i></font></a>    <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'n'</font>, <font color="#1122ff">'y'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'s'</font>, <font color="#1122ff">'p'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'c'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'E'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'p'</font>,
 <a name="263"><font color="#888888 "><i>  263   </i></font></a>    <font color="#1122ff">'t'</font>, <font color="#1122ff">'y'</font> <b>}</b>;
 <a name="264"><font color="#888888 "><i>  264   </i></font></a>
 <a name="265"><font color="#888888 "><i>  265   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *c_y;
-<a name="266"><font color="#888888 "><i>  266   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv69[2] = <b>{</b> 1, 51 <b>}</b>;
+<a name="266"><font color="#888888 "><i>  266   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv41[2] = <b>{</b> 1, 51 <b>}</b>;
 <a name="267"><font color="#888888 "><i>  267   </i></font></a>
-<a name="268"><font color="#888888 "><i>  268   </i></font></a>  char_T cv47[51];
-<a name="269"><font color="#888888 "><i>  269   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv48[51] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'o'</font>,
+<a name="268"><font color="#888888 "><i>  268   </i></font></a>  char_T cv46[51];
+<a name="269"><font color="#888888 "><i>  269   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv47[51] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'o'</font>,
 <a name="270"><font color="#888888 "><i>  270   </i></font></a>    <font color="#1122ff">'l'</font>, <font color="#1122ff">'b'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'x'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'r'</font>,
 <a name="271"><font color="#888888 "><i>  271   </i></font></a>    <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'n'</font>, <font color="#1122ff">'y'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'u'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'D'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'I'</font>, <font color="#1122ff">'n'</font>, <font color="#1122ff">'c'</font>,
 <a name="272"><font color="#888888 "><i>  272   </i></font></a>    <font color="#1122ff">'o'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'p'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'b'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'y'</font> <b>}</b>;
 <a name="273"><font color="#888888 "><i>  273   </i></font></a>
 <a name="274"><font color="#888888 "><i>  274   </i></font></a>  boolean_T exitg1;
-<a name="275"><font color="#888888 "><i>  275   </i></font></a>  int32_T i17;
+<a name="275"><font color="#888888 "><i>  275   </i></font></a>  int32_T i14;
 <a name="276"><font color="#888888 "><i>  276   </i></font></a>  emlrtStack st;
 <a name="277"><font color="#888888 "><i>  277   </i></font></a>  emlrtStack b_st;
 <a name="278"><font color="#888888 "><i>  278   </i></font></a>  emlrtStack c_st;
 <a name="279"><font color="#888888 "><i>  279   </i></font></a>  st.prev = sp;
 <a name="280"><font color="#888888 "><i>  280   </i></font></a>  st.tls = sp-&gt;tls;
-<a name="281"><font color="#888888 "><i>  281   </i></font></a>  st.site = &amp;<a href="#var_lh_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_lh_emlrtRSI');" target="_self"><font color="#1122aa">lh_emlrtRSI</font></a>;
+<a name="281"><font color="#888888 "><i>  281   </i></font></a>  st.site = &amp;<a href="#var_qg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_qg_emlrtRSI');" target="_self"><font color="#1122aa">qg_emlrtRSI</font></a>;
 <a name="282"><font color="#888888 "><i>  282   </i></font></a>  b_st.prev = &amp;st;
 <a name="283"><font color="#888888 "><i>  283   </i></font></a>  b_st.tls = st.tls;
 <a name="284"><font color="#888888 "><i>  284   </i></font></a>  c_st.prev = &amp;b_st;
 <a name="285"><font color="#888888 "><i>  285   </i></font></a>  c_st.tls = b_st.tls;
 <a name="286"><font color="#888888 "><i>  286   </i></font></a>  overflow = !<a href="isequal_c.html#fcn_isequal" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_isequal');" target="_self"><font color="#1122aa">isequal</font></a>(x);
-<a name="287"><font color="#888888 "><i>  287   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_jg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_jg_emlrtRSI');" target="_self"><font color="#1122aa">jg_emlrtRSI</font></a>;
+<a name="287"><font color="#888888 "><i>  287   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_ig_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ig_emlrtRSI');" target="_self"><font color="#1122aa">ig_emlrtRSI</font></a>;
 <a name="288"><font color="#888888 "><i>  288   </i></font></a>  <font color="#112266"><b>if</b></font> (overflow) <b>{</b>
 <a name="289"><font color="#888888 "><i>  289   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
 <a name="290"><font color="#888888 "><i>  290   </i></font></a>    b_y = NULL;
-<a name="291"><font color="#888888 "><i>  291   </i></font></a>    m13 = emlrtCreateCharArray(2, iv68);
+<a name="291"><font color="#888888 "><i>  291   </i></font></a>    m12 = emlrtCreateCharArray(2, iv40);
 <a name="292"><font color="#888888 "><i>  292   </i></font></a>    <font color="#112266"><b>for</b></font> (i = 0; i &lt; 41; i++) <b>{</b>
-<a name="293"><font color="#888888 "><i>  293   </i></font></a>      cv45[i] = cv46[i];
+<a name="293"><font color="#888888 "><i>  293   </i></font></a>      cv44[i] = cv45[i];
 <a name="294"><font color="#888888 "><i>  294   </i></font></a>    <b>}</b>
 <a name="295"><font color="#888888 "><i>  295   </i></font></a>
-<a name="296"><font color="#888888 "><i>  296   </i></font></a>    emlrtInitCharArrayR2013a(&amp;b_st, 41, m13, cv45);
-<a name="297"><font color="#888888 "><i>  297   </i></font></a>    emlrtAssign(&amp;b_y, m13);
-<a name="298"><font color="#888888 "><i>  298   </i></font></a>    c_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_xp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_xp_emlrtRSI');" target="_self"><font color="#1122aa">xp_emlrtRSI</font></a>;
-<a name="299"><font color="#888888 "><i>  299   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;c_st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;c_st, b_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_db_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_db_emlrtMCI');" target="_self"><font color="#1122aa">db_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_db_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_db_emlrtMCI');" target="_self"><font color="#1122aa">db_emlrtMCI</font></a>);
+<a name="296"><font color="#888888 "><i>  296   </i></font></a>    emlrtInitCharArrayR2013a(&amp;b_st, 41, m12, cv44);
+<a name="297"><font color="#888888 "><i>  297   </i></font></a>    emlrtAssign(&amp;b_y, m12);
+<a name="298"><font color="#888888 "><i>  298   </i></font></a>    c_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_cp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_cp_emlrtRSI');" target="_self"><font color="#1122aa">cp_emlrtRSI</font></a>;
+<a name="299"><font color="#888888 "><i>  299   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;c_st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;c_st, b_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_bb_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_bb_emlrtMCI');" target="_self"><font color="#1122aa">bb_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_bb_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_bb_emlrtMCI');" target="_self"><font color="#1122aa">bb_emlrtMCI</font></a>);
 <a name="300"><font color="#888888 "><i>  300   </i></font></a>  <b>}</b>
 <a name="301"><font color="#888888 "><i>  301   </i></font></a>
 <a name="302"><font color="#888888 "><i>  302   </i></font></a>  <font color="#112266"><b>if</b></font> ((x-&gt;size[1] == 1) || (x-&gt;size[1] != 1)) <b>{</b>
@@ -317,23 +317,23 @@
 <a name="305"><font color="#888888 "><i>  305   </i></font></a>    overflow = false;
 <a name="306"><font color="#888888 "><i>  306   </i></font></a>  <b>}</b>
 <a name="307"><font color="#888888 "><i>  307   </i></font></a>
-<a name="308"><font color="#888888 "><i>  308   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_kg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_kg_emlrtRSI');" target="_self"><font color="#1122aa">kg_emlrtRSI</font></a>;
+<a name="308"><font color="#888888 "><i>  308   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_jg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_jg_emlrtRSI');" target="_self"><font color="#1122aa">jg_emlrtRSI</font></a>;
 <a name="309"><font color="#888888 "><i>  309   </i></font></a>  <font color="#112266"><b>if</b></font> (overflow) <b>{</b>
 <a name="310"><font color="#888888 "><i>  310   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
 <a name="311"><font color="#888888 "><i>  311   </i></font></a>    c_y = NULL;
-<a name="312"><font color="#888888 "><i>  312   </i></font></a>    m13 = emlrtCreateCharArray(2, iv69);
+<a name="312"><font color="#888888 "><i>  312   </i></font></a>    m12 = emlrtCreateCharArray(2, iv41);
 <a name="313"><font color="#888888 "><i>  313   </i></font></a>    <font color="#112266"><b>for</b></font> (i = 0; i &lt; 51; i++) <b>{</b>
-<a name="314"><font color="#888888 "><i>  314   </i></font></a>      cv47[i] = cv48[i];
+<a name="314"><font color="#888888 "><i>  314   </i></font></a>      cv46[i] = cv47[i];
 <a name="315"><font color="#888888 "><i>  315   </i></font></a>    <b>}</b>
 <a name="316"><font color="#888888 "><i>  316   </i></font></a>
-<a name="317"><font color="#888888 "><i>  317   </i></font></a>    emlrtInitCharArrayR2013a(&amp;b_st, 51, m13, cv47);
-<a name="318"><font color="#888888 "><i>  318   </i></font></a>    emlrtAssign(&amp;c_y, m13);
-<a name="319"><font color="#888888 "><i>  319   </i></font></a>    c_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_xp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_xp_emlrtRSI');" target="_self"><font color="#1122aa">xp_emlrtRSI</font></a>;
-<a name="320"><font color="#888888 "><i>  320   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;c_st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;c_st, c_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_db_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_db_emlrtMCI');" target="_self"><font color="#1122aa">db_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_db_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_db_emlrtMCI');" target="_self"><font color="#1122aa">db_emlrtMCI</font></a>);
+<a name="317"><font color="#888888 "><i>  317   </i></font></a>    emlrtInitCharArrayR2013a(&amp;b_st, 51, m12, cv46);
+<a name="318"><font color="#888888 "><i>  318   </i></font></a>    emlrtAssign(&amp;c_y, m12);
+<a name="319"><font color="#888888 "><i>  319   </i></font></a>    c_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_cp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_cp_emlrtRSI');" target="_self"><font color="#1122aa">cp_emlrtRSI</font></a>;
+<a name="320"><font color="#888888 "><i>  320   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;c_st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;c_st, c_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_bb_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_bb_emlrtMCI');" target="_self"><font color="#1122aa">bb_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_bb_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_bb_emlrtMCI');" target="_self"><font color="#1122aa">bb_emlrtMCI</font></a>);
 <a name="321"><font color="#888888 "><i>  321   </i></font></a>  <b>}</b>
 <a name="322"><font color="#888888 "><i>  322   </i></font></a>
 <a name="323"><font color="#888888 "><i>  323   </i></font></a>  y = false;
-<a name="324"><font color="#888888 "><i>  324   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_xf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_xf_emlrtRSI');" target="_self"><font color="#1122aa">xf_emlrtRSI</font></a>;
+<a name="324"><font color="#888888 "><i>  324   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_wf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_wf_emlrtRSI');" target="_self"><font color="#1122aa">wf_emlrtRSI</font></a>;
 <a name="325"><font color="#888888 "><i>  325   </i></font></a>  <font color="#112266"><b>if</b></font> (1 &gt; x-&gt;size[1]) <b>{</b>
 <a name="326"><font color="#888888 "><i>  326   </i></font></a>    overflow = false;
 <a name="327"><font color="#888888 "><i>  327   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
@@ -348,13 +348,13 @@
 <a name="336"><font color="#888888 "><i>  336   </i></font></a>  i = 1;
 <a name="337"><font color="#888888 "><i>  337   </i></font></a>  exitg1 = false;
 <a name="338"><font color="#888888 "><i>  338   </i></font></a>  <font color="#112266"><b>while</b></font> ((!exitg1) &amp;&amp; (i &lt;= x-&gt;size[1])) <b>{</b>
-<a name="339"><font color="#888888 "><i>  339   </i></font></a>    i17 = x-&gt;size[1];
-<a name="340"><font color="#888888 "><i>  340   </i></font></a>    <font color="#112266"><b>if</b></font> (x-&gt;data[emlrtDynamicBoundsCheckFastR2012b(i, 1, i17, &amp;<a href="#var_me_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_me_emlrtBCI');" target="_self"><font color="#1122aa">me_emlrtBCI</font></a>, &amp;st)
+<a name="339"><font color="#888888 "><i>  339   </i></font></a>    i14 = x-&gt;size[1];
+<a name="340"><font color="#888888 "><i>  340   </i></font></a>    <font color="#112266"><b>if</b></font> (x-&gt;data[emlrtDynamicBoundsCheckFastR2012b(i, 1, i14, &amp;<a href="#var_me_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_me_emlrtBCI');" target="_self"><font color="#1122aa">me_emlrtBCI</font></a>, &amp;st)
 <a name="341"><font color="#888888 "><i>  341   </i></font></a>        - 1] == 0) <b>{</b>
 <a name="342"><font color="#888888 "><i>  342   </i></font></a>      overflow = true;
 <a name="343"><font color="#888888 "><i>  343   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
-<a name="344"><font color="#888888 "><i>  344   </i></font></a>      i17 = x-&gt;size[1];
-<a name="345"><font color="#888888 "><i>  345   </i></font></a>      emlrtDynamicBoundsCheckFastR2012b(i, 1, i17, &amp;<a href="#var_le_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_le_emlrtBCI');" target="_self"><font color="#1122aa">le_emlrtBCI</font></a>, &amp;st);
+<a name="344"><font color="#888888 "><i>  344   </i></font></a>      i14 = x-&gt;size[1];
+<a name="345"><font color="#888888 "><i>  345   </i></font></a>      emlrtDynamicBoundsCheckFastR2012b(i, 1, i14, &amp;<a href="#var_le_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_le_emlrtBCI');" target="_self"><font color="#1122aa">le_emlrtBCI</font></a>, &amp;st);
 <a name="346"><font color="#888888 "><i>  346   </i></font></a>      overflow = false;
 <a name="347"><font color="#888888 "><i>  347   </i></font></a>    <b>}</b>
 <a name="348"><font color="#888888 "><i>  348   </i></font></a>
@@ -374,51 +374,51 @@
 <a name="362"><font color="#888888 "><i>  362   </i></font></a>  boolean_T y;
 <a name="363"><font color="#888888 "><i>  363   </i></font></a>  boolean_T overflow;
 <a name="364"><font color="#888888 "><i>  364   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *b_y;
-<a name="365"><font color="#888888 "><i>  365   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv84[2] = <b>{</b> 1, 41 <b>}</b>;
+<a name="365"><font color="#888888 "><i>  365   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv53[2] = <b>{</b> 1, 41 <b>}</b>;
 <a name="366"><font color="#888888 "><i>  366   </i></font></a>
-<a name="367"><font color="#888888 "><i>  367   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *m20;
-<a name="368"><font color="#888888 "><i>  368   </i></font></a>  char_T cv67[41];
+<a name="367"><font color="#888888 "><i>  367   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *m19;
+<a name="368"><font color="#888888 "><i>  368   </i></font></a>  char_T cv66[41];
 <a name="369"><font color="#888888 "><i>  369   </i></font></a>  int32_T i;
-<a name="370"><font color="#888888 "><i>  370   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv68[41] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'o'</font>,
+<a name="370"><font color="#888888 "><i>  370   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv67[41] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'o'</font>,
 <a name="371"><font color="#888888 "><i>  371   </i></font></a>    <font color="#1122ff">'l'</font>, <font color="#1122ff">'b'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'x'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'r'</font>,
 <a name="372"><font color="#888888 "><i>  372   </i></font></a>    <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'n'</font>, <font color="#1122ff">'y'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'s'</font>, <font color="#1122ff">'p'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'c'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'E'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'p'</font>,
 <a name="373"><font color="#888888 "><i>  373   </i></font></a>    <font color="#1122ff">'t'</font>, <font color="#1122ff">'y'</font> <b>}</b>;
 <a name="374"><font color="#888888 "><i>  374   </i></font></a>
 <a name="375"><font color="#888888 "><i>  375   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *c_y;
-<a name="376"><font color="#888888 "><i>  376   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv85[2] = <b>{</b> 1, 51 <b>}</b>;
+<a name="376"><font color="#888888 "><i>  376   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv54[2] = <b>{</b> 1, 51 <b>}</b>;
 <a name="377"><font color="#888888 "><i>  377   </i></font></a>
-<a name="378"><font color="#888888 "><i>  378   </i></font></a>  char_T cv69[51];
-<a name="379"><font color="#888888 "><i>  379   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv70[51] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'o'</font>,
+<a name="378"><font color="#888888 "><i>  378   </i></font></a>  char_T cv68[51];
+<a name="379"><font color="#888888 "><i>  379   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv69[51] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'o'</font>,
 <a name="380"><font color="#888888 "><i>  380   </i></font></a>    <font color="#1122ff">'l'</font>, <font color="#1122ff">'b'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'x'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'r'</font>,
 <a name="381"><font color="#888888 "><i>  381   </i></font></a>    <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'n'</font>, <font color="#1122ff">'y'</font>, <font color="#1122ff">'_'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'u'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'D'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'I'</font>, <font color="#1122ff">'n'</font>, <font color="#1122ff">'c'</font>,
 <a name="382"><font color="#888888 "><i>  382   </i></font></a>    <font color="#1122ff">'o'</font>, <font color="#1122ff">'m'</font>, <font color="#1122ff">'p'</font>, <font color="#1122ff">'a'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'b'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'l'</font>, <font color="#1122ff">'i'</font>, <font color="#1122ff">'t'</font>, <font color="#1122ff">'y'</font> <b>}</b>;
 <a name="383"><font color="#888888 "><i>  383   </i></font></a>
 <a name="384"><font color="#888888 "><i>  384   </i></font></a>  boolean_T exitg1;
-<a name="385"><font color="#888888 "><i>  385   </i></font></a>  int32_T i24;
+<a name="385"><font color="#888888 "><i>  385   </i></font></a>  int32_T i21;
 <a name="386"><font color="#888888 "><i>  386   </i></font></a>  emlrtStack st;
 <a name="387"><font color="#888888 "><i>  387   </i></font></a>  emlrtStack b_st;
 <a name="388"><font color="#888888 "><i>  388   </i></font></a>  emlrtStack c_st;
 <a name="389"><font color="#888888 "><i>  389   </i></font></a>  st.prev = sp;
 <a name="390"><font color="#888888 "><i>  390   </i></font></a>  st.tls = sp-&gt;tls;
-<a name="391"><font color="#888888 "><i>  391   </i></font></a>  st.site = &amp;<a href="#var_lh_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_lh_emlrtRSI');" target="_self"><font color="#1122aa">lh_emlrtRSI</font></a>;
+<a name="391"><font color="#888888 "><i>  391   </i></font></a>  st.site = &amp;<a href="#var_qg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_qg_emlrtRSI');" target="_self"><font color="#1122aa">qg_emlrtRSI</font></a>;
 <a name="392"><font color="#888888 "><i>  392   </i></font></a>  b_st.prev = &amp;st;
 <a name="393"><font color="#888888 "><i>  393   </i></font></a>  b_st.tls = st.tls;
 <a name="394"><font color="#888888 "><i>  394   </i></font></a>  c_st.prev = &amp;b_st;
 <a name="395"><font color="#888888 "><i>  395   </i></font></a>  c_st.tls = b_st.tls;
 <a name="396"><font color="#888888 "><i>  396   </i></font></a>  overflow = !<a href="isequal_c.html#fcn_b_isequal" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_isequal');" target="_self"><font color="#1122aa">b_isequal</font></a>(x);
-<a name="397"><font color="#888888 "><i>  397   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_jg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_jg_emlrtRSI');" target="_self"><font color="#1122aa">jg_emlrtRSI</font></a>;
+<a name="397"><font color="#888888 "><i>  397   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_ig_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ig_emlrtRSI');" target="_self"><font color="#1122aa">ig_emlrtRSI</font></a>;
 <a name="398"><font color="#888888 "><i>  398   </i></font></a>  <font color="#112266"><b>if</b></font> (overflow) <b>{</b>
 <a name="399"><font color="#888888 "><i>  399   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
 <a name="400"><font color="#888888 "><i>  400   </i></font></a>    b_y = NULL;
-<a name="401"><font color="#888888 "><i>  401   </i></font></a>    m20 = emlrtCreateCharArray(2, iv84);
+<a name="401"><font color="#888888 "><i>  401   </i></font></a>    m19 = emlrtCreateCharArray(2, iv53);
 <a name="402"><font color="#888888 "><i>  402   </i></font></a>    <font color="#112266"><b>for</b></font> (i = 0; i &lt; 41; i++) <b>{</b>
-<a name="403"><font color="#888888 "><i>  403   </i></font></a>      cv67[i] = cv68[i];
+<a name="403"><font color="#888888 "><i>  403   </i></font></a>      cv66[i] = cv67[i];
 <a name="404"><font color="#888888 "><i>  404   </i></font></a>    <b>}</b>
 <a name="405"><font color="#888888 "><i>  405   </i></font></a>
-<a name="406"><font color="#888888 "><i>  406   </i></font></a>    emlrtInitCharArrayR2013a(&amp;b_st, 41, m20, cv67);
-<a name="407"><font color="#888888 "><i>  407   </i></font></a>    emlrtAssign(&amp;b_y, m20);
-<a name="408"><font color="#888888 "><i>  408   </i></font></a>    c_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_xp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_xp_emlrtRSI');" target="_self"><font color="#1122aa">xp_emlrtRSI</font></a>;
-<a name="409"><font color="#888888 "><i>  409   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;c_st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;c_st, b_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_db_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_db_emlrtMCI');" target="_self"><font color="#1122aa">db_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_db_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_db_emlrtMCI');" target="_self"><font color="#1122aa">db_emlrtMCI</font></a>);
+<a name="406"><font color="#888888 "><i>  406   </i></font></a>    emlrtInitCharArrayR2013a(&amp;b_st, 41, m19, cv66);
+<a name="407"><font color="#888888 "><i>  407   </i></font></a>    emlrtAssign(&amp;b_y, m19);
+<a name="408"><font color="#888888 "><i>  408   </i></font></a>    c_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_cp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_cp_emlrtRSI');" target="_self"><font color="#1122aa">cp_emlrtRSI</font></a>;
+<a name="409"><font color="#888888 "><i>  409   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;c_st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;c_st, b_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_bb_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_bb_emlrtMCI');" target="_self"><font color="#1122aa">bb_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_bb_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_bb_emlrtMCI');" target="_self"><font color="#1122aa">bb_emlrtMCI</font></a>);
 <a name="410"><font color="#888888 "><i>  410   </i></font></a>  <b>}</b>
 <a name="411"><font color="#888888 "><i>  411   </i></font></a>
 <a name="412"><font color="#888888 "><i>  412   </i></font></a>  <font color="#112266"><b>if</b></font> ((x-&gt;size[0] == 1) || (x-&gt;size[0] != 1)) <b>{</b>
@@ -427,23 +427,23 @@
 <a name="415"><font color="#888888 "><i>  415   </i></font></a>    overflow = false;
 <a name="416"><font color="#888888 "><i>  416   </i></font></a>  <b>}</b>
 <a name="417"><font color="#888888 "><i>  417   </i></font></a>
-<a name="418"><font color="#888888 "><i>  418   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_kg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_kg_emlrtRSI');" target="_self"><font color="#1122aa">kg_emlrtRSI</font></a>;
+<a name="418"><font color="#888888 "><i>  418   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_jg_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_jg_emlrtRSI');" target="_self"><font color="#1122aa">jg_emlrtRSI</font></a>;
 <a name="419"><font color="#888888 "><i>  419   </i></font></a>  <font color="#112266"><b>if</b></font> (overflow) <b>{</b>
 <a name="420"><font color="#888888 "><i>  420   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
 <a name="421"><font color="#888888 "><i>  421   </i></font></a>    c_y = NULL;
-<a name="422"><font color="#888888 "><i>  422   </i></font></a>    m20 = emlrtCreateCharArray(2, iv85);
+<a name="422"><font color="#888888 "><i>  422   </i></font></a>    m19 = emlrtCreateCharArray(2, iv54);
 <a name="423"><font color="#888888 "><i>  423   </i></font></a>    <font color="#112266"><b>for</b></font> (i = 0; i &lt; 51; i++) <b>{</b>
-<a name="424"><font color="#888888 "><i>  424   </i></font></a>      cv69[i] = cv70[i];
+<a name="424"><font color="#888888 "><i>  424   </i></font></a>      cv68[i] = cv69[i];
 <a name="425"><font color="#888888 "><i>  425   </i></font></a>    <b>}</b>
 <a name="426"><font color="#888888 "><i>  426   </i></font></a>
-<a name="427"><font color="#888888 "><i>  427   </i></font></a>    emlrtInitCharArrayR2013a(&amp;b_st, 51, m20, cv69);
-<a name="428"><font color="#888888 "><i>  428   </i></font></a>    emlrtAssign(&amp;c_y, m20);
-<a name="429"><font color="#888888 "><i>  429   </i></font></a>    c_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_xp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_xp_emlrtRSI');" target="_self"><font color="#1122aa">xp_emlrtRSI</font></a>;
-<a name="430"><font color="#888888 "><i>  430   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;c_st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;c_st, c_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_db_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_db_emlrtMCI');" target="_self"><font color="#1122aa">db_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_db_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_db_emlrtMCI');" target="_self"><font color="#1122aa">db_emlrtMCI</font></a>);
+<a name="427"><font color="#888888 "><i>  427   </i></font></a>    emlrtInitCharArrayR2013a(&amp;b_st, 51, m19, cv68);
+<a name="428"><font color="#888888 "><i>  428   </i></font></a>    emlrtAssign(&amp;c_y, m19);
+<a name="429"><font color="#888888 "><i>  429   </i></font></a>    c_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_cp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_cp_emlrtRSI');" target="_self"><font color="#1122aa">cp_emlrtRSI</font></a>;
+<a name="430"><font color="#888888 "><i>  430   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;c_st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;c_st, c_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_bb_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_bb_emlrtMCI');" target="_self"><font color="#1122aa">bb_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_bb_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_bb_emlrtMCI');" target="_self"><font color="#1122aa">bb_emlrtMCI</font></a>);
 <a name="431"><font color="#888888 "><i>  431   </i></font></a>  <b>}</b>
 <a name="432"><font color="#888888 "><i>  432   </i></font></a>
 <a name="433"><font color="#888888 "><i>  433   </i></font></a>  y = false;
-<a name="434"><font color="#888888 "><i>  434   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_xf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_xf_emlrtRSI');" target="_self"><font color="#1122aa">xf_emlrtRSI</font></a>;
+<a name="434"><font color="#888888 "><i>  434   </i></font></a>  b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_wf_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_wf_emlrtRSI');" target="_self"><font color="#1122aa">wf_emlrtRSI</font></a>;
 <a name="435"><font color="#888888 "><i>  435   </i></font></a>  <font color="#112266"><b>if</b></font> (1 &gt; x-&gt;size[0]) <b>{</b>
 <a name="436"><font color="#888888 "><i>  436   </i></font></a>    overflow = false;
 <a name="437"><font color="#888888 "><i>  437   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
@@ -458,13 +458,13 @@
 <a name="446"><font color="#888888 "><i>  446   </i></font></a>  i = 1;
 <a name="447"><font color="#888888 "><i>  447   </i></font></a>  exitg1 = false;
 <a name="448"><font color="#888888 "><i>  448   </i></font></a>  <font color="#112266"><b>while</b></font> ((!exitg1) &amp;&amp; (i &lt;= x-&gt;size[0])) <b>{</b>
-<a name="449"><font color="#888888 "><i>  449   </i></font></a>    i24 = x-&gt;size[0];
-<a name="450"><font color="#888888 "><i>  450   </i></font></a>    <font color="#112266"><b>if</b></font> (x-&gt;data[emlrtDynamicBoundsCheckFastR2012b(i, 1, i24, &amp;<a href="#var_me_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_me_emlrtBCI');" target="_self"><font color="#1122aa">me_emlrtBCI</font></a>, &amp;st)
+<a name="449"><font color="#888888 "><i>  449   </i></font></a>    i21 = x-&gt;size[0];
+<a name="450"><font color="#888888 "><i>  450   </i></font></a>    <font color="#112266"><b>if</b></font> (x-&gt;data[emlrtDynamicBoundsCheckFastR2012b(i, 1, i21, &amp;<a href="#var_me_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_me_emlrtBCI');" target="_self"><font color="#1122aa">me_emlrtBCI</font></a>, &amp;st)
 <a name="451"><font color="#888888 "><i>  451   </i></font></a>        - 1] == 0) <b>{</b>
 <a name="452"><font color="#888888 "><i>  452   </i></font></a>      overflow = true;
 <a name="453"><font color="#888888 "><i>  453   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
-<a name="454"><font color="#888888 "><i>  454   </i></font></a>      i24 = x-&gt;size[0];
-<a name="455"><font color="#888888 "><i>  455   </i></font></a>      emlrtDynamicBoundsCheckFastR2012b(i, 1, i24, &amp;<a href="#var_le_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_le_emlrtBCI');" target="_self"><font color="#1122aa">le_emlrtBCI</font></a>, &amp;st);
+<a name="454"><font color="#888888 "><i>  454   </i></font></a>      i21 = x-&gt;size[0];
+<a name="455"><font color="#888888 "><i>  455   </i></font></a>      emlrtDynamicBoundsCheckFastR2012b(i, 1, i21, &amp;<a href="#var_le_emlrtBCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_le_emlrtBCI');" target="_self"><font color="#1122aa">le_emlrtBCI</font></a>, &amp;st);
 <a name="456"><font color="#888888 "><i>  456   </i></font></a>      overflow = false;
 <a name="457"><font color="#888888 "><i>  457   </i></font></a>    <b>}</b>
 <a name="458"><font color="#888888 "><i>  458   </i></font></a>

@@ -14,67 +14,67 @@
 #include "growManyTreesCompileTest_data.h"
 
 /* Variable Definitions */
-static emlrtRSInfo qe_emlrtRSI = { 78, "eml_sort",
+static emlrtRSInfo pe_emlrtRSI = { 78, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
-static emlrtRSInfo re_emlrtRSI = { 69, "eml_sort",
+static emlrtRSInfo qe_emlrtRSI = { 69, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
-static emlrtRSInfo se_emlrtRSI = { 66, "eml_sort",
+static emlrtRSInfo re_emlrtRSI = { 66, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
-static emlrtRSInfo te_emlrtRSI = { 62, "eml_sort",
+static emlrtRSInfo se_emlrtRSI = { 62, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
-static emlrtRSInfo ue_emlrtRSI = { 50, "eml_sort",
+static emlrtRSInfo te_emlrtRSI = { 50, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
-static emlrtRSInfo ye_emlrtRSI = { 42, "eml_sort_idx",
+static emlrtRSInfo xe_emlrtRSI = { 42, "eml_sort_idx",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort_idx.m"
 };
 
-static emlrtRSInfo af_emlrtRSI = { 134, "eml_sort_idx",
+static emlrtRSInfo ye_emlrtRSI = { 134, "eml_sort_idx",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort_idx.m"
 };
 
-static emlrtRSInfo bf_emlrtRSI = { 138, "eml_sort_idx",
+static emlrtRSInfo af_emlrtRSI = { 138, "eml_sort_idx",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort_idx.m"
 };
 
-static emlrtRSInfo cf_emlrtRSI = { 185, "eml_sort_idx",
+static emlrtRSInfo bf_emlrtRSI = { 185, "eml_sort_idx",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort_idx.m"
 };
 
-static emlrtRTEInfo qb_emlrtRTEI = { 52, 1, "eml_sort",
+static emlrtRTEInfo nb_emlrtRTEI = { 52, 1, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
-static emlrtRTEInfo rb_emlrtRTEI = { 53, 1, "eml_sort",
+static emlrtRTEInfo ob_emlrtRTEI = { 53, 1, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
-static emlrtRTEInfo sb_emlrtRTEI = { 78, 13, "eml_sort",
+static emlrtRTEInfo pb_emlrtRTEI = { 78, 13, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
-static emlrtRTEInfo tb_emlrtRTEI = { 27, 5, "eml_sort_idx",
+static emlrtRTEInfo qb_emlrtRTEI = { 27, 5, "eml_sort_idx",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort_idx.m"
 };
 
-static emlrtRTEInfo ub_emlrtRTEI = { 1, 20, "eml_sort_idx",
+static emlrtRTEInfo rb_emlrtRTEI = { 1, 20, "eml_sort_idx",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort_idx.m"
 };
 
-static emlrtRTEInfo vb_emlrtRTEI = { 145, 5, "eml_sort_idx",
+static emlrtRTEInfo sb_emlrtRTEI = { 145, 5, "eml_sort_idx",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort_idx.m"
 };
 
-static emlrtRTEInfo ee_emlrtRTEI = { 61, 5, "eml_sort",
+static emlrtRTEInfo rd_emlrtRTEI = { 61, 5, "eml_sort",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_sort.m"
 };
 
@@ -109,11 +109,11 @@ static void eml_sort_idx(const emlrtStack *sp, const emxArray_real_T *x,
   k = idx->size[0];
   idx->size[0] = (int32_T)unnamed_idx_0;
   emxEnsureCapacity(sp, (emxArray__common *)idx, k, (int32_T)sizeof(int32_T),
-                    &tb_emlrtRTEI);
+                    &qb_emlrtRTEI);
   if (x->size[0] == 0) {
-    st.site = &ye_emlrtRSI;
+    st.site = &xe_emlrtRSI;
   } else {
-    st.site = &af_emlrtRSI;
+    st.site = &ye_emlrtRSI;
     overflow = (x->size[0] > 2147483646);
     if (overflow) {
       b_st.site = &v_emlrtRSI;
@@ -124,7 +124,7 @@ static void eml_sort_idx(const emlrtStack *sp, const emxArray_real_T *x,
       idx->data[k - 1] = k;
     }
 
-    st.site = &bf_emlrtRSI;
+    st.site = &af_emlrtRSI;
     for (k = 1; k <= x->size[0] - 1; k += 2) {
       if ((x->data[k - 1] <= x->data[k]) || muDoubleScalarIsNaN(x->data[k])) {
         overflow = true;
@@ -139,11 +139,11 @@ static void eml_sort_idx(const emlrtStack *sp, const emxArray_real_T *x,
       }
     }
 
-    emxInit_int32_T(sp, &idx0, 1, &vb_emlrtRTEI, true);
+    emxInit_int32_T(sp, &idx0, 1, &sb_emlrtRTEI, true);
     k = idx0->size[0];
     idx0->size[0] = x->size[0];
     emxEnsureCapacity(sp, (emxArray__common *)idx0, k, (int32_T)sizeof(int32_T),
-                      &ub_emlrtRTEI);
+                      &rb_emlrtRTEI);
     i = x->size[0];
     for (k = 0; k < i; k++) {
       idx0->data[k] = 1;
@@ -196,7 +196,7 @@ static void eml_sort_idx(const emlrtStack *sp, const emxArray_real_T *x,
           k++;
         }
 
-        st.site = &cf_emlrtRSI;
+        st.site = &bf_emlrtRSI;
         for (k = 0; k + 1 <= kEnd; k++) {
           idx->data[(j + k) - 1] = idx0->data[k];
         }
@@ -222,7 +222,7 @@ void b_eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T 
   int32_T i1;
   int32_T vstride;
   int32_T k;
-  boolean_T b9;
+  boolean_T b6;
   emxArray_int32_T *iidx;
   int32_T ix;
   emlrtStack st;
@@ -237,23 +237,23 @@ void b_eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T 
     dim = 1;
   }
 
-  st.site = &ue_emlrtRSI;
+  st.site = &te_emlrtRSI;
   if (dim <= 1) {
     vlen = x->size[0];
   } else {
     vlen = 1;
   }
 
-  emxInit_real_T(sp, &vwork, 1, &qb_emlrtRTEI, true);
+  b_emxInit_real_T(sp, &vwork, 1, &nb_emlrtRTEI, true);
   i1 = vwork->size[0];
   vwork->size[0] = vlen;
   emxEnsureCapacity(sp, (emxArray__common *)vwork, i1, (int32_T)sizeof(real_T),
-                    &qb_emlrtRTEI);
+                    &nb_emlrtRTEI);
   i1 = y->size[0];
   y->size[0] = x->size[0];
   emxEnsureCapacity(sp, (emxArray__common *)y, i1, (int32_T)sizeof(real_T),
-                    &rb_emlrtRTEI);
-  st.site = &te_emlrtRSI;
+                    &ob_emlrtRTEI);
+  st.site = &se_emlrtRSI;
   vstride = 1;
   k = 1;
   while (k <= dim - 1) {
@@ -261,22 +261,22 @@ void b_eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T 
     k = 2;
   }
 
-  st.site = &se_emlrtRSI;
-  i1 = 0;
   st.site = &re_emlrtRSI;
+  i1 = 0;
+  st.site = &qe_emlrtRSI;
   if (1 > vstride) {
-    b9 = false;
+    b6 = false;
   } else {
-    b9 = (vstride > 2147483646);
+    b6 = (vstride > 2147483646);
   }
 
-  if (b9) {
+  if (b6) {
     b_st.site = &v_emlrtRSI;
     check_forloop_overflow_error(&b_st);
   }
 
   dim = 1;
-  emxInit_int32_T(sp, &iidx, 1, &sb_emlrtRTEI, true);
+  emxInit_int32_T(sp, &iidx, 1, &pb_emlrtRTEI, true);
   while (dim <= vstride) {
     i1++;
     ix = i1;
@@ -285,7 +285,7 @@ void b_eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T 
       ix += vstride;
     }
 
-    st.site = &qe_emlrtRSI;
+    st.site = &pe_emlrtRSI;
     eml_sort_idx(&st, vwork, iidx);
     ix = i1;
     for (k = 0; k < vlen; k++) {
@@ -311,7 +311,7 @@ void c_eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T 
   uint32_T unnamed_idx_0;
   int32_T vstride;
   int32_T k;
-  boolean_T b22;
+  boolean_T b19;
   emxArray_int32_T *iidx;
   int32_T ix;
   emlrtStack st;
@@ -326,28 +326,28 @@ void c_eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T 
     dim = 1;
   }
 
-  st.site = &ue_emlrtRSI;
+  st.site = &te_emlrtRSI;
   if (dim <= 1) {
     vlen = x->size[0];
   } else {
     vlen = 1;
   }
 
-  emxInit_real_T(sp, &vwork, 1, &qb_emlrtRTEI, true);
+  b_emxInit_real_T(sp, &vwork, 1, &nb_emlrtRTEI, true);
   i1 = vwork->size[0];
   vwork->size[0] = vlen;
   emxEnsureCapacity(sp, (emxArray__common *)vwork, i1, (int32_T)sizeof(real_T),
-                    &qb_emlrtRTEI);
+                    &nb_emlrtRTEI);
   i1 = y->size[0];
   y->size[0] = x->size[0];
   emxEnsureCapacity(sp, (emxArray__common *)y, i1, (int32_T)sizeof(real_T),
-                    &rb_emlrtRTEI);
+                    &ob_emlrtRTEI);
   unnamed_idx_0 = (uint32_T)x->size[0];
   i1 = idx->size[0];
   idx->size[0] = (int32_T)unnamed_idx_0;
   emxEnsureCapacity(sp, (emxArray__common *)idx, i1, (int32_T)sizeof(int32_T),
-                    &ee_emlrtRTEI);
-  st.site = &te_emlrtRSI;
+                    &rd_emlrtRTEI);
+  st.site = &se_emlrtRSI;
   vstride = 1;
   k = 1;
   while (k <= dim - 1) {
@@ -355,22 +355,22 @@ void c_eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T 
     k = 2;
   }
 
-  st.site = &se_emlrtRSI;
-  i1 = -1;
   st.site = &re_emlrtRSI;
+  i1 = -1;
+  st.site = &qe_emlrtRSI;
   if (1 > vstride) {
-    b22 = false;
+    b19 = false;
   } else {
-    b22 = (vstride > 2147483646);
+    b19 = (vstride > 2147483646);
   }
 
-  if (b22) {
+  if (b19) {
     b_st.site = &v_emlrtRSI;
     check_forloop_overflow_error(&b_st);
   }
 
   dim = 1;
-  emxInit_int32_T(sp, &iidx, 1, &sb_emlrtRTEI, true);
+  emxInit_int32_T(sp, &iidx, 1, &pb_emlrtRTEI, true);
   while (dim <= vstride) {
     i1++;
     ix = i1 + 1;
@@ -379,7 +379,7 @@ void c_eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T 
       ix += vstride;
     }
 
-    st.site = &qe_emlrtRSI;
+    st.site = &pe_emlrtRSI;
     eml_sort_idx(&st, vwork, iidx);
     ix = i1;
     for (k = 0; k < vlen; k++) {
@@ -407,17 +407,17 @@ void eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T *y
   st.prev = sp;
   st.tls = sp->tls;
   emlrtHeapReferenceStackEnterFcnR2012b(sp);
-  emxInit_real_T(sp, &vwork, 1, &qb_emlrtRTEI, true);
+  b_emxInit_real_T(sp, &vwork, 1, &nb_emlrtRTEI, true);
   unnamed_idx_0 = (uint32_T)x->size[1];
   ix = vwork->size[0];
   vwork->size[0] = (int32_T)unnamed_idx_0;
   emxEnsureCapacity(sp, (emxArray__common *)vwork, ix, (int32_T)sizeof(real_T),
-                    &qb_emlrtRTEI);
+                    &nb_emlrtRTEI);
   for (ix = 0; ix < 2; ix++) {
     k = y->size[0] * y->size[1];
     y->size[ix] = x->size[ix];
     emxEnsureCapacity(sp, (emxArray__common *)y, k, (int32_T)sizeof(real_T),
-                      &rb_emlrtRTEI);
+                      &ob_emlrtRTEI);
   }
 
   ix = 0;
@@ -426,8 +426,8 @@ void eml_sort(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T *y
     ix++;
   }
 
-  emxInit_int32_T(sp, &iidx, 1, &sb_emlrtRTEI, true);
-  st.site = &qe_emlrtRSI;
+  emxInit_int32_T(sp, &iidx, 1, &pb_emlrtRTEI, true);
+  st.site = &pe_emlrtRSI;
   eml_sort_idx(&st, vwork, iidx);
   ix = 0;
   for (k = 0; k < x->size[1]; k++) {

@@ -17,75 +17,75 @@
 #include "growManyTreesCompileTest_data.h"
 
 /* Variable Definitions */
-static emlrtRSInfo sf_emlrtRSI = { 87, "bsxfun",
+static emlrtRSInfo rf_emlrtRSI = { 87, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRSInfo tf_emlrtRSI = { 81, "bsxfun",
+static emlrtRSInfo sf_emlrtRSI = { 81, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRSInfo uf_emlrtRSI = { 75, "bsxfun",
+static emlrtRSInfo tf_emlrtRSI = { 75, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRSInfo rh_emlrtRSI = { 77, "bsxfun",
+static emlrtRSInfo wg_emlrtRSI = { 77, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRSInfo to_emlrtRSI = { 85, "bsxfun",
+static emlrtRSInfo yn_emlrtRSI = { 85, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRSInfo uo_emlrtRSI = { 15, "rdivide",
+static emlrtRSInfo ao_emlrtRSI = { 15, "rdivide",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\rdivide.m"
 };
 
-static emlrtRSInfo vo_emlrtRSI = { 9, "eml_div",
+static emlrtRSInfo bo_emlrtRSI = { 9, "eml_div",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\eml\\eml_div.m"
 };
 
-static emlrtMCInfo fb_emlrtMCI = { 22, 5, "bsxfun",
+static emlrtMCInfo db_emlrtMCI = { 22, 5, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtMCInfo gb_emlrtMCI = { 21, 15, "bsxfun",
+static emlrtMCInfo eb_emlrtMCI = { 21, 15, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtMCInfo hb_emlrtMCI = { 24, 5, "bsxfun",
+static emlrtMCInfo fb_emlrtMCI = { 24, 5, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtMCInfo ib_emlrtMCI = { 23, 15, "bsxfun",
+static emlrtMCInfo gb_emlrtMCI = { 23, 15, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtMCInfo wb_emlrtMCI = { 14, 5, "rdivide",
+static emlrtMCInfo tb_emlrtMCI = { 14, 5, "rdivide",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\rdivide.m"
 };
 
-static emlrtMCInfo xb_emlrtMCI = { 13, 15, "rdivide",
+static emlrtMCInfo ub_emlrtMCI = { 13, 15, "rdivide",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\rdivide.m"
 };
 
-static emlrtRTEInfo ec_emlrtRTEI = { 41, 1, "bsxfun",
+static emlrtRTEInfo bc_emlrtRTEI = { 41, 1, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRTEInfo fc_emlrtRTEI = { 66, 1, "bsxfun",
+static emlrtRTEInfo cc_emlrtRTEI = { 66, 1, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRTEInfo gc_emlrtRTEI = { 1, 14, "bsxfun",
+static emlrtRTEInfo dc_emlrtRTEI = { 1, 14, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRTEInfo hc_emlrtRTEI = { 85, 5, "bsxfun",
+static emlrtRTEInfo ec_emlrtRTEI = { 85, 5, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRTEInfo yc_emlrtRTEI = { 65, 1, "bsxfun",
+static emlrtRTEInfo mc_emlrtRTEI = { 65, 1, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
@@ -93,27 +93,27 @@ static emlrtECInfo pb_emlrtECI = { -1, 1, 1, "div",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\coder\\coder\\+coder\\+internal\\div.p"
 };
 
-static emlrtRSInfo rp_emlrtRSI = { 13, "rdivide",
+static emlrtRSInfo vo_emlrtRSI = { 13, "rdivide",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\rdivide.m"
 };
 
-static emlrtRSInfo sp_emlrtRSI = { 23, "bsxfun",
+static emlrtRSInfo wo_emlrtRSI = { 23, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRSInfo tp_emlrtRSI = { 21, "bsxfun",
+static emlrtRSInfo xo_emlrtRSI = { 21, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRSInfo qq_emlrtRSI = { 14, "rdivide",
+static emlrtRSInfo tp_emlrtRSI = { 14, "rdivide",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\rdivide.m"
 };
 
-static emlrtRSInfo rq_emlrtRSI = { 24, "bsxfun",
+static emlrtRSInfo up_emlrtRSI = { 24, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
-static emlrtRSInfo sq_emlrtRSI = { 22, "bsxfun",
+static emlrtRSInfo vp_emlrtRSI = { 22, "bsxfun",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\bsxfun.m"
 };
 
@@ -145,24 +145,24 @@ void b_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   c->size[0] = b->size[0];
   c->size[1] = a->size[1];
   emxEnsureCapacity(sp, (emxArray__common *)c, b_idx_0, (int32_T)sizeof
-                    (boolean_T), &ec_emlrtRTEI);
+                    (boolean_T), &bc_emlrtRTEI);
   b_b_idx_0 = b->size[0];
   b_idx_1 = a->size[1];
   if ((b_b_idx_0 == 0) || (b_idx_1 == 0)) {
   } else {
-    emxInit_real_T(sp, &bv, 1, &fc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &bv, 1, &cc_emlrtRTEI, true);
     b_idx_1 = b->size[0];
     b_idx_0 = bv->size[0];
     bv->size[0] = b_idx_1;
     emxEnsureCapacity(sp, (emxArray__common *)bv, b_idx_0, (int32_T)sizeof
-                      (real_T), &fc_emlrtRTEI);
+                      (real_T), &cc_emlrtRTEI);
     asub = 1;
     ak = 0;
     b_b_idx_0 = b->size[0];
     b_idx_1 = a->size[1];
     b_idx_0 = b->size[0];
     b_b = b_b_idx_0 * b_idx_1 - b_idx_0;
-    st.site = &uf_emlrtRSI;
+    st.site = &tf_emlrtRSI;
     b_b_idx_0 = b->size[0];
     if ((b_b_idx_0 == 0) || (0 > b_b)) {
       overflow = false;
@@ -177,12 +177,12 @@ void b_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     }
 
     ck = 0;
-    emxInit_boolean_T(sp, &cv, 1, &hc_emlrtRTEI, true);
+    emxInit_boolean_T(sp, &cv, 1, &ec_emlrtRTEI, true);
     do {
       exitg1 = 0;
       b_b_idx_0 = b->size[0];
       if ((b_b_idx_0 > 0) && (ck <= b_b)) {
-        st.site = &tf_emlrtRSI;
+        st.site = &sf_emlrtRSI;
         if (1 > b->size[0]) {
           overflow = false;
         } else {
@@ -202,13 +202,13 @@ void b_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
         b_idx_0 = cv->size[0];
         cv->size[0] = bv->size[0];
         emxEnsureCapacity(sp, (emxArray__common *)cv, b_idx_0, (int32_T)sizeof
-                          (boolean_T), &gc_emlrtRTEI);
+                          (boolean_T), &dc_emlrtRTEI);
         b_idx_1 = bv->size[0];
         for (b_idx_0 = 0; b_idx_0 < b_idx_1; b_idx_0++) {
           cv->data[b_idx_0] = (b_a == bv->data[b_idx_0]);
         }
 
-        st.site = &sf_emlrtRSI;
+        st.site = &rf_emlrtRSI;
         b_idx_1 = 0;
         do {
           exitg2 = 0;
@@ -258,21 +258,21 @@ void c_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
 {
   boolean_T overflow;
   const mxArray *y;
-  static const int32_T iv70[2] = { 1, 44 };
+  static const int32_T iv42[2] = { 1, 44 };
 
-  const mxArray *m15;
-  char_T cv49[44];
+  const mxArray *m14;
+  char_T cv48[44];
   int32_T i;
-  static const char_T cv50[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
+  static const char_T cv49[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
     'L', 'A', 'B', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'a', 'r', 'r', 'a',
     'y', 'D', 'i', 'm', 'e', 'n', 's', 'i', 'o', 'n', 's', 'M', 'u', 's', 't',
     'M', 'a', 't', 'c', 'h' };
 
   const mxArray *b_y;
-  static const int32_T iv71[2] = { 1, 37 };
+  static const int32_T iv43[2] = { 1, 37 };
 
-  char_T cv51[37];
-  static const char_T cv52[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
+  char_T cv50[37];
+  static const char_T cv51[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
     'l', 'b', 'o', 'x', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'd', 'y', 'n',
     'a', 'm', 'i', 'c', 'E', 'x', 'p', 'a', 'n', 's', 'i', 'o', 'n' };
 
@@ -308,16 +308,16 @@ void c_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     y = NULL;
-    m15 = emlrtCreateCharArray(2, iv70);
+    m14 = emlrtCreateCharArray(2, iv42);
     for (i = 0; i < 44; i++) {
-      cv49[i] = cv50[i];
+      cv48[i] = cv49[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 44, m15, cv49);
-    emlrtAssign(&y, m15);
-    st.site = &tp_emlrtRSI;
-    b_st.site = &sq_emlrtRSI;
-    f_error(&st, b_message(&b_st, y, &fb_emlrtMCI), &gb_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 44, m14, cv48);
+    emlrtAssign(&y, m14);
+    st.site = &xo_emlrtRSI;
+    b_st.site = &vp_emlrtRSI;
+    f_error(&st, b_message(&b_st, y, &db_emlrtMCI), &eb_emlrtMCI);
   }
 
   if (a->size[1] != b->size[1]) {
@@ -329,33 +329,33 @@ void c_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     b_y = NULL;
-    m15 = emlrtCreateCharArray(2, iv71);
+    m14 = emlrtCreateCharArray(2, iv43);
     for (i = 0; i < 37; i++) {
-      cv51[i] = cv52[i];
+      cv50[i] = cv51[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 37, m15, cv51);
-    emlrtAssign(&b_y, m15);
-    st.site = &sp_emlrtRSI;
-    b_st.site = &rq_emlrtRSI;
-    f_error(&st, b_message(&b_st, b_y, &hb_emlrtMCI), &ib_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 37, m14, cv50);
+    emlrtAssign(&b_y, m14);
+    st.site = &wo_emlrtRSI;
+    b_st.site = &up_emlrtRSI;
+    f_error(&st, b_message(&b_st, b_y, &fb_emlrtMCI), &gb_emlrtMCI);
   }
 
   a_idx_0 = c->size[0] * c->size[1];
   c->size[0] = a->size[0];
   c->size[1] = a->size[1];
   emxEnsureCapacity(sp, (emxArray__common *)c, a_idx_0, (int32_T)sizeof
-                    (boolean_T), &ec_emlrtRTEI);
+                    (boolean_T), &bc_emlrtRTEI);
   b_a_idx_0 = a->size[0];
   i = a->size[1];
   if ((b_a_idx_0 == 0) || (i == 0)) {
   } else {
-    emxInit_real_T(sp, &av, 1, &yc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &av, 1, &mc_emlrtRTEI, true);
     i = a->size[0];
     a_idx_0 = av->size[0];
     av->size[0] = i;
     emxEnsureCapacity(sp, (emxArray__common *)av, a_idx_0, (int32_T)sizeof
-                      (real_T), &yc_emlrtRTEI);
+                      (real_T), &mc_emlrtRTEI);
     asub = 1;
     bsub = 1;
     ak = 0;
@@ -364,7 +364,7 @@ void c_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     i = a->size[1];
     a_idx_0 = a->size[0];
     b_b = b_a_idx_0 * i - a_idx_0;
-    st.site = &uf_emlrtRSI;
+    st.site = &tf_emlrtRSI;
     b_a_idx_0 = a->size[0];
     if ((b_a_idx_0 == 0) || (0 > b_b)) {
       overflow = false;
@@ -379,12 +379,12 @@ void c_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     }
 
     ck = 0;
-    emxInit_boolean_T(sp, &cv, 1, &hc_emlrtRTEI, true);
+    emxInit_boolean_T(sp, &cv, 1, &ec_emlrtRTEI, true);
     do {
       exitg1 = 0;
       b_a_idx_0 = a->size[0];
       if ((b_a_idx_0 > 0) && (ck <= b_b)) {
-        st.site = &rh_emlrtRSI;
+        st.site = &wg_emlrtRSI;
         if (1 > a->size[0]) {
           overflow = false;
         } else {
@@ -404,13 +404,13 @@ void c_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
         a_idx_0 = cv->size[0];
         cv->size[0] = av->size[0];
         emxEnsureCapacity(sp, (emxArray__common *)cv, a_idx_0, (int32_T)sizeof
-                          (boolean_T), &gc_emlrtRTEI);
+                          (boolean_T), &dc_emlrtRTEI);
         i = av->size[0];
         for (a_idx_0 = 0; a_idx_0 < i; a_idx_0++) {
           cv->data[a_idx_0] = (av->data[a_idx_0] == c_b);
         }
 
-        st.site = &sf_emlrtRSI;
+        st.site = &rf_emlrtRSI;
         i = 0;
         do {
           exitg2 = 0;
@@ -455,21 +455,21 @@ void d_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
 {
   boolean_T overflow;
   const mxArray *y;
-  static const int32_T iv82[2] = { 1, 44 };
+  static const int32_T iv51[2] = { 1, 44 };
 
-  const mxArray *m18;
-  char_T cv63[44];
+  const mxArray *m17;
+  char_T cv62[44];
   int32_T i;
-  static const char_T cv64[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
+  static const char_T cv63[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
     'L', 'A', 'B', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'a', 'r', 'r', 'a',
     'y', 'D', 'i', 'm', 'e', 'n', 's', 'i', 'o', 'n', 's', 'M', 'u', 's', 't',
     'M', 'a', 't', 'c', 'h' };
 
   const mxArray *b_y;
-  static const int32_T iv83[2] = { 1, 37 };
+  static const int32_T iv52[2] = { 1, 37 };
 
-  char_T cv65[37];
-  static const char_T cv66[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
+  char_T cv64[37];
+  static const char_T cv65[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
     'l', 'b', 'o', 'x', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'd', 'y', 'n',
     'a', 'm', 'i', 'c', 'E', 'x', 'p', 'a', 'n', 's', 'i', 'o', 'n' };
 
@@ -505,16 +505,16 @@ void d_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     y = NULL;
-    m18 = emlrtCreateCharArray(2, iv82);
+    m17 = emlrtCreateCharArray(2, iv51);
     for (i = 0; i < 44; i++) {
-      cv63[i] = cv64[i];
+      cv62[i] = cv63[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 44, m18, cv63);
-    emlrtAssign(&y, m18);
-    st.site = &tp_emlrtRSI;
-    b_st.site = &sq_emlrtRSI;
-    f_error(&st, b_message(&b_st, y, &fb_emlrtMCI), &gb_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 44, m17, cv62);
+    emlrtAssign(&y, m17);
+    st.site = &xo_emlrtRSI;
+    b_st.site = &vp_emlrtRSI;
+    f_error(&st, b_message(&b_st, y, &db_emlrtMCI), &eb_emlrtMCI);
   }
 
   if (a->size[1] != b->size[1]) {
@@ -526,33 +526,33 @@ void d_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     b_y = NULL;
-    m18 = emlrtCreateCharArray(2, iv83);
+    m17 = emlrtCreateCharArray(2, iv52);
     for (i = 0; i < 37; i++) {
-      cv65[i] = cv66[i];
+      cv64[i] = cv65[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 37, m18, cv65);
-    emlrtAssign(&b_y, m18);
-    st.site = &sp_emlrtRSI;
-    b_st.site = &rq_emlrtRSI;
-    f_error(&st, b_message(&b_st, b_y, &hb_emlrtMCI), &ib_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 37, m17, cv64);
+    emlrtAssign(&b_y, m17);
+    st.site = &wo_emlrtRSI;
+    b_st.site = &up_emlrtRSI;
+    f_error(&st, b_message(&b_st, b_y, &fb_emlrtMCI), &gb_emlrtMCI);
   }
 
   a_idx_0 = c->size[0] * c->size[1];
   c->size[0] = a->size[0];
   c->size[1] = a->size[1];
   emxEnsureCapacity(sp, (emxArray__common *)c, a_idx_0, (int32_T)sizeof(real_T),
-                    &ec_emlrtRTEI);
+                    &bc_emlrtRTEI);
   b_a_idx_0 = a->size[0];
   i = a->size[1];
   if ((b_a_idx_0 == 0) || (i == 0)) {
   } else {
-    emxInit_real_T(sp, &av, 1, &yc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &av, 1, &mc_emlrtRTEI, true);
     i = a->size[0];
     a_idx_0 = av->size[0];
     av->size[0] = i;
     emxEnsureCapacity(sp, (emxArray__common *)av, a_idx_0, (int32_T)sizeof
-                      (real_T), &yc_emlrtRTEI);
+                      (real_T), &mc_emlrtRTEI);
     asub = 1;
     bsub = 1;
     ak = 0;
@@ -561,7 +561,7 @@ void d_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     i = a->size[1];
     a_idx_0 = a->size[0];
     b_b = b_a_idx_0 * i - a_idx_0;
-    st.site = &uf_emlrtRSI;
+    st.site = &tf_emlrtRSI;
     b_a_idx_0 = a->size[0];
     if ((b_a_idx_0 == 0) || (0 > b_b)) {
       overflow = false;
@@ -576,12 +576,12 @@ void d_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     }
 
     ck = 0;
-    emxInit_real_T(sp, &cv, 1, &hc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &cv, 1, &ec_emlrtRTEI, true);
     do {
       exitg1 = 0;
       b_a_idx_0 = a->size[0];
       if ((b_a_idx_0 > 0) && (ck <= b_b)) {
-        st.site = &rh_emlrtRSI;
+        st.site = &wg_emlrtRSI;
         if (1 > a->size[0]) {
           overflow = false;
         } else {
@@ -601,13 +601,13 @@ void d_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
         a_idx_0 = cv->size[0];
         cv->size[0] = av->size[0];
         emxEnsureCapacity(sp, (emxArray__common *)cv, a_idx_0, (int32_T)sizeof
-                          (real_T), &gc_emlrtRTEI);
+                          (real_T), &dc_emlrtRTEI);
         i = av->size[0];
         for (a_idx_0 = 0; a_idx_0 < i; a_idx_0++) {
           cv->data[a_idx_0] = av->data[a_idx_0] - c_b;
         }
 
-        st.site = &sf_emlrtRSI;
+        st.site = &rf_emlrtRSI;
         i = 0;
         do {
           exitg2 = 0;
@@ -652,21 +652,21 @@ void e_bsxfun(const emlrtStack *sp, const emxArray_boolean_T *a, const
 {
   boolean_T overflow;
   const mxArray *y;
-  static const int32_T iv86[2] = { 1, 44 };
+  static const int32_T iv55[2] = { 1, 44 };
 
-  const mxArray *m21;
-  char_T cv71[44];
+  const mxArray *m20;
+  char_T cv70[44];
   int32_T i;
-  static const char_T cv72[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
+  static const char_T cv71[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
     'L', 'A', 'B', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'a', 'r', 'r', 'a',
     'y', 'D', 'i', 'm', 'e', 'n', 's', 'i', 'o', 'n', 's', 'M', 'u', 's', 't',
     'M', 'a', 't', 'c', 'h' };
 
   const mxArray *b_y;
-  static const int32_T iv87[2] = { 1, 37 };
+  static const int32_T iv56[2] = { 1, 37 };
 
-  char_T cv73[37];
-  static const char_T cv74[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
+  char_T cv72[37];
+  static const char_T cv73[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
     'l', 'b', 'o', 'x', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'd', 'y', 'n',
     'a', 'm', 'i', 'c', 'E', 'x', 'p', 'a', 'n', 's', 'i', 'o', 'n' };
 
@@ -702,16 +702,16 @@ void e_bsxfun(const emlrtStack *sp, const emxArray_boolean_T *a, const
   if (overflow) {
   } else {
     y = NULL;
-    m21 = emlrtCreateCharArray(2, iv86);
+    m20 = emlrtCreateCharArray(2, iv55);
     for (i = 0; i < 44; i++) {
-      cv71[i] = cv72[i];
+      cv70[i] = cv71[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 44, m21, cv71);
-    emlrtAssign(&y, m21);
-    st.site = &tp_emlrtRSI;
-    b_st.site = &sq_emlrtRSI;
-    f_error(&st, b_message(&b_st, y, &fb_emlrtMCI), &gb_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 44, m20, cv70);
+    emlrtAssign(&y, m20);
+    st.site = &xo_emlrtRSI;
+    b_st.site = &vp_emlrtRSI;
+    f_error(&st, b_message(&b_st, y, &db_emlrtMCI), &eb_emlrtMCI);
   }
 
   if (a->size[1] != b->size[1]) {
@@ -723,33 +723,33 @@ void e_bsxfun(const emlrtStack *sp, const emxArray_boolean_T *a, const
   if (overflow) {
   } else {
     b_y = NULL;
-    m21 = emlrtCreateCharArray(2, iv87);
+    m20 = emlrtCreateCharArray(2, iv56);
     for (i = 0; i < 37; i++) {
-      cv73[i] = cv74[i];
+      cv72[i] = cv73[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 37, m21, cv73);
-    emlrtAssign(&b_y, m21);
-    st.site = &sp_emlrtRSI;
-    b_st.site = &rq_emlrtRSI;
-    f_error(&st, b_message(&b_st, b_y, &hb_emlrtMCI), &ib_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 37, m20, cv72);
+    emlrtAssign(&b_y, m20);
+    st.site = &wo_emlrtRSI;
+    b_st.site = &up_emlrtRSI;
+    f_error(&st, b_message(&b_st, b_y, &fb_emlrtMCI), &gb_emlrtMCI);
   }
 
   a_idx_0 = c->size[0] * c->size[1];
   c->size[0] = a->size[0];
   c->size[1] = a->size[1];
   emxEnsureCapacity(sp, (emxArray__common *)c, a_idx_0, (int32_T)sizeof(real_T),
-                    &ec_emlrtRTEI);
+                    &bc_emlrtRTEI);
   b_a_idx_0 = a->size[0];
   i = a->size[1];
   if ((b_a_idx_0 == 0) || (i == 0)) {
   } else {
-    emxInit_boolean_T(sp, &av, 1, &yc_emlrtRTEI, true);
+    emxInit_boolean_T(sp, &av, 1, &mc_emlrtRTEI, true);
     i = a->size[0];
     a_idx_0 = av->size[0];
     av->size[0] = i;
     emxEnsureCapacity(sp, (emxArray__common *)av, a_idx_0, (int32_T)sizeof
-                      (boolean_T), &yc_emlrtRTEI);
+                      (boolean_T), &mc_emlrtRTEI);
     asub = 1;
     bsub = 1;
     ak = 0;
@@ -758,7 +758,7 @@ void e_bsxfun(const emlrtStack *sp, const emxArray_boolean_T *a, const
     i = a->size[1];
     a_idx_0 = a->size[0];
     b_b = b_a_idx_0 * i - a_idx_0;
-    st.site = &uf_emlrtRSI;
+    st.site = &tf_emlrtRSI;
     b_a_idx_0 = a->size[0];
     if ((b_a_idx_0 == 0) || (0 > b_b)) {
       overflow = false;
@@ -773,12 +773,12 @@ void e_bsxfun(const emlrtStack *sp, const emxArray_boolean_T *a, const
     }
 
     ck = 0;
-    emxInit_real_T(sp, &cv, 1, &hc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &cv, 1, &ec_emlrtRTEI, true);
     do {
       exitg1 = 0;
       b_a_idx_0 = a->size[0];
       if ((b_a_idx_0 > 0) && (ck <= b_b)) {
-        st.site = &rh_emlrtRSI;
+        st.site = &wg_emlrtRSI;
         if (1 > a->size[0]) {
           overflow = false;
         } else {
@@ -798,13 +798,13 @@ void e_bsxfun(const emlrtStack *sp, const emxArray_boolean_T *a, const
         a_idx_0 = cv->size[0];
         cv->size[0] = av->size[0];
         emxEnsureCapacity(sp, (emxArray__common *)cv, a_idx_0, (int32_T)sizeof
-                          (real_T), &gc_emlrtRTEI);
+                          (real_T), &dc_emlrtRTEI);
         i = av->size[0];
         for (a_idx_0 = 0; a_idx_0 < i; a_idx_0++) {
           cv->data[a_idx_0] = (real_T)av->data[a_idx_0] - c_b;
         }
 
-        st.site = &sf_emlrtRSI;
+        st.site = &rf_emlrtRSI;
         i = 0;
         do {
           exitg2 = 0;
@@ -849,21 +849,21 @@ void f_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
 {
   boolean_T overflow;
   const mxArray *y;
-  static const int32_T iv100[2] = { 1, 44 };
+  static const int32_T iv65[2] = { 1, 44 };
 
-  const mxArray *m32;
-  char_T cv98[44];
+  const mxArray *m28;
+  char_T cv90[44];
   int32_T i;
-  static const char_T cv99[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
+  static const char_T cv91[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
     'L', 'A', 'B', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'a', 'r', 'r', 'a',
     'y', 'D', 'i', 'm', 'e', 'n', 's', 'i', 'o', 'n', 's', 'M', 'u', 's', 't',
     'M', 'a', 't', 'c', 'h' };
 
   const mxArray *b_y;
-  static const int32_T iv101[2] = { 1, 37 };
+  static const int32_T iv66[2] = { 1, 37 };
 
-  char_T cv100[37];
-  static const char_T cv101[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
+  char_T cv92[37];
+  static const char_T cv93[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
     'l', 'b', 'o', 'x', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'd', 'y', 'n',
     'a', 'm', 'i', 'c', 'E', 'x', 'p', 'a', 'n', 's', 'i', 'o', 'n' };
 
@@ -897,16 +897,16 @@ void f_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     y = NULL;
-    m32 = emlrtCreateCharArray(2, iv100);
+    m28 = emlrtCreateCharArray(2, iv65);
     for (i = 0; i < 44; i++) {
-      cv98[i] = cv99[i];
+      cv90[i] = cv91[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 44, m32, cv98);
-    emlrtAssign(&y, m32);
-    st.site = &tp_emlrtRSI;
-    b_st.site = &sq_emlrtRSI;
-    f_error(&st, b_message(&b_st, y, &fb_emlrtMCI), &gb_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 44, m28, cv90);
+    emlrtAssign(&y, m28);
+    st.site = &xo_emlrtRSI;
+    b_st.site = &vp_emlrtRSI;
+    f_error(&st, b_message(&b_st, y, &db_emlrtMCI), &eb_emlrtMCI);
   }
 
   if (a->size[1] != b->size[1]) {
@@ -918,32 +918,32 @@ void f_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     b_y = NULL;
-    m32 = emlrtCreateCharArray(2, iv101);
+    m28 = emlrtCreateCharArray(2, iv66);
     for (i = 0; i < 37; i++) {
-      cv100[i] = cv101[i];
+      cv92[i] = cv93[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 37, m32, cv100);
-    emlrtAssign(&b_y, m32);
-    st.site = &sp_emlrtRSI;
-    b_st.site = &rq_emlrtRSI;
-    f_error(&st, b_message(&b_st, b_y, &hb_emlrtMCI), &ib_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 37, m28, cv92);
+    emlrtAssign(&b_y, m28);
+    st.site = &wo_emlrtRSI;
+    b_st.site = &up_emlrtRSI;
+    f_error(&st, b_message(&b_st, b_y, &fb_emlrtMCI), &gb_emlrtMCI);
   }
 
   i = c->size[0] * c->size[1];
   c->size[0] = a->size[0];
   c->size[1] = a->size[1];
   emxEnsureCapacity(sp, (emxArray__common *)c, i, (int32_T)sizeof(real_T),
-                    &ec_emlrtRTEI);
+                    &bc_emlrtRTEI);
   a_idx_0 = a->size[0];
   if (a_idx_0 == 0) {
   } else {
-    emxInit_real_T(sp, &av, 1, &yc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &av, 1, &mc_emlrtRTEI, true);
     unnamed_idx_0 = a->size[0];
     i = av->size[0];
     av->size[0] = unnamed_idx_0;
     emxEnsureCapacity(sp, (emxArray__common *)av, i, (int32_T)sizeof(real_T),
-                      &yc_emlrtRTEI);
+                      &mc_emlrtRTEI);
     asub = 1;
     bsub = 1;
     ak = 0;
@@ -952,7 +952,7 @@ void f_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     i = a->size[1];
     unnamed_idx_0 = a->size[0];
     i = a_idx_0 * i - unnamed_idx_0;
-    st.site = &uf_emlrtRSI;
+    st.site = &tf_emlrtRSI;
     a_idx_0 = a->size[0];
     if ((a_idx_0 == 0) || (0 > i)) {
       overflow = false;
@@ -967,12 +967,12 @@ void f_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     }
 
     unnamed_idx_0 = 0;
-    emxInit_real_T(sp, &cv, 1, &hc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &cv, 1, &ec_emlrtRTEI, true);
     do {
       exitg1 = 0;
       a_idx_0 = a->size[0];
       if ((a_idx_0 > 0) && (unnamed_idx_0 <= i)) {
-        st.site = &rh_emlrtRSI;
+        st.site = &wg_emlrtRSI;
         if (1 > a->size[0]) {
           overflow = false;
         } else {
@@ -989,7 +989,7 @@ void f_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
         }
 
         rdivide(sp, av, b->data[bk], cv);
-        st.site = &sf_emlrtRSI;
+        st.site = &rf_emlrtRSI;
         k = 0;
         do {
           exitg2 = 0;
@@ -1034,21 +1034,21 @@ void g_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
 {
   boolean_T overflow;
   const mxArray *y;
-  static const int32_T iv104[2] = { 1, 44 };
+  static const int32_T iv69[2] = { 1, 44 };
 
-  const mxArray *m34;
-  char_T cv106[44];
+  const mxArray *m30;
+  char_T cv98[44];
   int32_T i;
-  static const char_T cv107[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
+  static const char_T cv99[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
     'L', 'A', 'B', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'a', 'r', 'r', 'a',
     'y', 'D', 'i', 'm', 'e', 'n', 's', 'i', 'o', 'n', 's', 'M', 'u', 's', 't',
     'M', 'a', 't', 'c', 'h' };
 
   const mxArray *b_y;
-  static const int32_T iv105[2] = { 1, 37 };
+  static const int32_T iv70[2] = { 1, 37 };
 
-  char_T cv108[37];
-  static const char_T cv109[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
+  char_T cv100[37];
+  static const char_T cv101[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
     'l', 'b', 'o', 'x', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'd', 'y', 'n',
     'a', 'm', 'i', 'c', 'E', 'x', 'p', 'a', 'n', 's', 'i', 'o', 'n' };
 
@@ -1084,16 +1084,16 @@ void g_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     y = NULL;
-    m34 = emlrtCreateCharArray(2, iv104);
+    m30 = emlrtCreateCharArray(2, iv69);
     for (i = 0; i < 44; i++) {
-      cv106[i] = cv107[i];
+      cv98[i] = cv99[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 44, m34, cv106);
-    emlrtAssign(&y, m34);
-    st.site = &tp_emlrtRSI;
-    b_st.site = &sq_emlrtRSI;
-    f_error(&st, b_message(&b_st, y, &fb_emlrtMCI), &gb_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 44, m30, cv98);
+    emlrtAssign(&y, m30);
+    st.site = &xo_emlrtRSI;
+    b_st.site = &vp_emlrtRSI;
+    f_error(&st, b_message(&b_st, y, &db_emlrtMCI), &eb_emlrtMCI);
   }
 
   if (a->size[1] != b->size[1]) {
@@ -1105,33 +1105,33 @@ void g_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     b_y = NULL;
-    m34 = emlrtCreateCharArray(2, iv105);
+    m30 = emlrtCreateCharArray(2, iv70);
     for (i = 0; i < 37; i++) {
-      cv108[i] = cv109[i];
+      cv100[i] = cv101[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 37, m34, cv108);
-    emlrtAssign(&b_y, m34);
-    st.site = &sp_emlrtRSI;
-    b_st.site = &rq_emlrtRSI;
-    f_error(&st, b_message(&b_st, b_y, &hb_emlrtMCI), &ib_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 37, m30, cv100);
+    emlrtAssign(&b_y, m30);
+    st.site = &wo_emlrtRSI;
+    b_st.site = &up_emlrtRSI;
+    f_error(&st, b_message(&b_st, b_y, &fb_emlrtMCI), &gb_emlrtMCI);
   }
 
   b_idx_0 = c->size[0] * c->size[1];
   c->size[0] = b->size[0];
   c->size[1] = a->size[1];
   emxEnsureCapacity(sp, (emxArray__common *)c, b_idx_0, (int32_T)sizeof(real_T),
-                    &ec_emlrtRTEI);
+                    &bc_emlrtRTEI);
   b_b_idx_0 = b->size[0];
   i = a->size[1];
   if ((b_b_idx_0 == 0) || (i == 0)) {
   } else {
-    emxInit_real_T(sp, &bv, 1, &fc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &bv, 1, &cc_emlrtRTEI, true);
     i = b->size[0];
     b_idx_0 = bv->size[0];
     bv->size[0] = i;
     emxEnsureCapacity(sp, (emxArray__common *)bv, b_idx_0, (int32_T)sizeof
-                      (real_T), &fc_emlrtRTEI);
+                      (real_T), &cc_emlrtRTEI);
     asub = 1;
     bsub = 1;
     ak = 0;
@@ -1140,7 +1140,7 @@ void g_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     i = a->size[1];
     b_idx_0 = b->size[0];
     b_b = b_b_idx_0 * i - b_idx_0;
-    st.site = &uf_emlrtRSI;
+    st.site = &tf_emlrtRSI;
     b_b_idx_0 = b->size[0];
     if ((b_b_idx_0 == 0) || (0 > b_b)) {
       overflow = false;
@@ -1155,12 +1155,12 @@ void g_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     }
 
     ck = 0;
-    emxInit_real_T(sp, &cv, 1, &hc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &cv, 1, &ec_emlrtRTEI, true);
     do {
       exitg1 = 0;
       b_b_idx_0 = b->size[0];
       if ((b_b_idx_0 > 0) && (ck <= b_b)) {
-        st.site = &tf_emlrtRSI;
+        st.site = &sf_emlrtRSI;
         if (1 > b->size[0]) {
           overflow = false;
         } else {
@@ -1180,13 +1180,13 @@ void g_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
         b_idx_0 = cv->size[0];
         cv->size[0] = bv->size[0];
         emxEnsureCapacity(sp, (emxArray__common *)cv, b_idx_0, (int32_T)sizeof
-                          (real_T), &gc_emlrtRTEI);
+                          (real_T), &dc_emlrtRTEI);
         i = bv->size[0];
         for (b_idx_0 = 0; b_idx_0 < i; b_idx_0++) {
           cv->data[b_idx_0] = b_a - bv->data[b_idx_0];
         }
 
-        st.site = &sf_emlrtRSI;
+        st.site = &rf_emlrtRSI;
         i = 0;
         do {
           exitg2 = 0;
@@ -1231,21 +1231,21 @@ void h_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
 {
   boolean_T overflow;
   const mxArray *y;
-  static const int32_T iv106[2] = { 1, 44 };
+  static const int32_T iv71[2] = { 1, 44 };
 
-  const mxArray *m35;
-  char_T cv110[44];
+  const mxArray *m31;
+  char_T cv102[44];
   int32_T i;
-  static const char_T cv111[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
+  static const char_T cv103[44] = { 'C', 'o', 'd', 'e', 'r', ':', 'M', 'A', 'T',
     'L', 'A', 'B', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'a', 'r', 'r', 'a',
     'y', 'D', 'i', 'm', 'e', 'n', 's', 'i', 'o', 'n', 's', 'M', 'u', 's', 't',
     'M', 'a', 't', 'c', 'h' };
 
   const mxArray *b_y;
-  static const int32_T iv107[2] = { 1, 37 };
+  static const int32_T iv72[2] = { 1, 37 };
 
-  char_T cv112[37];
-  static const char_T cv113[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
+  char_T cv104[37];
+  static const char_T cv105[37] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
     'l', 'b', 'o', 'x', ':', 'b', 's', 'x', 'f', 'u', 'n', '_', 'd', 'y', 'n',
     'a', 'm', 'i', 'c', 'E', 'x', 'p', 'a', 'n', 's', 'i', 'o', 'n' };
 
@@ -1264,10 +1264,10 @@ void h_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   boolean_T p;
   boolean_T exitg3;
   const mxArray *c_y;
-  static const int32_T iv108[2] = { 1, 15 };
+  static const int32_T iv73[2] = { 1, 15 };
 
-  char_T cv114[15];
-  static const char_T cv115[15] = { 'M', 'A', 'T', 'L', 'A', 'B', ':', 'd', 'i',
+  char_T cv106[15];
+  static const char_T cv107[15] = { 'M', 'A', 'T', 'L', 'A', 'B', ':', 'd', 'i',
     'm', 'a', 'g', 'r', 'e', 'e' };
 
   int32_T exitg2;
@@ -1296,16 +1296,16 @@ void h_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     y = NULL;
-    m35 = emlrtCreateCharArray(2, iv106);
+    m31 = emlrtCreateCharArray(2, iv71);
     for (i = 0; i < 44; i++) {
-      cv110[i] = cv111[i];
+      cv102[i] = cv103[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 44, m35, cv110);
-    emlrtAssign(&y, m35);
-    st.site = &tp_emlrtRSI;
-    b_st.site = &sq_emlrtRSI;
-    f_error(&st, b_message(&b_st, y, &fb_emlrtMCI), &gb_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 44, m31, cv102);
+    emlrtAssign(&y, m31);
+    st.site = &xo_emlrtRSI;
+    b_st.site = &vp_emlrtRSI;
+    f_error(&st, b_message(&b_st, y, &db_emlrtMCI), &eb_emlrtMCI);
   }
 
   if (a->size[0] != b->size[0]) {
@@ -1317,46 +1317,46 @@ void h_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
   if (overflow) {
   } else {
     b_y = NULL;
-    m35 = emlrtCreateCharArray(2, iv107);
+    m31 = emlrtCreateCharArray(2, iv72);
     for (i = 0; i < 37; i++) {
-      cv112[i] = cv113[i];
+      cv104[i] = cv105[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 37, m35, cv112);
-    emlrtAssign(&b_y, m35);
-    st.site = &sp_emlrtRSI;
-    b_st.site = &rq_emlrtRSI;
-    f_error(&st, b_message(&b_st, b_y, &hb_emlrtMCI), &ib_emlrtMCI);
+    emlrtInitCharArrayR2013a(sp, 37, m31, cv104);
+    emlrtAssign(&b_y, m31);
+    st.site = &wo_emlrtRSI;
+    b_st.site = &up_emlrtRSI;
+    f_error(&st, b_message(&b_st, b_y, &fb_emlrtMCI), &gb_emlrtMCI);
   }
 
   a_idx_0 = c->size[0] * c->size[1];
   c->size[0] = a->size[0];
   c->size[1] = a->size[1];
   emxEnsureCapacity(sp, (emxArray__common *)c, a_idx_0, (int32_T)sizeof(real_T),
-                    &ec_emlrtRTEI);
+                    &bc_emlrtRTEI);
   b_a_idx_0 = a->size[0];
   i = a->size[1];
   if ((b_a_idx_0 == 0) || (i == 0)) {
   } else {
-    emxInit_real_T(sp, &av, 1, &yc_emlrtRTEI, true);
-    emxInit_real_T(sp, &bv, 1, &fc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &av, 1, &mc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &bv, 1, &cc_emlrtRTEI, true);
     i = a->size[0];
     a_idx_0 = av->size[0];
     av->size[0] = i;
     emxEnsureCapacity(sp, (emxArray__common *)av, a_idx_0, (int32_T)sizeof
-                      (real_T), &yc_emlrtRTEI);
+                      (real_T), &mc_emlrtRTEI);
     i = b->size[0];
     a_idx_0 = bv->size[0];
     bv->size[0] = i;
     emxEnsureCapacity(sp, (emxArray__common *)bv, a_idx_0, (int32_T)sizeof
-                      (real_T), &fc_emlrtRTEI);
+                      (real_T), &cc_emlrtRTEI);
     asub = 1;
     ak = 0;
     b_a_idx_0 = a->size[0];
     i = a->size[1];
     a_idx_0 = a->size[0];
     b_b = b_a_idx_0 * i - a_idx_0;
-    st.site = &uf_emlrtRSI;
+    st.site = &tf_emlrtRSI;
     b_a_idx_0 = a->size[0];
     if ((b_a_idx_0 == 0) || (0 > b_b)) {
       overflow = false;
@@ -1371,12 +1371,12 @@ void h_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
     }
 
     ck = 0;
-    emxInit_real_T(sp, &cv, 1, &hc_emlrtRTEI, true);
+    b_emxInit_real_T(sp, &cv, 1, &ec_emlrtRTEI, true);
     do {
       exitg1 = 0;
       b_a_idx_0 = a->size[0];
       if ((b_a_idx_0 > 0) && (ck <= b_b)) {
-        st.site = &rh_emlrtRSI;
+        st.site = &wg_emlrtRSI;
         if (1 > a->size[0]) {
           overflow = false;
         } else {
@@ -1392,7 +1392,7 @@ void h_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
           av->data[i] = a->data[ak + i];
         }
 
-        st.site = &tf_emlrtRSI;
+        st.site = &sf_emlrtRSI;
         if (1 > b->size[0]) {
           overflow = false;
         } else {
@@ -1408,7 +1408,7 @@ void h_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
           bv->data[i] = b->data[i];
         }
 
-        st.site = &to_emlrtRSI;
+        st.site = &yn_emlrtRSI;
         varargin_1[0] = (uint32_T)av->size[0];
         varargin_1[1] = 1U;
         varargin_2[0] = (uint32_T)bv->size[0];
@@ -1434,33 +1434,33 @@ void h_bsxfun(const emlrtStack *sp, const emxArray_real_T *a, const
         if (overflow) {
         } else {
           c_y = NULL;
-          m35 = emlrtCreateCharArray(2, iv108);
+          m31 = emlrtCreateCharArray(2, iv73);
           for (i = 0; i < 15; i++) {
-            cv114[i] = cv115[i];
+            cv106[i] = cv107[i];
           }
 
-          emlrtInitCharArrayR2013a(&st, 15, m35, cv114);
-          emlrtAssign(&c_y, m35);
-          c_st.site = &rp_emlrtRSI;
-          d_st.site = &qq_emlrtRSI;
-          f_error(&c_st, b_message(&d_st, c_y, &wb_emlrtMCI), &xb_emlrtMCI);
+          emlrtInitCharArrayR2013a(&st, 15, m31, cv106);
+          emlrtAssign(&c_y, m31);
+          c_st.site = &vo_emlrtRSI;
+          d_st.site = &tp_emlrtRSI;
+          f_error(&c_st, b_message(&d_st, c_y, &tb_emlrtMCI), &ub_emlrtMCI);
         }
 
-        c_st.site = &uo_emlrtRSI;
-        e_st.site = &vo_emlrtRSI;
+        c_st.site = &ao_emlrtRSI;
+        e_st.site = &bo_emlrtRSI;
         a_idx_0 = av->size[0];
         i = bv->size[0];
         emlrtSizeEqCheck1DFastR2012b(a_idx_0, i, &pb_emlrtECI, &e_st);
         a_idx_0 = cv->size[0];
         cv->size[0] = av->size[0];
         emxEnsureCapacity(&e_st, (emxArray__common *)cv, a_idx_0, (int32_T)
-                          sizeof(real_T), &gc_emlrtRTEI);
+                          sizeof(real_T), &dc_emlrtRTEI);
         i = av->size[0];
         for (a_idx_0 = 0; a_idx_0 < i; a_idx_0++) {
           cv->data[a_idx_0] = av->data[a_idx_0] / bv->data[a_idx_0];
         }
 
-        st.site = &sf_emlrtRSI;
+        st.site = &rf_emlrtRSI;
         i = 0;
         do {
           exitg2 = 0;
