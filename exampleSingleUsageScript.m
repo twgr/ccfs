@@ -1,5 +1,10 @@
 % The below will train a CCF for the example spirals dataset shown in the
-% paper 
+% paper and then generate the plots for the CCF and a RF trained using
+% MATLABs TreeBagger function similar to those in the paper (note that the
+% points plotted here are seperate points draw from the same distribution
+% instead of the training points used in the paper)
+%
+% Tom Rainforth 27/07/15
 
 clear all
 disp('Generating data')
