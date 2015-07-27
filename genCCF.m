@@ -77,16 +77,19 @@ if ~isnumeric(XTrain) || any(isnan(XTrain(:)))
     error('Data is not processed, please use processInputData function');
 end
 
+if ~exist('bOrdinal','var')
+    bOrdinal = [];
+elseif ~isempty(bOrdinal)
+    bOrdinal = logical(bOrdinal);
+end
+
 if ~isnumeric(XTrain) || ~exist('iFeatureNum','var') || isempty(iFeatureNum)
     % If XTrain not in numeric form or if a grouping of features is not
     % provided, apply the input data processing.
     if exist('iFeatureNum','var') && ~isempty(iFeatureNum)
         warning('iFeatureNum provided but XTrain not in array format, over-riding');
     end
-    if ~exist('bOrdinal','var')
-        bOrdinal = [];
-    end
-    if ~exist('XTest','var')
+    if ~exist('XTest','var') || isempty(XTest)
         [XTrain, iFeatureNum, inputProcess] = processInputData(XTrain,bOrdinal);
     else
         [XTrain, iFeatureNum, inputProcess, XTest] = processInputData(XTrain,bOrdinal,XTest);
@@ -96,7 +99,9 @@ else
     std_XTrain = nanstd(XTrain,[],1);
     inputProcess = setupInputProcessFunc(mu_XTrain,std_XTrain);
     XTrain = inputProcess(XTrain);
-    XTest = inputProcess(XTest);
+    if ~isempty(XTest)
+        XTest = inputProcess(XTest);
+    end
 end
 
 if ~exist('bKeepTrees','var') || isempty(bKeepTrees)

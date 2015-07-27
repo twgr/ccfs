@@ -31,9 +31,12 @@ elseif numel(left)<foldSize
 end
 fold{nFolds} = left;
 
+iTrain = cell(nFolds,1);
+iTest = cell(nFolds,1);
+
 for n=1:nFolds
-    iTest = fold{n};
-    iTrain = setdiff(1:nDataPoints,iTest);
+    iTest{n} = fold{n};
+    iTrain{n} = setdiff(1:nDataPoints,iTest{n});
 end
 
 end
