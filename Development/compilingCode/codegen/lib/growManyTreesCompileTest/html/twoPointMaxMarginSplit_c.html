@@ -1,0 +1,472 @@
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>RTW Report - twoPointMaxMarginSplit.c</title>
+<script language="JavaScript" type="text/javascript" src="rtwreport_utils.js"></script>
+</head>
+<body bgcolor="#eeeeee" text="#1122aa" onload="try {if (top) { if (top.rtwFileOnLoad) top.rtwFileOnLoad(window.document); else local_onload();}} catch(err) {};">
+<p>
+<table border="0" cellspacing="0" cellpadding="6" width="100%%" height="100%%"><tr><td width="100%%" valign="top" bgcolor="#ffffff">
+<h4>File: <a href="../twoPointMaxMarginSplit.c" target="rtwreport_document_frame" id="linkToText_plain">twoPointMaxMarginSplit.c</a></h4>
+<pre id="RTWcode">
+<a name="1"><font color="#888888 "><i>    1   </i></font></a><font color="#117755"><i>/*</i></font>
+<a name="2"><font color="#888888 "><i>    2   </i></font></a><font color="#117755"><I> * File: twoPointMaxMarginSplit.c</i></font>
+<a name="3"><font color="#888888 "><i>    3   </i></font></a><font color="#117755"><I> *</i></font>
+<a name="4"><font color="#888888 "><i>    4   </i></font></a><font color="#117755"><I> * MATLAB Coder version            : 2.6</i></font>
+<a name="5"><font color="#888888 "><i>    5   </i></font></a><font color="#117755"><I> * C/C++ source code generated on  : 28-Jul-2015 12:37:59</i></font>
+<a name="6"><font color="#888888 "><i>    6   </i></font></a><font color="#117755"><I> */</i></font>
+<a name="7"><font color="#888888 "><i>    7   </i></font></a>
+<a name="8"><font color="#888888 "><i>    8   </i></font></a><font color="#117755"><i>/* Include files */</i></font>
+<a name="9"><font color="#888888 "><i>    9   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;rt_nonfinite.h&quot;</font>
+<a name="10"><font color="#888888 "><i>   10   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;growManyTreesCompileTest.h&quot;</font>
+<a name="11"><font color="#888888 "><i>   11   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;twoPointMaxMarginSplit.h&quot;</font>
+<a name="12"><font color="#888888 "><i>   12   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;growManyTreesCompileTest_emxutil.h&quot;</font>
+<a name="13"><font color="#888888 "><i>   13   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;all.h&quot;</font>
+<a name="14"><font color="#888888 "><i>   14   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;sum.h&quot;</font>
+<a name="15"><font color="#888888 "><i>   15   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;abs.h&quot;</font>
+<a name="16"><font color="#888888 "><i>   16   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;bsxfun.h&quot;</font>
+<a name="17"><font color="#888888 "><i>   17   </i></font></a>
+<a name="18"><font color="#888888 "><i>   18   </i></font></a><font color="#117755"><i>/* Function Definitions */</i></font>
+<a name="19"><font color="#888888 "><i>   19   </i></font></a>
+<a name="20"><font color="#888888 "><i>   20   </i></font></a><font color="#117755"><i>/*</i></font>
+<a name="21"><font color="#888888 "><i>   21   </i></font></a><font color="#117755"><I> * Arguments    : const emxArray_boolean_T *x</i></font>
+<a name="22"><font color="#888888 "><i>   22   </i></font></a><font color="#117755"><I> *                emxArray_int32_T *y</i></font>
+<a name="23"><font color="#888888 "><i>   23   </i></font></a><font color="#117755"><I> * Return Type  : void</i></font>
+<a name="24"><font color="#888888 "><i>   24   </i></font></a><font color="#117755"><I> */</i></font>
+<a name="25"><font color="#888888 "><i>   25   </i></font></a><font color="#112266"><b>void</b></font> <a name="fcn_b_eml_li_find">b_eml_li_find</a>(<font color="#112266"><b>const</b></font> <a href="growManyTreesCompileTest_types_h.html#type_emxArray_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_boolean_T');" target="_self"><font color="#1122aa">emxArray_boolean_T</font></a> *x, <a href="growManyTreesCompileTest_types_h.html#type_emxArray_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_int32_T');" target="_self"><font color="#1122aa">emxArray_int32_T</font></a> *y)
+<a name="26"><font color="#888888 "><i>   26   </i></font></a><b>{</b>
+<a name="27"><font color="#888888 "><i>   27   </i></font></a>  <font color="#112266"><b>int</b></font> k;
+<a name="28"><font color="#888888 "><i>   28   </i></font></a>  <font color="#112266"><b>int</b></font> i;
+<a name="29"><font color="#888888 "><i>   29   </i></font></a>  <font color="#112266"><b>int</b></font> j;
+<a name="30"><font color="#888888 "><i>   30   </i></font></a>  k = 0;
+<a name="31"><font color="#888888 "><i>   31   </i></font></a>  <font color="#112266"><b>for</b></font> (i = 1; i &lt;= x-&gt;size[0]; i++) <b>{</b>
+<a name="32"><font color="#888888 "><i>   32   </i></font></a>    <font color="#112266"><b>if</b></font> (x-&gt;data[i - 1]) <b>{</b>
+<a name="33"><font color="#888888 "><i>   33   </i></font></a>      k++;
+<a name="34"><font color="#888888 "><i>   34   </i></font></a>    <b>}</b>
+<a name="35"><font color="#888888 "><i>   35   </i></font></a>  <b>}</b>
+<a name="36"><font color="#888888 "><i>   36   </i></font></a>
+<a name="37"><font color="#888888 "><i>   37   </i></font></a>  j = y-&gt;size[0];
+<a name="38"><font color="#888888 "><i>   38   </i></font></a>  y-&gt;size[0] = k;
+<a name="39"><font color="#888888 "><i>   39   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, j, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>int</b></font>));
+<a name="40"><font color="#888888 "><i>   40   </i></font></a>  j = 0;
+<a name="41"><font color="#888888 "><i>   41   </i></font></a>  <font color="#112266"><b>for</b></font> (i = 1; i &lt;= x-&gt;size[0]; i++) <b>{</b>
+<a name="42"><font color="#888888 "><i>   42   </i></font></a>    <font color="#112266"><b>if</b></font> (x-&gt;data[i - 1]) <b>{</b>
+<a name="43"><font color="#888888 "><i>   43   </i></font></a>      y-&gt;data[j] = i;
+<a name="44"><font color="#888888 "><i>   44   </i></font></a>      j++;
+<a name="45"><font color="#888888 "><i>   45   </i></font></a>    <b>}</b>
+<a name="46"><font color="#888888 "><i>   46   </i></font></a>  <b>}</b>
+<a name="47"><font color="#888888 "><i>   47   </i></font></a><b>}</b>
+<a name="48"><font color="#888888 "><i>   48   </i></font></a>
+<a name="49"><font color="#888888 "><i>   49   </i></font></a><font color="#117755"><i>/*</i></font>
+<a name="50"><font color="#888888 "><i>   50   </i></font></a><font color="#117755"><I> * This should only be done if X has exactly 2 unique rows in which case it</i></font>
+<a name="51"><font color="#888888 "><i>   51   </i></font></a><font color="#117755"><I> *  produces the optimal split</i></font>
+<a name="52"><font color="#888888 "><i>   52   </i></font></a><font color="#117755"><I> * Arguments    : const emxArray_real_T *X</i></font>
+<a name="53"><font color="#888888 "><i>   53   </i></font></a><font color="#117755"><I> *                const emxArray_boolean_T *Y</i></font>
+<a name="54"><font color="#888888 "><i>   54   </i></font></a><font color="#117755"><I> *                double tol</i></font>
+<a name="55"><font color="#888888 "><i>   55   </i></font></a><font color="#117755"><I> *                boolean_T *bSp</i></font>
+<a name="56"><font color="#888888 "><i>   56   </i></font></a><font color="#117755"><I> *                emxArray_real_T *rmm</i></font>
+<a name="57"><font color="#888888 "><i>   57   </i></font></a><font color="#117755"><I> *                double cmm_data[]</i></font>
+<a name="58"><font color="#888888 "><i>   58   </i></font></a><font color="#117755"><I> *                int cmm_size[2]</i></font>
+<a name="59"><font color="#888888 "><i>   59   </i></font></a><font color="#117755"><I> * Return Type  : void</i></font>
+<a name="60"><font color="#888888 "><i>   60   </i></font></a><font color="#117755"><I> */</i></font>
+<a name="61"><font color="#888888 "><i>   61   </i></font></a><font color="#112266"><b>void</b></font> <a name="fcn_twoPointMaxMarginSplit">twoPointMaxMarginSplit</a>(<font color="#112266"><b>const</b></font> <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *X, <font color="#112266"><b>const</b></font> <a href="growManyTreesCompileTest_types_h.html#type_emxArray_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_boolean_T');" target="_self"><font color="#1122aa">emxArray_boolean_T</font></a>
+<a name="62"><font color="#888888 "><i>   62   </i></font></a>  *Y, <font color="#112266"><b>double</b></font> tol, <a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a> *bSp, <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *rmm, <font color="#112266"><b>double</b></font> cmm_data[], <font color="#112266"><b>int</b></font>
+<a name="63"><font color="#888888 "><i>   63   </i></font></a>  cmm_size[2])
+<a name="64"><font color="#888888 "><i>   64   </i></font></a><b>{</b>
+<a name="65"><font color="#888888 "><i>   65   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *b_X;
+<a name="66"><font color="#888888 "><i>   66   </i></font></a>  <font color="#112266"><b>int</b></font> loop_ub;
+<a name="67"><font color="#888888 "><i>   67   </i></font></a>  <font color="#112266"><b>int</b></font> i10;
+<a name="68"><font color="#888888 "><i>   68   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *a;
+<a name="69"><font color="#888888 "><i>   69   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *b_a;
+<a name="70"><font color="#888888 "><i>   70   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_boolean_T');" target="_self"><font color="#1122aa">emxArray_boolean_T</font></a> *c_a;
+<a name="71"><font color="#888888 "><i>   71   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_boolean_T');" target="_self"><font color="#1122aa">emxArray_boolean_T</font></a> *bType1;
+<a name="72"><font color="#888888 "><i>   72   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_boolean_T');" target="_self"><font color="#1122aa">emxArray_boolean_T</font></a> *YLeft;
+<a name="73"><font color="#888888 "><i>   73   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_boolean_T');" target="_self"><font color="#1122aa">emxArray_boolean_T</font></a> *YRight;
+<a name="74"><font color="#888888 "><i>   74   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_int32_T');" target="_self"><font color="#1122aa">emxArray_int32_T</font></a> *r11;
+<a name="75"><font color="#888888 "><i>   75   </i></font></a>  <font color="#112266"><b>int</b></font> b_loop_ub;
+<a name="76"><font color="#888888 "><i>   76   </i></font></a>  <font color="#112266"><b>int</b></font> i11;
+<a name="77"><font color="#888888 "><i>   77   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_boolean_T');" target="_self"><font color="#1122aa">emxArray_boolean_T</font></a> *b_bType1;
+<a name="78"><font color="#888888 "><i>   78   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *r12;
+<a name="79"><font color="#888888 "><i>   79   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *r13;
+<a name="80"><font color="#888888 "><i>   80   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *r14;
+<a name="81"><font color="#888888 "><i>   81   </i></font></a>  <a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a> tmp_data[10000];
+<a name="82"><font color="#888888 "><i>   82   </i></font></a>  <font color="#112266"><b>int</b></font> tmp_size[2];
+<a name="83"><font color="#888888 "><i>   83   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_boolean_T');" target="_self"><font color="#1122aa">emxArray_boolean_T</font></a> b_tmp_data;
+<a name="84"><font color="#888888 "><i>   84   </i></font></a>  <font color="#112266"><b>int</b></font> k;
+<a name="85"><font color="#888888 "><i>   85   </i></font></a>  <font color="#112266"><b>int</b></font> idx;
+<a name="86"><font color="#888888 "><i>   86   </i></font></a>  <font color="#112266"><b>int</b></font> ii_data[1];
+<a name="87"><font color="#888888 "><i>   87   </i></font></a>  <font color="#112266"><b>int</b></font> ii;
+<a name="88"><font color="#888888 "><i>   88   </i></font></a>  <a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a> exitg1;
+<a name="89"><font color="#888888 "><i>   89   </i></font></a>  <font color="#112266"><b>int</b></font> b_ii_data[1];
+<a name="90"><font color="#888888 "><i>   90   </i></font></a>  <font color="#112266"><b>int</b></font> iType2_data[1];
+<a name="91"><font color="#888888 "><i>   91   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *c_X;
+<a name="92"><font color="#888888 "><i>   92   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *y;
+<a name="93"><font color="#888888 "><i>   93   </i></font></a>  <font color="#112266"><b>signed</b></font> <font color="#112266"><b>char</b></font> unnamed_idx_0;
+<a name="94"><font color="#888888 "><i>   94   </i></font></a>  <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *d_X;
+<a name="95"><font color="#888888 "><i>   95   </i></font></a>  <font color="#112266"><b>double</b></font> C_data[1];
+<a name="96"><font color="#888888 "><i>   96   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="_self"><font color="#1122aa">emxInit_real_T</font></a>(&amp;b_X, 2);
+<a name="97"><font color="#888888 "><i>   97   </i></font></a>  loop_ub = X-&gt;size[1];
+<a name="98"><font color="#888888 "><i>   98   </i></font></a>  i10 = b_X-&gt;size[0] * b_X-&gt;size[1];
+<a name="99"><font color="#888888 "><i>   99   </i></font></a>  b_X-&gt;size[0] = 1;
+<a name="100"><font color="#888888 "><i>  100   </i></font></a>  b_X-&gt;size[1] = loop_ub;
+<a name="101"><font color="#888888 "><i>  101   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)b_X, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="102"><font color="#888888 "><i>  102   </i></font></a>  <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="103"><font color="#888888 "><i>  103   </i></font></a>    b_X-&gt;data[b_X-&gt;size[0] * i10] = X-&gt;data[X-&gt;size[0] * i10];
+<a name="104"><font color="#888888 "><i>  104   </i></font></a>  <b>}</b>
+<a name="105"><font color="#888888 "><i>  105   </i></font></a>
+<a name="106"><font color="#888888 "><i>  106   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="_self"><font color="#1122aa">emxInit_real_T</font></a>(&amp;a, 2);
+<a name="107"><font color="#888888 "><i>  107   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="_self"><font color="#1122aa">emxInit_real_T</font></a>(&amp;b_a, 2);
+<a name="108"><font color="#888888 "><i>  108   </i></font></a>  <a href="bsxfun_c.html#fcn_d_bsxfun" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_d_bsxfun');" target="_self"><font color="#1122aa">d_bsxfun</font></a>(X, b_X, a);
+<a name="109"><font color="#888888 "><i>  109   </i></font></a>  i10 = b_a-&gt;size[0] * b_a-&gt;size[1];
+<a name="110"><font color="#888888 "><i>  110   </i></font></a>  b_a-&gt;size[0] = a-&gt;size[0];
+<a name="111"><font color="#888888 "><i>  111   </i></font></a>  b_a-&gt;size[1] = a-&gt;size[1];
+<a name="112"><font color="#888888 "><i>  112   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)b_a, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="113"><font color="#888888 "><i>  113   </i></font></a>  loop_ub = a-&gt;size[0] * a-&gt;size[1];
+<a name="114"><font color="#888888 "><i>  114   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;b_X);
+<a name="115"><font color="#888888 "><i>  115   </i></font></a>  <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="116"><font color="#888888 "><i>  116   </i></font></a>    b_a-&gt;data[i10] = a-&gt;data[i10];
+<a name="117"><font color="#888888 "><i>  117   </i></font></a>  <b>}</b>
+<a name="118"><font color="#888888 "><i>  118   </i></font></a>
+<a name="119"><font color="#888888 "><i>  119   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_b_emxInit_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_emxInit_boolean_T');" target="_self"><font color="#1122aa">b_emxInit_boolean_T</font></a>(&amp;c_a, 2);
+<a name="120"><font color="#888888 "><i>  120   </i></font></a>  <a href="abs_c.html#fcn_c_abs" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_c_abs');" target="_self"><font color="#1122aa">c_abs</font></a>(b_a, a);
+<a name="121"><font color="#888888 "><i>  121   </i></font></a>  i10 = c_a-&gt;size[0] * c_a-&gt;size[1];
+<a name="122"><font color="#888888 "><i>  122   </i></font></a>  c_a-&gt;size[0] = a-&gt;size[0];
+<a name="123"><font color="#888888 "><i>  123   </i></font></a>  c_a-&gt;size[1] = a-&gt;size[1];
+<a name="124"><font color="#888888 "><i>  124   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)c_a, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a>));
+<a name="125"><font color="#888888 "><i>  125   </i></font></a>  loop_ub = a-&gt;size[0] * a-&gt;size[1];
+<a name="126"><font color="#888888 "><i>  126   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;b_a);
+<a name="127"><font color="#888888 "><i>  127   </i></font></a>  <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="128"><font color="#888888 "><i>  128   </i></font></a>    c_a-&gt;data[i10] = (a-&gt;data[i10] &lt; tol);
+<a name="129"><font color="#888888 "><i>  129   </i></font></a>  <b>}</b>
+<a name="130"><font color="#888888 "><i>  130   </i></font></a>
+<a name="131"><font color="#888888 "><i>  131   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_boolean_T');" target="_self"><font color="#1122aa">emxInit_boolean_T</font></a>(&amp;bType1, 1);
+<a name="132"><font color="#888888 "><i>  132   </i></font></a>  <a href="all_c.html#fcn_b_all" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_all');" target="_self"><font color="#1122aa">b_all</font></a>(c_a, bType1);
+<a name="133"><font color="#888888 "><i>  133   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_boolean_T');" target="_self"><font color="#1122aa">emxFree_boolean_T</font></a>(&amp;c_a);
+<a name="134"><font color="#888888 "><i>  134   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_b_emxInit_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_emxInit_boolean_T');" target="_self"><font color="#1122aa">b_emxInit_boolean_T</font></a>(&amp;YLeft, 2);
+<a name="135"><font color="#888888 "><i>  135   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_b_emxInit_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_emxInit_boolean_T');" target="_self"><font color="#1122aa">b_emxInit_boolean_T</font></a>(&amp;YRight, 2);
+<a name="136"><font color="#888888 "><i>  136   </i></font></a>  <font color="#112266"><b>if</b></font> (Y-&gt;size[1] == 1) <b>{</b>
+<a name="137"><font color="#888888 "><i>  137   </i></font></a>    i10 = YLeft-&gt;size[0] * YLeft-&gt;size[1];
+<a name="138"><font color="#888888 "><i>  138   </i></font></a>    YLeft-&gt;size[0] = Y-&gt;size[0];
+<a name="139"><font color="#888888 "><i>  139   </i></font></a>    YLeft-&gt;size[1] = Y-&gt;size[1];
+<a name="140"><font color="#888888 "><i>  140   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)YLeft, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a>));
+<a name="141"><font color="#888888 "><i>  141   </i></font></a>    loop_ub = Y-&gt;size[0] * Y-&gt;size[1];
+<a name="142"><font color="#888888 "><i>  142   </i></font></a>    <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="143"><font color="#888888 "><i>  143   </i></font></a>      YLeft-&gt;data[i10] = Y-&gt;data[i10];
+<a name="144"><font color="#888888 "><i>  144   </i></font></a>    <b>}</b>
+<a name="145"><font color="#888888 "><i>  145   </i></font></a>
+<a name="146"><font color="#888888 "><i>  146   </i></font></a>    i10 = YRight-&gt;size[0] * YRight-&gt;size[1];
+<a name="147"><font color="#888888 "><i>  147   </i></font></a>    YRight-&gt;size[0] = Y-&gt;size[0];
+<a name="148"><font color="#888888 "><i>  148   </i></font></a>    YRight-&gt;size[1] = Y-&gt;size[1];
+<a name="149"><font color="#888888 "><i>  149   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)YRight, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a>));
+<a name="150"><font color="#888888 "><i>  150   </i></font></a>    loop_ub = Y-&gt;size[0] * Y-&gt;size[1];
+<a name="151"><font color="#888888 "><i>  151   </i></font></a>    <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="152"><font color="#888888 "><i>  152   </i></font></a>      YRight-&gt;data[i10] = !Y-&gt;data[i10];
+<a name="153"><font color="#888888 "><i>  153   </i></font></a>    <b>}</b>
+<a name="154"><font color="#888888 "><i>  154   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="155"><font color="#888888 "><i>  155   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_int32_T');" target="_self"><font color="#1122aa">emxInit_int32_T</font></a>(&amp;r11, 1);
+<a name="156"><font color="#888888 "><i>  156   </i></font></a>    <a href="#fcn_b_eml_li_find" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_eml_li_find');" target="_self"><font color="#1122aa">b_eml_li_find</font></a>(bType1, r11);
+<a name="157"><font color="#888888 "><i>  157   </i></font></a>    loop_ub = Y-&gt;size[1];
+<a name="158"><font color="#888888 "><i>  158   </i></font></a>    i10 = YLeft-&gt;size[0] * YLeft-&gt;size[1];
+<a name="159"><font color="#888888 "><i>  159   </i></font></a>    YLeft-&gt;size[0] = r11-&gt;size[0];
+<a name="160"><font color="#888888 "><i>  160   </i></font></a>    YLeft-&gt;size[1] = loop_ub;
+<a name="161"><font color="#888888 "><i>  161   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)YLeft, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a>));
+<a name="162"><font color="#888888 "><i>  162   </i></font></a>    <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="163"><font color="#888888 "><i>  163   </i></font></a>      b_loop_ub = r11-&gt;size[0];
+<a name="164"><font color="#888888 "><i>  164   </i></font></a>      <font color="#112266"><b>for</b></font> (i11 = 0; i11 &lt; b_loop_ub; i11++) <b>{</b>
+<a name="165"><font color="#888888 "><i>  165   </i></font></a>        YLeft-&gt;data[i11 + YLeft-&gt;size[0] * i10] = Y-&gt;data[(r11-&gt;data[i11] +
+<a name="166"><font color="#888888 "><i>  166   </i></font></a>          Y-&gt;size[0] * i10) - 1];
+<a name="167"><font color="#888888 "><i>  167   </i></font></a>      <b>}</b>
+<a name="168"><font color="#888888 "><i>  168   </i></font></a>    <b>}</b>
+<a name="169"><font color="#888888 "><i>  169   </i></font></a>
+<a name="170"><font color="#888888 "><i>  170   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_boolean_T');" target="_self"><font color="#1122aa">emxInit_boolean_T</font></a>(&amp;b_bType1, 1);
+<a name="171"><font color="#888888 "><i>  171   </i></font></a>    i10 = b_bType1-&gt;size[0];
+<a name="172"><font color="#888888 "><i>  172   </i></font></a>    b_bType1-&gt;size[0] = bType1-&gt;size[0];
+<a name="173"><font color="#888888 "><i>  173   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)b_bType1, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a>));
+<a name="174"><font color="#888888 "><i>  174   </i></font></a>    loop_ub = bType1-&gt;size[0];
+<a name="175"><font color="#888888 "><i>  175   </i></font></a>    <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="176"><font color="#888888 "><i>  176   </i></font></a>      b_bType1-&gt;data[i10] = !bType1-&gt;data[i10];
+<a name="177"><font color="#888888 "><i>  177   </i></font></a>    <b>}</b>
+<a name="178"><font color="#888888 "><i>  178   </i></font></a>
+<a name="179"><font color="#888888 "><i>  179   </i></font></a>    <a href="#fcn_b_eml_li_find" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_eml_li_find');" target="_self"><font color="#1122aa">b_eml_li_find</font></a>(b_bType1, r11);
+<a name="180"><font color="#888888 "><i>  180   </i></font></a>    loop_ub = Y-&gt;size[1];
+<a name="181"><font color="#888888 "><i>  181   </i></font></a>    i10 = YRight-&gt;size[0] * YRight-&gt;size[1];
+<a name="182"><font color="#888888 "><i>  182   </i></font></a>    YRight-&gt;size[0] = r11-&gt;size[0];
+<a name="183"><font color="#888888 "><i>  183   </i></font></a>    YRight-&gt;size[1] = loop_ub;
+<a name="184"><font color="#888888 "><i>  184   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)YRight, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a>));
+<a name="185"><font color="#888888 "><i>  185   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_boolean_T');" target="_self"><font color="#1122aa">emxFree_boolean_T</font></a>(&amp;b_bType1);
+<a name="186"><font color="#888888 "><i>  186   </i></font></a>    <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="187"><font color="#888888 "><i>  187   </i></font></a>      b_loop_ub = r11-&gt;size[0];
+<a name="188"><font color="#888888 "><i>  188   </i></font></a>      <font color="#112266"><b>for</b></font> (i11 = 0; i11 &lt; b_loop_ub; i11++) <b>{</b>
+<a name="189"><font color="#888888 "><i>  189   </i></font></a>        YRight-&gt;data[i11 + YRight-&gt;size[0] * i10] = Y-&gt;data[(r11-&gt;data[i11] +
+<a name="190"><font color="#888888 "><i>  190   </i></font></a>          Y-&gt;size[0] * i10) - 1];
+<a name="191"><font color="#888888 "><i>  191   </i></font></a>      <b>}</b>
+<a name="192"><font color="#888888 "><i>  192   </i></font></a>    <b>}</b>
+<a name="193"><font color="#888888 "><i>  193   </i></font></a>
+<a name="194"><font color="#888888 "><i>  194   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_int32_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_int32_T');" target="_self"><font color="#1122aa">emxFree_int32_T</font></a>(&amp;r11);
+<a name="195"><font color="#888888 "><i>  195   </i></font></a>  <b>}</b>
+<a name="196"><font color="#888888 "><i>  196   </i></font></a>
+<a name="197"><font color="#888888 "><i>  197   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="_self"><font color="#1122aa">emxInit_real_T</font></a>(&amp;r12, 2);
+<a name="198"><font color="#888888 "><i>  198   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="_self"><font color="#1122aa">emxInit_real_T</font></a>(&amp;r13, 2);
+<a name="199"><font color="#888888 "><i>  199   </i></font></a>  <a href="sum_c.html#fcn_b_sum" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_sum');" target="_self"><font color="#1122aa">b_sum</font></a>(YLeft, r13);
+<a name="200"><font color="#888888 "><i>  200   </i></font></a>  i10 = r12-&gt;size[0] * r12-&gt;size[1];
+<a name="201"><font color="#888888 "><i>  201   </i></font></a>  r12-&gt;size[0] = 1;
+<a name="202"><font color="#888888 "><i>  202   </i></font></a>  r12-&gt;size[1] = r13-&gt;size[1];
+<a name="203"><font color="#888888 "><i>  203   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)r12, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="204"><font color="#888888 "><i>  204   </i></font></a>  loop_ub = r13-&gt;size[0] * r13-&gt;size[1];
+<a name="205"><font color="#888888 "><i>  205   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_boolean_T');" target="_self"><font color="#1122aa">emxFree_boolean_T</font></a>(&amp;YLeft);
+<a name="206"><font color="#888888 "><i>  206   </i></font></a>  <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="207"><font color="#888888 "><i>  207   </i></font></a>    r12-&gt;data[i10] = r13-&gt;data[i10];
+<a name="208"><font color="#888888 "><i>  208   </i></font></a>  <b>}</b>
+<a name="209"><font color="#888888 "><i>  209   </i></font></a>
+<a name="210"><font color="#888888 "><i>  210   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="_self"><font color="#1122aa">emxInit_real_T</font></a>(&amp;r14, 2);
+<a name="211"><font color="#888888 "><i>  211   </i></font></a>  <a href="sum_c.html#fcn_b_sum" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_sum');" target="_self"><font color="#1122aa">b_sum</font></a>(YRight, r13);
+<a name="212"><font color="#888888 "><i>  212   </i></font></a>  i10 = r14-&gt;size[0] * r14-&gt;size[1];
+<a name="213"><font color="#888888 "><i>  213   </i></font></a>  r14-&gt;size[0] = 1;
+<a name="214"><font color="#888888 "><i>  214   </i></font></a>  r14-&gt;size[1] = r13-&gt;size[1];
+<a name="215"><font color="#888888 "><i>  215   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)r14, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="216"><font color="#888888 "><i>  216   </i></font></a>  loop_ub = r13-&gt;size[0] * r13-&gt;size[1];
+<a name="217"><font color="#888888 "><i>  217   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_boolean_T');" target="_self"><font color="#1122aa">emxFree_boolean_T</font></a>(&amp;YRight);
+<a name="218"><font color="#888888 "><i>  218   </i></font></a>  <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="219"><font color="#888888 "><i>  219   </i></font></a>    r14-&gt;data[i10] = r13-&gt;data[i10];
+<a name="220"><font color="#888888 "><i>  220   </i></font></a>  <b>}</b>
+<a name="221"><font color="#888888 "><i>  221   </i></font></a>
+<a name="222"><font color="#888888 "><i>  222   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;r13);
+<a name="223"><font color="#888888 "><i>  223   </i></font></a>  tmp_size[0] = 1;
+<a name="224"><font color="#888888 "><i>  224   </i></font></a>  tmp_size[1] = r12-&gt;size[1];
+<a name="225"><font color="#888888 "><i>  225   </i></font></a>  loop_ub = r12-&gt;size[0] * r12-&gt;size[1];
+<a name="226"><font color="#888888 "><i>  226   </i></font></a>  <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="227"><font color="#888888 "><i>  227   </i></font></a>    tmp_data[i10] = (r12-&gt;data[i10] == r14-&gt;data[i10]);
+<a name="228"><font color="#888888 "><i>  228   </i></font></a>  <b>}</b>
+<a name="229"><font color="#888888 "><i>  229   </i></font></a>
+<a name="230"><font color="#888888 "><i>  230   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;r14);
+<a name="231"><font color="#888888 "><i>  231   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;r12);
+<a name="232"><font color="#888888 "><i>  232   </i></font></a>  b_tmp_data.data = (<a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a> *)&amp;tmp_data;
+<a name="233"><font color="#888888 "><i>  233   </i></font></a>  b_tmp_data.size = (<font color="#112266"><b>int</b></font> *)&amp;tmp_size;
+<a name="234"><font color="#888888 "><i>  234   </i></font></a>  b_tmp_data.allocatedSize = 10000;
+<a name="235"><font color="#888888 "><i>  235   </i></font></a>  b_tmp_data.numDimensions = 2;
+<a name="236"><font color="#888888 "><i>  236   </i></font></a>  b_tmp_data.canFreeData = false;
+<a name="237"><font color="#888888 "><i>  237   </i></font></a>  <font color="#112266"><b>if</b></font> (<a href="all_c.html#fcn_all" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_all');" target="_self"><font color="#1122aa">all</font></a>(&amp;b_tmp_data)) <b>{</b>
+<a name="238"><font color="#888888 "><i>  238   </i></font></a>    <font color="#117755"><i>/*  Here the two unique points have identical sets of class */</i></font>
+<a name="239"><font color="#888888 "><i>  239   </i></font></a>    <font color="#117755"><i>/*  labels and so we can't split */</i></font>
+<a name="240"><font color="#888888 "><i>  240   </i></font></a>    *bSp = false;
+<a name="241"><font color="#888888 "><i>  241   </i></font></a>    i10 = rmm-&gt;size[0] * rmm-&gt;size[1];
+<a name="242"><font color="#888888 "><i>  242   </i></font></a>    rmm-&gt;size[0] = 0;
+<a name="243"><font color="#888888 "><i>  243   </i></font></a>    rmm-&gt;size[1] = 0;
+<a name="244"><font color="#888888 "><i>  244   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)rmm, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="245"><font color="#888888 "><i>  245   </i></font></a>    cmm_size[0] = 0;
+<a name="246"><font color="#888888 "><i>  246   </i></font></a>    cmm_size[1] = 0;
+<a name="247"><font color="#888888 "><i>  247   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="248"><font color="#888888 "><i>  248   </i></font></a>    *bSp = true;
+<a name="249"><font color="#888888 "><i>  249   </i></font></a>
+<a name="250"><font color="#888888 "><i>  250   </i></font></a>    <font color="#117755"><i>/*  Otherwise the optimal spliting plane is the plane perpendicular */</i></font>
+<a name="251"><font color="#888888 "><i>  251   </i></font></a>    <font color="#117755"><i>/*  to the vector between the two points (rmm) and the maximal */</i></font>
+<a name="252"><font color="#888888 "><i>  252   </i></font></a>    <font color="#117755"><i>/*  marginal split point (cmm) is halway between the two points on */</i></font>
+<a name="253"><font color="#888888 "><i>  253   </i></font></a>    <font color="#117755"><i>/*  this line. */</i></font>
+<a name="254"><font color="#888888 "><i>  254   </i></font></a>    i10 = bType1-&gt;size[0];
+<a name="255"><font color="#888888 "><i>  255   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)bType1, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<a href="rtwtypes_h.html#type_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_boolean_T');" target="_self"><font color="#1122aa">boolean_T</font></a>));
+<a name="256"><font color="#888888 "><i>  256   </i></font></a>    loop_ub = bType1-&gt;size[0];
+<a name="257"><font color="#888888 "><i>  257   </i></font></a>    <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="258"><font color="#888888 "><i>  258   </i></font></a>      bType1-&gt;data[i10] = !bType1-&gt;data[i10];
+<a name="259"><font color="#888888 "><i>  259   </i></font></a>    <b>}</b>
+<a name="260"><font color="#888888 "><i>  260   </i></font></a>
+<a name="261"><font color="#888888 "><i>  261   </i></font></a>    <font color="#112266"><b>if</b></font> (1 &lt;= bType1-&gt;size[0]) <b>{</b>
+<a name="262"><font color="#888888 "><i>  262   </i></font></a>      k = 1;
+<a name="263"><font color="#888888 "><i>  263   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="264"><font color="#888888 "><i>  264   </i></font></a>      k = 0;
+<a name="265"><font color="#888888 "><i>  265   </i></font></a>    <b>}</b>
+<a name="266"><font color="#888888 "><i>  266   </i></font></a>
+<a name="267"><font color="#888888 "><i>  267   </i></font></a>    idx = 0;
+<a name="268"><font color="#888888 "><i>  268   </i></font></a>    ii = 1;
+<a name="269"><font color="#888888 "><i>  269   </i></font></a>    exitg1 = false;
+<a name="270"><font color="#888888 "><i>  270   </i></font></a>    <font color="#112266"><b>while</b></font> ((!exitg1) &amp;&amp; (ii &lt;= bType1-&gt;size[0])) <b>{</b>
+<a name="271"><font color="#888888 "><i>  271   </i></font></a>      <font color="#112266"><b>if</b></font> (bType1-&gt;data[ii - 1]) <b>{</b>
+<a name="272"><font color="#888888 "><i>  272   </i></font></a>        idx = 1;
+<a name="273"><font color="#888888 "><i>  273   </i></font></a>        ii_data[0] = ii;
+<a name="274"><font color="#888888 "><i>  274   </i></font></a>        exitg1 = true;
+<a name="275"><font color="#888888 "><i>  275   </i></font></a>      <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="276"><font color="#888888 "><i>  276   </i></font></a>        ii++;
+<a name="277"><font color="#888888 "><i>  277   </i></font></a>      <b>}</b>
+<a name="278"><font color="#888888 "><i>  278   </i></font></a>    <b>}</b>
+<a name="279"><font color="#888888 "><i>  279   </i></font></a>
+<a name="280"><font color="#888888 "><i>  280   </i></font></a>    <font color="#112266"><b>if</b></font> (k == 1) <b>{</b>
+<a name="281"><font color="#888888 "><i>  281   </i></font></a>      <font color="#112266"><b>if</b></font> (idx == 0) <b>{</b>
+<a name="282"><font color="#888888 "><i>  282   </i></font></a>        k = 0;
+<a name="283"><font color="#888888 "><i>  283   </i></font></a>      <b>}</b>
+<a name="284"><font color="#888888 "><i>  284   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="285"><font color="#888888 "><i>  285   </i></font></a>      <font color="#112266"><b>if</b></font> (1 &gt; idx) <b>{</b>
+<a name="286"><font color="#888888 "><i>  286   </i></font></a>        loop_ub = -1;
+<a name="287"><font color="#888888 "><i>  287   </i></font></a>      <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="288"><font color="#888888 "><i>  288   </i></font></a>        loop_ub = 0;
+<a name="289"><font color="#888888 "><i>  289   </i></font></a>      <b>}</b>
+<a name="290"><font color="#888888 "><i>  290   </i></font></a>
+<a name="291"><font color="#888888 "><i>  291   </i></font></a>      i10 = 0;
+<a name="292"><font color="#888888 "><i>  292   </i></font></a>      <font color="#112266"><b>while</b></font> (i10 &lt;= loop_ub) <b>{</b>
+<a name="293"><font color="#888888 "><i>  293   </i></font></a>        b_ii_data[0] = ii_data[0];
+<a name="294"><font color="#888888 "><i>  294   </i></font></a>        i10 = 1;
+<a name="295"><font color="#888888 "><i>  295   </i></font></a>      <b>}</b>
+<a name="296"><font color="#888888 "><i>  296   </i></font></a>
+<a name="297"><font color="#888888 "><i>  297   </i></font></a>      k = loop_ub + 1;
+<a name="298"><font color="#888888 "><i>  298   </i></font></a>      loop_ub++;
+<a name="299"><font color="#888888 "><i>  299   </i></font></a>      i10 = 0;
+<a name="300"><font color="#888888 "><i>  300   </i></font></a>      <font color="#112266"><b>while</b></font> (i10 &lt;= loop_ub - 1) <b>{</b>
+<a name="301"><font color="#888888 "><i>  301   </i></font></a>        ii_data[0] = b_ii_data[0];
+<a name="302"><font color="#888888 "><i>  302   </i></font></a>        i10 = 1;
+<a name="303"><font color="#888888 "><i>  303   </i></font></a>      <b>}</b>
+<a name="304"><font color="#888888 "><i>  304   </i></font></a>    <b>}</b>
+<a name="305"><font color="#888888 "><i>  305   </i></font></a>
+<a name="306"><font color="#888888 "><i>  306   </i></font></a>    i10 = 0;
+<a name="307"><font color="#888888 "><i>  307   </i></font></a>    <font color="#112266"><b>while</b></font> (i10 &lt;= k - 1) <b>{</b>
+<a name="308"><font color="#888888 "><i>  308   </i></font></a>      iType2_data[0] = ii_data[0];
+<a name="309"><font color="#888888 "><i>  309   </i></font></a>      i10 = 1;
+<a name="310"><font color="#888888 "><i>  310   </i></font></a>    <b>}</b>
+<a name="311"><font color="#888888 "><i>  311   </i></font></a>
+<a name="312"><font color="#888888 "><i>  312   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_b_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_emxInit_real_T');" target="_self"><font color="#1122aa">b_emxInit_real_T</font></a>(&amp;c_X, 1);
+<a name="313"><font color="#888888 "><i>  313   </i></font></a>    loop_ub = X-&gt;size[1];
+<a name="314"><font color="#888888 "><i>  314   </i></font></a>    b_loop_ub = X-&gt;size[1];
+<a name="315"><font color="#888888 "><i>  315   </i></font></a>    i10 = c_X-&gt;size[0];
+<a name="316"><font color="#888888 "><i>  316   </i></font></a>    c_X-&gt;size[0] = b_loop_ub;
+<a name="317"><font color="#888888 "><i>  317   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)c_X, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="318"><font color="#888888 "><i>  318   </i></font></a>    i10 = 0;
+<a name="319"><font color="#888888 "><i>  319   </i></font></a>    <font color="#112266"><b>while</b></font> (i10 &lt;= k - 1) <b>{</b>
+<a name="320"><font color="#888888 "><i>  320   </i></font></a>      <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; b_loop_ub; i10++) <b>{</b>
+<a name="321"><font color="#888888 "><i>  321   </i></font></a>        c_X-&gt;data[i10] = X-&gt;data[(iType2_data[0] + X-&gt;size[0] * i10) - 1] -
+<a name="322"><font color="#888888 "><i>  322   </i></font></a>          X-&gt;data[X-&gt;size[0] * i10];
+<a name="323"><font color="#888888 "><i>  323   </i></font></a>      <b>}</b>
+<a name="324"><font color="#888888 "><i>  324   </i></font></a>
+<a name="325"><font color="#888888 "><i>  325   </i></font></a>      i10 = 1;
+<a name="326"><font color="#888888 "><i>  326   </i></font></a>    <b>}</b>
+<a name="327"><font color="#888888 "><i>  327   </i></font></a>
+<a name="328"><font color="#888888 "><i>  328   </i></font></a>    i10 = rmm-&gt;size[0] * rmm-&gt;size[1];
+<a name="329"><font color="#888888 "><i>  329   </i></font></a>    rmm-&gt;size[0] = loop_ub;
+<a name="330"><font color="#888888 "><i>  330   </i></font></a>    rmm-&gt;size[1] = 1;
+<a name="331"><font color="#888888 "><i>  331   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)rmm, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="332"><font color="#888888 "><i>  332   </i></font></a>    i10 = 0;
+<a name="333"><font color="#888888 "><i>  333   </i></font></a>    <font color="#112266"><b>while</b></font> (i10 &lt;= 0) <b>{</b>
+<a name="334"><font color="#888888 "><i>  334   </i></font></a>      <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="335"><font color="#888888 "><i>  335   </i></font></a>        rmm-&gt;data[i10] = c_X-&gt;data[i10];
+<a name="336"><font color="#888888 "><i>  336   </i></font></a>      <b>}</b>
+<a name="337"><font color="#888888 "><i>  337   </i></font></a>
+<a name="338"><font color="#888888 "><i>  338   </i></font></a>      i10 = 1;
+<a name="339"><font color="#888888 "><i>  339   </i></font></a>    <b>}</b>
+<a name="340"><font color="#888888 "><i>  340   </i></font></a>
+<a name="341"><font color="#888888 "><i>  341   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;c_X);
+<a name="342"><font color="#888888 "><i>  342   </i></font></a>    loop_ub = X-&gt;size[1];
+<a name="343"><font color="#888888 "><i>  343   </i></font></a>    i10 = a-&gt;size[0] * a-&gt;size[1];
+<a name="344"><font color="#888888 "><i>  344   </i></font></a>    a-&gt;size[0] = k;
+<a name="345"><font color="#888888 "><i>  345   </i></font></a>    a-&gt;size[1] = loop_ub;
+<a name="346"><font color="#888888 "><i>  346   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)a, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="347"><font color="#888888 "><i>  347   </i></font></a>    <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="348"><font color="#888888 "><i>  348   </i></font></a>      i11 = 0;
+<a name="349"><font color="#888888 "><i>  349   </i></font></a>      <font color="#112266"><b>while</b></font> (i11 &lt;= k - 1) <b>{</b>
+<a name="350"><font color="#888888 "><i>  350   </i></font></a>        a-&gt;data[a-&gt;size[0] * i10] = X-&gt;data[(iType2_data[0] + X-&gt;size[0] * i10)
+<a name="351"><font color="#888888 "><i>  351   </i></font></a>          - 1];
+<a name="352"><font color="#888888 "><i>  352   </i></font></a>        i11 = 1;
+<a name="353"><font color="#888888 "><i>  353   </i></font></a>      <b>}</b>
+<a name="354"><font color="#888888 "><i>  354   </i></font></a>    <b>}</b>
+<a name="355"><font color="#888888 "><i>  355   </i></font></a>
+<a name="356"><font color="#888888 "><i>  356   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="_self"><font color="#1122aa">emxInit_real_T</font></a>(&amp;y, 2);
+<a name="357"><font color="#888888 "><i>  357   </i></font></a>    <font color="#112266"><b>if</b></font> ((a-&gt;size[1] == 1) || (rmm-&gt;size[0] == 1)) <b>{</b>
+<a name="358"><font color="#888888 "><i>  358   </i></font></a>      i10 = y-&gt;size[0] * y-&gt;size[1];
+<a name="359"><font color="#888888 "><i>  359   </i></font></a>      y-&gt;size[0] = a-&gt;size[0];
+<a name="360"><font color="#888888 "><i>  360   </i></font></a>      y-&gt;size[1] = rmm-&gt;size[1];
+<a name="361"><font color="#888888 "><i>  361   </i></font></a>      <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="362"><font color="#888888 "><i>  362   </i></font></a>      loop_ub = a-&gt;size[0];
+<a name="363"><font color="#888888 "><i>  363   </i></font></a>      <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="364"><font color="#888888 "><i>  364   </i></font></a>        b_loop_ub = rmm-&gt;size[1];
+<a name="365"><font color="#888888 "><i>  365   </i></font></a>        <font color="#112266"><b>for</b></font> (i11 = 0; i11 &lt; b_loop_ub; i11++) <b>{</b>
+<a name="366"><font color="#888888 "><i>  366   </i></font></a>          y-&gt;data[i10 + y-&gt;size[0] * i11] = 0.0;
+<a name="367"><font color="#888888 "><i>  367   </i></font></a>          idx = a-&gt;size[1];
+<a name="368"><font color="#888888 "><i>  368   </i></font></a>          <font color="#112266"><b>for</b></font> (ii = 0; ii &lt; idx; ii++) <b>{</b>
+<a name="369"><font color="#888888 "><i>  369   </i></font></a>            y-&gt;data[i10 + y-&gt;size[0] * i11] += a-&gt;data[i10 + a-&gt;size[0] * ii] *
+<a name="370"><font color="#888888 "><i>  370   </i></font></a>              rmm-&gt;data[ii + rmm-&gt;size[0] * i11];
+<a name="371"><font color="#888888 "><i>  371   </i></font></a>          <b>}</b>
+<a name="372"><font color="#888888 "><i>  372   </i></font></a>        <b>}</b>
+<a name="373"><font color="#888888 "><i>  373   </i></font></a>      <b>}</b>
+<a name="374"><font color="#888888 "><i>  374   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="375"><font color="#888888 "><i>  375   </i></font></a>      unnamed_idx_0 = (<font color="#112266"><b>signed</b></font> <font color="#112266"><b>char</b></font>)a-&gt;size[0];
+<a name="376"><font color="#888888 "><i>  376   </i></font></a>      i10 = y-&gt;size[0] * y-&gt;size[1];
+<a name="377"><font color="#888888 "><i>  377   </i></font></a>      y-&gt;size[0] = unnamed_idx_0;
+<a name="378"><font color="#888888 "><i>  378   </i></font></a>      <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="379"><font color="#888888 "><i>  379   </i></font></a>      i10 = y-&gt;size[0] * y-&gt;size[1];
+<a name="380"><font color="#888888 "><i>  380   </i></font></a>      y-&gt;size[1] = 1;
+<a name="381"><font color="#888888 "><i>  381   </i></font></a>      <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="382"><font color="#888888 "><i>  382   </i></font></a>      loop_ub = unnamed_idx_0;
+<a name="383"><font color="#888888 "><i>  383   </i></font></a>      <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="384"><font color="#888888 "><i>  384   </i></font></a>        y-&gt;data[i10] = 0.0;
+<a name="385"><font color="#888888 "><i>  385   </i></font></a>      <b>}</b>
+<a name="386"><font color="#888888 "><i>  386   </i></font></a>
+<a name="387"><font color="#888888 "><i>  387   </i></font></a>      <font color="#112266"><b>if</b></font> (a-&gt;size[0] == 0) <b>{</b>
+<a name="388"><font color="#888888 "><i>  388   </i></font></a>      <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="389"><font color="#888888 "><i>  389   </i></font></a>        y-&gt;data[0] = 0.0;
+<a name="390"><font color="#888888 "><i>  390   </i></font></a>        idx = 0;
+<a name="391"><font color="#888888 "><i>  391   </i></font></a>        i10 = a-&gt;size[1];
+<a name="392"><font color="#888888 "><i>  392   </i></font></a>        <font color="#112266"><b>for</b></font> (ii = 0; ii + 1 &lt;= i10; ii++) <b>{</b>
+<a name="393"><font color="#888888 "><i>  393   </i></font></a>          <font color="#112266"><b>if</b></font> (rmm-&gt;data[ii] != 0.0) <b>{</b>
+<a name="394"><font color="#888888 "><i>  394   </i></font></a>            y-&gt;data[0] += rmm-&gt;data[ii] * a-&gt;data[idx];
+<a name="395"><font color="#888888 "><i>  395   </i></font></a>          <b>}</b>
+<a name="396"><font color="#888888 "><i>  396   </i></font></a>
+<a name="397"><font color="#888888 "><i>  397   </i></font></a>          idx++;
+<a name="398"><font color="#888888 "><i>  398   </i></font></a>        <b>}</b>
+<a name="399"><font color="#888888 "><i>  399   </i></font></a>      <b>}</b>
+<a name="400"><font color="#888888 "><i>  400   </i></font></a>    <b>}</b>
+<a name="401"><font color="#888888 "><i>  401   </i></font></a>
+<a name="402"><font color="#888888 "><i>  402   </i></font></a>    i10 = X-&gt;size[1];
+<a name="403"><font color="#888888 "><i>  403   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxInit_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxInit_real_T');" target="_self"><font color="#1122aa">emxInit_real_T</font></a>(&amp;d_X, 2);
+<a name="404"><font color="#888888 "><i>  404   </i></font></a>    <font color="#112266"><b>if</b></font> ((i10 == 1) || (rmm-&gt;size[0] == 1)) <b>{</b>
+<a name="405"><font color="#888888 "><i>  405   </i></font></a>      loop_ub = X-&gt;size[1];
+<a name="406"><font color="#888888 "><i>  406   </i></font></a>      i10 = d_X-&gt;size[0] * d_X-&gt;size[1];
+<a name="407"><font color="#888888 "><i>  407   </i></font></a>      d_X-&gt;size[0] = 1;
+<a name="408"><font color="#888888 "><i>  408   </i></font></a>      d_X-&gt;size[1] = loop_ub;
+<a name="409"><font color="#888888 "><i>  409   </i></font></a>      <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>((<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)d_X, i10, (<font color="#112266"><b>int</b></font>)<font color="#112266"><b>sizeof</b></font>(<font color="#112266"><b>double</b></font>));
+<a name="410"><font color="#888888 "><i>  410   </i></font></a>      <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="411"><font color="#888888 "><i>  411   </i></font></a>        d_X-&gt;data[d_X-&gt;size[0] * i10] = X-&gt;data[X-&gt;size[0] * i10];
+<a name="412"><font color="#888888 "><i>  412   </i></font></a>      <b>}</b>
+<a name="413"><font color="#888888 "><i>  413   </i></font></a>
+<a name="414"><font color="#888888 "><i>  414   </i></font></a>      loop_ub = rmm-&gt;size[1];
+<a name="415"><font color="#888888 "><i>  415   </i></font></a>      <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="416"><font color="#888888 "><i>  416   </i></font></a>        C_data[i10] = 0.0;
+<a name="417"><font color="#888888 "><i>  417   </i></font></a>        b_loop_ub = d_X-&gt;size[1];
+<a name="418"><font color="#888888 "><i>  418   </i></font></a>        <font color="#112266"><b>for</b></font> (i11 = 0; i11 &lt; b_loop_ub; i11++) <b>{</b>
+<a name="419"><font color="#888888 "><i>  419   </i></font></a>          C_data[i10] += d_X-&gt;data[d_X-&gt;size[0] * i11] * rmm-&gt;data[i11 +
+<a name="420"><font color="#888888 "><i>  420   </i></font></a>            rmm-&gt;size[0] * i10];
+<a name="421"><font color="#888888 "><i>  421   </i></font></a>        <b>}</b>
+<a name="422"><font color="#888888 "><i>  422   </i></font></a>      <b>}</b>
+<a name="423"><font color="#888888 "><i>  423   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
+<a name="424"><font color="#888888 "><i>  424   </i></font></a>      C_data[0] = 0.0;
+<a name="425"><font color="#888888 "><i>  425   </i></font></a>      idx = 1;
+<a name="426"><font color="#888888 "><i>  426   </i></font></a>      i10 = X-&gt;size[1];
+<a name="427"><font color="#888888 "><i>  427   </i></font></a>      <font color="#112266"><b>for</b></font> (ii = 0; ii + 1 &lt;= i10; ii++) <b>{</b>
+<a name="428"><font color="#888888 "><i>  428   </i></font></a>        <font color="#112266"><b>if</b></font> (rmm-&gt;data[ii] != 0.0) <b>{</b>
+<a name="429"><font color="#888888 "><i>  429   </i></font></a>          C_data[0] += rmm-&gt;data[ii] * X-&gt;data[X-&gt;size[0] * (idx - 1)];
+<a name="430"><font color="#888888 "><i>  430   </i></font></a>        <b>}</b>
+<a name="431"><font color="#888888 "><i>  431   </i></font></a>
+<a name="432"><font color="#888888 "><i>  432   </i></font></a>        idx++;
+<a name="433"><font color="#888888 "><i>  433   </i></font></a>      <b>}</b>
+<a name="434"><font color="#888888 "><i>  434   </i></font></a>    <b>}</b>
+<a name="435"><font color="#888888 "><i>  435   </i></font></a>
+<a name="436"><font color="#888888 "><i>  436   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;d_X);
+<a name="437"><font color="#888888 "><i>  437   </i></font></a>    cmm_size[0] = y-&gt;size[0];
+<a name="438"><font color="#888888 "><i>  438   </i></font></a>    cmm_size[1] = y-&gt;size[1];
+<a name="439"><font color="#888888 "><i>  439   </i></font></a>    loop_ub = y-&gt;size[0] * y-&gt;size[1];
+<a name="440"><font color="#888888 "><i>  440   </i></font></a>    <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; loop_ub; i10++) <b>{</b>
+<a name="441"><font color="#888888 "><i>  441   </i></font></a>      cmm_data[i10] = 0.5 * (y-&gt;data[i10] + C_data[i10]);
+<a name="442"><font color="#888888 "><i>  442   </i></font></a>    <b>}</b>
+<a name="443"><font color="#888888 "><i>  443   </i></font></a>
+<a name="444"><font color="#888888 "><i>  444   </i></font></a>    <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;y);
+<a name="445"><font color="#888888 "><i>  445   </i></font></a>  <b>}</b>
+<a name="446"><font color="#888888 "><i>  446   </i></font></a>
+<a name="447"><font color="#888888 "><i>  447   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_real_T');" target="_self"><font color="#1122aa">emxFree_real_T</font></a>(&amp;a);
+<a name="448"><font color="#888888 "><i>  448   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxFree_boolean_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxFree_boolean_T');" target="_self"><font color="#1122aa">emxFree_boolean_T</font></a>(&amp;bType1);
+<a name="449"><font color="#888888 "><i>  449   </i></font></a><b>}</b>
+<a name="450"><font color="#888888 "><i>  450   </i></font></a>
+<a name="451"><font color="#888888 "><i>  451   </i></font></a><font color="#117755"><i>/*</i></font>
+<a name="452"><font color="#888888 "><i>  452   </i></font></a><font color="#117755"><I> * File trailer for twoPointMaxMarginSplit.c</i></font>
+<a name="453"><font color="#888888 "><i>  453   </i></font></a><font color="#117755"><I> *</i></font>
+<a name="454"><font color="#888888 "><i>  454   </i></font></a><font color="#117755"><I> * [EOF]</i></font>
+<a name="455"><font color="#888888 "><i>  455   </i></font></a><font color="#117755"><I> */</i></font>
+<a name="456"><font color="#888888 "><i>  456   </i></font></a></pre>
+</td></tr></table>
+</p>
+</body>
+</html>

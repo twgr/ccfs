@@ -1,5 +1,5 @@
 function trees = growManyTreesCompileTest(nTrees,XTrain,YTrain,options,iFeatureNum)
-
+%#codegen
 K = max(2,size(YTrain,2));
 
 nNodesToPreassign = 2000;
@@ -57,7 +57,7 @@ tree.decisionProjection = phiStruct;
 trees = repmat(tree,nTrees,1);
 
 
-parfor n=1:nTrees
+for n=1:nTrees
     trees(n) = growCCTnotRecursive(XTrain,YTrain,options,iFeatureNum,0);
 end
 end
