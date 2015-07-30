@@ -28,19 +28,19 @@
 <a name="16"><font color="#888888 "><i>   16   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;growManyTreesCompileTest_data.h&quot;</font>
 <a name="17"><font color="#888888 "><i>   17   </i></font></a>
 <a name="18"><font color="#888888 "><i>   18   </i></font></a><font color="#117755"><i>/* Variable Definitions */</i></font>
-<a name="19"><font color="#888888 "><i>   19   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_fp_emlrtRSI">fp_emlrtRSI</a> = <b>{</b> 42, <font color="#1122ff">&quot;repmat&quot;</font>,
+<a name="19"><font color="#888888 "><i>   19   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_ko_emlrtRSI">ko_emlrtRSI</a> = <b>{</b> 42, <font color="#1122ff">&quot;repmat&quot;</font>,
 <a name="20"><font color="#888888 "><i>   20   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m&quot;</font>
 <a name="21"><font color="#888888 "><i>   21   </i></font></a><b>}</b>;
 <a name="22"><font color="#888888 "><i>   22   </i></font></a>
-<a name="23"><font color="#888888 "><i>   23   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_gp_emlrtRSI">gp_emlrtRSI</a> = <b>{</b> 45, <font color="#1122ff">&quot;repmat&quot;</font>,
+<a name="23"><font color="#888888 "><i>   23   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_lo_emlrtRSI">lo_emlrtRSI</a> = <b>{</b> 45, <font color="#1122ff">&quot;repmat&quot;</font>,
 <a name="24"><font color="#888888 "><i>   24   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m&quot;</font>
 <a name="25"><font color="#888888 "><i>   25   </i></font></a><b>}</b>;
 <a name="26"><font color="#888888 "><i>   26   </i></font></a>
-<a name="27"><font color="#888888 "><i>   27   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_hp_emlrtRSI">hp_emlrtRSI</a> = <b>{</b> 47, <font color="#1122ff">&quot;repmat&quot;</font>,
+<a name="27"><font color="#888888 "><i>   27   </i></font></a><font color="#112266"><b>static</b></font> emlrtRSInfo <a name="var_mo_emlrtRSI">mo_emlrtRSI</a> = <b>{</b> 47, <font color="#1122ff">&quot;repmat&quot;</font>,
 <a name="28"><font color="#888888 "><i>   28   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m&quot;</font>
 <a name="29"><font color="#888888 "><i>   29   </i></font></a><b>}</b>;
 <a name="30"><font color="#888888 "><i>   30   </i></font></a>
-<a name="31"><font color="#888888 "><i>   31   </i></font></a><font color="#112266"><b>static</b></font> emlrtRTEInfo <a name="var_ge_emlrtRTEI">ge_emlrtRTEI</a> = <b>{</b> 30, 1, <font color="#1122ff">&quot;repmat&quot;</font>,
+<a name="31"><font color="#888888 "><i>   31   </i></font></a><font color="#112266"><b>static</b></font> emlrtRTEInfo <a name="var_td_emlrtRTEI">td_emlrtRTEI</a> = <b>{</b> 30, 1, <font color="#1122ff">&quot;repmat&quot;</font>,
 <a name="32"><font color="#888888 "><i>   32   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m&quot;</font>
 <a name="33"><font color="#888888 "><i>   33   </i></font></a><b>}</b>;
 <a name="34"><font color="#888888 "><i>   34   </i></font></a>
@@ -50,7 +50,7 @@
 <a name="38"><font color="#888888 "><i>   38   </i></font></a>  boolean_T p;
 <a name="39"><font color="#888888 "><i>   39   </i></font></a>  boolean_T guard1 = false;
 <a name="40"><font color="#888888 "><i>   40   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *y;
-<a name="41"><font color="#888888 "><i>   41   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv12[2] = <b>{</b> 1, 28 <b>}</b>;
+<a name="41"><font color="#888888 "><i>   41   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv0[2] = <b>{</b> 1, 28 <b>}</b>;
 <a name="42"><font color="#888888 "><i>   42   </i></font></a>
 <a name="43"><font color="#888888 "><i>   43   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *m0;
 <a name="44"><font color="#888888 "><i>   44   </i></font></a>  char_T cv0[28];
@@ -63,7 +63,7 @@
 <a name="51"><font color="#888888 "><i>   51   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *c_y;
 <a name="52"><font color="#888888 "><i>   52   </i></font></a>  real_T b_varargin_1;
 <a name="53"><font color="#888888 "><i>   53   </i></font></a>  <font color="#112266"><b>const</b></font> mxArray *d_y;
-<a name="54"><font color="#888888 "><i>   54   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv13[2] = <b>{</b> 1, 21 <b>}</b>;
+<a name="54"><font color="#888888 "><i>   54   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> int32_T iv1[2] = <b>{</b> 1, 21 <b>}</b>;
 <a name="55"><font color="#888888 "><i>   55   </i></font></a>
 <a name="56"><font color="#888888 "><i>   56   </i></font></a>  char_T cv2[21];
 <a name="57"><font color="#888888 "><i>   57   </i></font></a>  <font color="#112266"><b>static</b></font> <font color="#112266"><b>const</b></font> char_T cv3[21] = <b>{</b> <font color="#1122ff">'C'</font>, <font color="#1122ff">'o'</font>, <font color="#1122ff">'d'</font>, <font color="#1122ff">'e'</font>, <font color="#1122ff">'r'</font>, <font color="#1122ff">':'</font>, <font color="#1122ff">'M'</font>, <font color="#1122ff">'A'</font>, <font color="#1122ff">'T'</font>,
@@ -106,7 +106,7 @@
 <a name="94"><font color="#888888 "><i>   94   </i></font></a>  <font color="#112266"><b>if</b></font> (p) <b>{</b>
 <a name="95"><font color="#888888 "><i>   95   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
 <a name="96"><font color="#888888 "><i>   96   </i></font></a>    y = NULL;
-<a name="97"><font color="#888888 "><i>   97   </i></font></a>    m0 = emlrtCreateCharArray(2, iv12);
+<a name="97"><font color="#888888 "><i>   97   </i></font></a>    m0 = emlrtCreateCharArray(2, iv0);
 <a name="98"><font color="#888888 "><i>   98   </i></font></a>    <font color="#112266"><b>for</b></font> (i = 0; i &lt; 28; i++) <b>{</b>
 <a name="99"><font color="#888888 "><i>   99   </i></font></a>      cv0[i] = cv1[i];
 <a name="100"><font color="#888888 "><i>  100   </i></font></a>    <b>}</b>
@@ -121,8 +121,8 @@
 <a name="109"><font color="#888888 "><i>  109   </i></font></a>    m0 = emlrtCreateNumericMatrix(1, 1, mxINT32_CLASS, mxREAL);
 <a name="110"><font color="#888888 "><i>  110   </i></font></a>    *(int32_T *)mxGetData(m0) = MAX_int32_T;
 <a name="111"><font color="#888888 "><i>  111   </i></font></a>    emlrtAssign(&amp;c_y, m0);
-<a name="112"><font color="#888888 "><i>  112   </i></font></a>    st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_vp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_vp_emlrtRSI');" target="_self"><font color="#1122aa">vp_emlrtRSI</font></a>;
-<a name="113"><font color="#888888 "><i>  113   </i></font></a>    b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_fr_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_fr_emlrtRSI');" target="_self"><font color="#1122aa">fr_emlrtRSI</font></a>;
+<a name="112"><font color="#888888 "><i>  112   </i></font></a>    st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_ap_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ap_emlrtRSI');" target="_self"><font color="#1122aa">ap_emlrtRSI</font></a>;
+<a name="113"><font color="#888888 "><i>  113   </i></font></a>    b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_hq_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_hq_emlrtRSI');" target="_self"><font color="#1122aa">hq_emlrtRSI</font></a>;
 <a name="114"><font color="#888888 "><i>  114   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_message');" target="_self"><font color="#1122aa">message</font></a>(&amp;b_st, y, b_y, c_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_emlrtMCI');" target="_self"><font color="#1122aa">emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_b_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_b_emlrtMCI');" target="_self"><font color="#1122aa">b_emlrtMCI</font></a>);
 <a name="115"><font color="#888888 "><i>  115   </i></font></a>  <b>}</b>
 <a name="116"><font color="#888888 "><i>  116   </i></font></a>
@@ -135,15 +135,15 @@
 <a name="123"><font color="#888888 "><i>  123   </i></font></a>  <font color="#112266"><b>if</b></font> (2.147483647E+9 &gt;= b_varargin_1) <b>{</b>
 <a name="124"><font color="#888888 "><i>  124   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
 <a name="125"><font color="#888888 "><i>  125   </i></font></a>    d_y = NULL;
-<a name="126"><font color="#888888 "><i>  126   </i></font></a>    m0 = emlrtCreateCharArray(2, iv13);
+<a name="126"><font color="#888888 "><i>  126   </i></font></a>    m0 = emlrtCreateCharArray(2, iv1);
 <a name="127"><font color="#888888 "><i>  127   </i></font></a>    <font color="#112266"><b>for</b></font> (i = 0; i &lt; 21; i++) <b>{</b>
 <a name="128"><font color="#888888 "><i>  128   </i></font></a>      cv2[i] = cv3[i];
 <a name="129"><font color="#888888 "><i>  129   </i></font></a>    <b>}</b>
 <a name="130"><font color="#888888 "><i>  130   </i></font></a>
 <a name="131"><font color="#888888 "><i>  131   </i></font></a>    emlrtInitCharArrayR2013a(sp, 21, m0, cv2);
 <a name="132"><font color="#888888 "><i>  132   </i></font></a>    emlrtAssign(&amp;d_y, m0);
-<a name="133"><font color="#888888 "><i>  133   </i></font></a>    st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_up_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_up_emlrtRSI');" target="_self"><font color="#1122aa">up_emlrtRSI</font></a>;
-<a name="134"><font color="#888888 "><i>  134   </i></font></a>    b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_tq_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_tq_emlrtRSI');" target="_self"><font color="#1122aa">tq_emlrtRSI</font></a>;
+<a name="133"><font color="#888888 "><i>  133   </i></font></a>    st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_yo_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_yo_emlrtRSI');" target="_self"><font color="#1122aa">yo_emlrtRSI</font></a>;
+<a name="134"><font color="#888888 "><i>  134   </i></font></a>    b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_wp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_wp_emlrtRSI');" target="_self"><font color="#1122aa">wp_emlrtRSI</font></a>;
 <a name="135"><font color="#888888 "><i>  135   </i></font></a>    <a href="growManyTreesCompileTest_mexutil_c.html#fcn_f_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_f_error');" target="_self"><font color="#1122aa">f_error</font></a>(&amp;st, <a href="growManyTreesCompileTest_mexutil_c.html#fcn_b_message" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_b_message');" target="_self"><font color="#1122aa">b_message</font></a>(&amp;b_st, d_y, &amp;<a href="growManyTreesCompileTest_data_c.html#var_c_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_c_emlrtMCI');" target="_self"><font color="#1122aa">c_emlrtMCI</font></a>), &amp;<a href="growManyTreesCompileTest_data_c.html#var_d_emlrtMCI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_d_emlrtMCI');" target="_self"><font color="#1122aa">d_emlrtMCI</font></a>);
 <a name="136"><font color="#888888 "><i>  136   </i></font></a>  <b>}</b>
 <a name="137"><font color="#888888 "><i>  137   </i></font></a><b>}</b>
@@ -152,7 +152,7 @@
 <a name="140"><font color="#888888 "><i>  140   </i></font></a>            <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *b)
 <a name="141"><font color="#888888 "><i>  141   </i></font></a><b>{</b>
 <a name="142"><font color="#888888 "><i>  142   </i></font></a>  int32_T i;
-<a name="143"><font color="#888888 "><i>  143   </i></font></a>  boolean_T b24;
+<a name="143"><font color="#888888 "><i>  143   </i></font></a>  boolean_T b21;
 <a name="144"><font color="#888888 "><i>  144   </i></font></a>  emlrtStack st;
 <a name="145"><font color="#888888 "><i>  145   </i></font></a>  emlrtStack b_st;
 <a name="146"><font color="#888888 "><i>  146   </i></font></a>  st.prev = sp;
@@ -165,24 +165,24 @@
 <a name="153"><font color="#888888 "><i>  153   </i></font></a>  b-&gt;size[0] = (int32_T)varargin_1;
 <a name="154"><font color="#888888 "><i>  154   </i></font></a>  b-&gt;size[1] = 1;
 <a name="155"><font color="#888888 "><i>  155   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(sp, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)b, i, (int32_T)<font color="#112266"><b>sizeof</b></font>(real_T),
-<a name="156"><font color="#888888 "><i>  156   </i></font></a>                    &amp;<a href="#var_ge_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ge_emlrtRTEI');" target="_self"><font color="#1122aa">ge_emlrtRTEI</font></a>);
+<a name="156"><font color="#888888 "><i>  156   </i></font></a>                    &amp;<a href="#var_td_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_td_emlrtRTEI');" target="_self"><font color="#1122aa">td_emlrtRTEI</font></a>);
 <a name="157"><font color="#888888 "><i>  157   </i></font></a>  <font color="#112266"><b>if</b></font> ((int32_T)varargin_1 == 0) <b>{</b>
 <a name="158"><font color="#888888 "><i>  158   </i></font></a>  <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
-<a name="159"><font color="#888888 "><i>  159   </i></font></a>    st.site = &amp;<a href="#var_fp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_fp_emlrtRSI');" target="_self"><font color="#1122aa">fp_emlrtRSI</font></a>;
-<a name="160"><font color="#888888 "><i>  160   </i></font></a>    st.site = &amp;<a href="#var_gp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_gp_emlrtRSI');" target="_self"><font color="#1122aa">gp_emlrtRSI</font></a>;
+<a name="159"><font color="#888888 "><i>  159   </i></font></a>    st.site = &amp;<a href="#var_ko_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_ko_emlrtRSI');" target="_self"><font color="#1122aa">ko_emlrtRSI</font></a>;
+<a name="160"><font color="#888888 "><i>  160   </i></font></a>    st.site = &amp;<a href="#var_lo_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_lo_emlrtRSI');" target="_self"><font color="#1122aa">lo_emlrtRSI</font></a>;
 <a name="161"><font color="#888888 "><i>  161   </i></font></a>    <font color="#112266"><b>if</b></font> (1 &gt; (int32_T)varargin_1) <b>{</b>
-<a name="162"><font color="#888888 "><i>  162   </i></font></a>      b24 = false;
+<a name="162"><font color="#888888 "><i>  162   </i></font></a>      b21 = false;
 <a name="163"><font color="#888888 "><i>  163   </i></font></a>    <b>}</b> <font color="#112266"><b>else</b></font> <b>{</b>
-<a name="164"><font color="#888888 "><i>  164   </i></font></a>      b24 = ((int32_T)varargin_1 &gt; 2147483646);
+<a name="164"><font color="#888888 "><i>  164   </i></font></a>      b21 = ((int32_T)varargin_1 &gt; 2147483646);
 <a name="165"><font color="#888888 "><i>  165   </i></font></a>    <b>}</b>
 <a name="166"><font color="#888888 "><i>  166   </i></font></a>
-<a name="167"><font color="#888888 "><i>  167   </i></font></a>    <font color="#112266"><b>if</b></font> (b24) <b>{</b>
+<a name="167"><font color="#888888 "><i>  167   </i></font></a>    <font color="#112266"><b>if</b></font> (b21) <b>{</b>
 <a name="168"><font color="#888888 "><i>  168   </i></font></a>      b_st.site = &amp;<a href="growManyTreesCompileTest_data_c.html#var_v_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_v_emlrtRSI');" target="_self"><font color="#1122aa">v_emlrtRSI</font></a>;
 <a name="169"><font color="#888888 "><i>  169   </i></font></a>      <a href="eml_int_forloop_overflow_check_c.html#fcn_check_forloop_overflow_error" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_check_forloop_overflow_error');" target="_self"><font color="#1122aa">check_forloop_overflow_error</font></a>(&amp;b_st);
 <a name="170"><font color="#888888 "><i>  170   </i></font></a>    <b>}</b>
 <a name="171"><font color="#888888 "><i>  171   </i></font></a>
 <a name="172"><font color="#888888 "><i>  172   </i></font></a>    <font color="#112266"><b>for</b></font> (i = 1; i &lt;= (int32_T)varargin_1; i++) <b>{</b>
-<a name="173"><font color="#888888 "><i>  173   </i></font></a>      st.site = &amp;<a href="#var_hp_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_hp_emlrtRSI');" target="_self"><font color="#1122aa">hp_emlrtRSI</font></a>;
+<a name="173"><font color="#888888 "><i>  173   </i></font></a>      st.site = &amp;<a href="#var_mo_emlrtRSI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mo_emlrtRSI');" target="_self"><font color="#1122aa">mo_emlrtRSI</font></a>;
 <a name="174"><font color="#888888 "><i>  174   </i></font></a>      b-&gt;data[i - 1] = a_data[0];
 <a name="175"><font color="#888888 "><i>  175   </i></font></a>    <b>}</b>
 <a name="176"><font color="#888888 "><i>  176   </i></font></a>  <b>}</b>

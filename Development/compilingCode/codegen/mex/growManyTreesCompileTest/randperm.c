@@ -14,51 +14,51 @@
 #include "growManyTreesCompileTest_mexutil.h"
 
 /* Variable Definitions */
-static emlrtRSInfo nf_emlrtRSI = { 24, "randperm",
+static emlrtRSInfo mf_emlrtRSI = { 24, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtMCInfo u_emlrtMCI = { 13, 5, "randperm",
+static emlrtMCInfo s_emlrtMCI = { 13, 5, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtMCInfo v_emlrtMCI = { 12, 15, "randperm",
+static emlrtMCInfo t_emlrtMCI = { 12, 15, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtMCInfo w_emlrtMCI = { 22, 9, "randperm",
+static emlrtMCInfo u_emlrtMCI = { 22, 9, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtMCInfo x_emlrtMCI = { 20, 19, "randperm",
+static emlrtMCInfo v_emlrtMCI = { 20, 19, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtMCInfo y_emlrtMCI = { 23, 27, "randperm",
+static emlrtMCInfo w_emlrtMCI = { 23, 27, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtMCInfo ab_emlrtMCI = { 23, 19, "randperm",
+static emlrtMCInfo x_emlrtMCI = { 23, 19, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRTEInfo yb_emlrtRTEI = { 1, 14, "randperm",
+static emlrtRTEInfo vb_emlrtRTEI = { 1, 14, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRTEInfo ac_emlrtRTEI = { 62, 5, "randperm",
+static emlrtRTEInfo wb_emlrtRTEI = { 62, 5, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRTEInfo bc_emlrtRTEI = { 63, 5, "randperm",
+static emlrtRTEInfo xb_emlrtRTEI = { 63, 5, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRTEInfo cc_emlrtRTEI = { 64, 5, "randperm",
+static emlrtRTEInfo yb_emlrtRTEI = { 64, 5, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRTEInfo dc_emlrtRTEI = { 65, 5, "randperm",
+static emlrtRTEInfo ac_emlrtRTEI = { 65, 5, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
@@ -66,23 +66,23 @@ static emlrtDCInfo p_emlrtDCI = { 31, 19, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m",
   4 };
 
-static emlrtRSInfo eq_emlrtRSI = { 23, "randperm",
+static emlrtRSInfo ip_emlrtRSI = { 23, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRSInfo fq_emlrtRSI = { 20, "randperm",
+static emlrtRSInfo jp_emlrtRSI = { 20, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRSInfo gq_emlrtRSI = { 12, "randperm",
+static emlrtRSInfo kp_emlrtRSI = { 12, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRSInfo ar_emlrtRSI = { 22, "randperm",
+static emlrtRSInfo dq_emlrtRSI = { 22, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
-static emlrtRSInfo br_emlrtRSI = { 13, "randperm",
+static emlrtRSInfo eq_emlrtRSI = { 13, "randperm",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\randfun\\randperm.m"
 };
 
@@ -90,24 +90,24 @@ static emlrtRSInfo br_emlrtRSI = { 13, "randperm",
 void randperm(const emlrtStack *sp, real_T n, real_T k, emxArray_real_T *p)
 {
   const mxArray *y;
-  static const int32_T iv61[2] = { 1, 25 };
+  static const int32_T iv33[2] = { 1, 25 };
 
   const mxArray *m9;
-  char_T cv35[25];
+  char_T cv34[25];
   int32_T i;
-  static const char_T cv36[25] = { 'M', 'A', 'T', 'L', 'A', 'B', ':', 'r', 'a',
+  static const char_T cv35[25] = { 'M', 'A', 'T', 'L', 'A', 'B', ':', 'r', 'a',
     'n', 'd', 'p', 'e', 'r', 'm', ':', 'i', 'n', 'p', 'u', 't', 'T', 'y', 'p',
     'e' };
 
-  boolean_T b8;
+  boolean_T b5;
   const mxArray *b_y;
-  static const int32_T iv62[2] = { 1, 25 };
+  static const int32_T iv34[2] = { 1, 25 };
 
   const mxArray *c_y;
-  static const int32_T iv63[2] = { 1, 30 };
+  static const int32_T iv35[2] = { 1, 30 };
 
-  char_T cv37[30];
-  static const char_T cv38[30] = { 'M', 'A', 'T', 'L', 'A', 'B', ':', 'r', 'a',
+  char_T cv36[30];
+  static const char_T cv37[30] = { 'M', 'A', 'T', 'L', 'A', 'B', ':', 'r', 'a',
     'n', 'd', 'p', 'e', 'r', 'm', ':', 'i', 'n', 'p', 'u', 't', 'K', 'T', 'o',
     'o', 'L', 'a', 'r', 'g', 'e' };
 
@@ -132,59 +132,59 @@ void randperm(const emlrtStack *sp, real_T n, real_T k, emxArray_real_T *p)
   if (n == muDoubleScalarFloor(n)) {
   } else {
     y = NULL;
-    m9 = emlrtCreateCharArray(2, iv61);
+    m9 = emlrtCreateCharArray(2, iv33);
     for (i = 0; i < 25; i++) {
-      cv35[i] = cv36[i];
+      cv34[i] = cv35[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 25, m9, cv35);
+    emlrtInitCharArrayR2013a(sp, 25, m9, cv34);
     emlrtAssign(&y, m9);
-    st.site = &gq_emlrtRSI;
-    b_st.site = &br_emlrtRSI;
-    f_error(&st, b_message(&b_st, y, &u_emlrtMCI), &v_emlrtMCI);
+    st.site = &kp_emlrtRSI;
+    b_st.site = &eq_emlrtRSI;
+    f_error(&st, b_message(&b_st, y, &s_emlrtMCI), &t_emlrtMCI);
   }
 
   if ((k >= 0.0) && (k == muDoubleScalarFloor(k))) {
-    b8 = true;
+    b5 = true;
   } else {
-    b8 = false;
+    b5 = false;
   }
 
-  if (b8) {
+  if (b5) {
   } else {
     b_y = NULL;
-    m9 = emlrtCreateCharArray(2, iv62);
+    m9 = emlrtCreateCharArray(2, iv34);
     for (i = 0; i < 25; i++) {
-      cv35[i] = cv36[i];
+      cv34[i] = cv35[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 25, m9, cv35);
+    emlrtInitCharArrayR2013a(sp, 25, m9, cv34);
     emlrtAssign(&b_y, m9);
-    st.site = &fq_emlrtRSI;
-    b_st.site = &ar_emlrtRSI;
-    f_error(&st, b_message(&b_st, b_y, &w_emlrtMCI), &x_emlrtMCI);
+    st.site = &jp_emlrtRSI;
+    b_st.site = &dq_emlrtRSI;
+    f_error(&st, b_message(&b_st, b_y, &u_emlrtMCI), &v_emlrtMCI);
   }
 
   if (k <= n) {
   } else {
     c_y = NULL;
-    m9 = emlrtCreateCharArray(2, iv63);
+    m9 = emlrtCreateCharArray(2, iv35);
     for (i = 0; i < 30; i++) {
-      cv37[i] = cv38[i];
+      cv36[i] = cv37[i];
     }
 
-    emlrtInitCharArrayR2013a(sp, 30, m9, cv37);
+    emlrtInitCharArrayR2013a(sp, 30, m9, cv36);
     emlrtAssign(&c_y, m9);
-    st.site = &eq_emlrtRSI;
-    f_error(&st, b_message(&st, c_y, &y_emlrtMCI), &ab_emlrtMCI);
+    st.site = &ip_emlrtRSI;
+    f_error(&st, b_message(&st, c_y, &w_emlrtMCI), &x_emlrtMCI);
   }
 
-  st.site = &nf_emlrtRSI;
+  st.site = &mf_emlrtRSI;
   i = p->size[0] * p->size[1];
   p->size[0] = 1;
   p->size[1] = (int32_T)emlrtNonNegativeCheckFastR2012b(k, &p_emlrtDCI, &st);
   emxEnsureCapacity(&st, (emxArray__common *)p, i, (int32_T)sizeof(real_T),
-                    &yb_emlrtRTEI);
+                    &vb_emlrtRTEI);
   loop_ub = (int32_T)emlrtNonNegativeCheckFastR2012b(k, &p_emlrtDCI, &st);
   for (i = 0; i < loop_ub; i++) {
     p->data[i] = 0.0;
@@ -220,41 +220,41 @@ void randperm(const emlrtStack *sp, real_T n, real_T k, emxArray_real_T *p)
       p->data[(int32_T)(j + 1.0) - 1] = t;
     }
   } else {
-    emxInit_real_T(&st, &hashTbl, 1, &ac_emlrtRTEI, true);
+    b_emxInit_real_T(&st, &hashTbl, 1, &wb_emlrtRTEI, true);
     i = hashTbl->size[0];
     hashTbl->size[0] = (int32_T)k;
     emxEnsureCapacity(&st, (emxArray__common *)hashTbl, i, (int32_T)sizeof
-                      (real_T), &yb_emlrtRTEI);
+                      (real_T), &vb_emlrtRTEI);
     loop_ub = (int32_T)k;
     for (i = 0; i < loop_ub; i++) {
       hashTbl->data[i] = 0.0;
     }
 
-    emxInit_real_T(&st, &link, 1, &bc_emlrtRTEI, true);
+    b_emxInit_real_T(&st, &link, 1, &xb_emlrtRTEI, true);
     i = link->size[0];
     link->size[0] = (int32_T)k;
     emxEnsureCapacity(&st, (emxArray__common *)link, i, (int32_T)sizeof(real_T),
-                      &yb_emlrtRTEI);
+                      &vb_emlrtRTEI);
     loop_ub = (int32_T)k;
     for (i = 0; i < loop_ub; i++) {
       link->data[i] = 0.0;
     }
 
-    emxInit_real_T(&st, &val, 1, &cc_emlrtRTEI, true);
+    b_emxInit_real_T(&st, &val, 1, &yb_emlrtRTEI, true);
     i = val->size[0];
     val->size[0] = (int32_T)k;
     emxEnsureCapacity(&st, (emxArray__common *)val, i, (int32_T)sizeof(real_T),
-                      &yb_emlrtRTEI);
+                      &vb_emlrtRTEI);
     loop_ub = (int32_T)k;
     for (i = 0; i < loop_ub; i++) {
       val->data[i] = 0.0;
     }
 
-    emxInit_real_T(&st, &loc, 1, &dc_emlrtRTEI, true);
+    b_emxInit_real_T(&st, &loc, 1, &ac_emlrtRTEI, true);
     i = loc->size[0];
     loc->size[0] = (int32_T)k;
     emxEnsureCapacity(&st, (emxArray__common *)loc, i, (int32_T)sizeof(real_T),
-                      &yb_emlrtRTEI);
+                      &vb_emlrtRTEI);
     loop_ub = (int32_T)k;
     for (i = 0; i < loop_ub; i++) {
       loc->data[i] = 0.0;

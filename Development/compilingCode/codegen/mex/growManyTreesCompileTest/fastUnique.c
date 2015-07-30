@@ -17,35 +17,35 @@
 #include "growManyTreesCompileTest_data.h"
 
 /* Variable Definitions */
-static emlrtRSInfo ne_emlrtRSI = { 3, "fastUnique",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\fastUnique.m" };
+static emlrtRSInfo me_emlrtRSI = { 4, "fastUnique",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\fastUnique.m" };
 
-static emlrtRSInfo oe_emlrtRSI = { 5, "fastUnique",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\fastUnique.m" };
+static emlrtRSInfo ne_emlrtRSI = { 6, "fastUnique",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\fastUnique.m" };
 
-static emlrtRSInfo df_emlrtRSI = { 108, "diff",
+static emlrtRSInfo cf_emlrtRSI = { 108, "diff",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\datafun\\diff.m"
 };
 
-static emlrtMCInfo o_emlrtMCI = { 52, 9, "diff",
+static emlrtMCInfo m_emlrtMCI = { 52, 9, "diff",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\datafun\\diff.m"
 };
 
-static emlrtMCInfo p_emlrtMCI = { 51, 19, "diff",
+static emlrtMCInfo n_emlrtMCI = { 51, 19, "diff",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\datafun\\diff.m"
 };
 
-static emlrtRTEInfo ob_emlrtRTEI = { 1, 15, "fastUnique",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\fastUnique.m" };
+static emlrtRTEInfo lb_emlrtRTEI = { 1, 15, "fastUnique",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\fastUnique.m" };
 
-static emlrtBCInfo ke_emlrtBCI = { -1, -1, 5, 10, "uX", "fastUnique",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\fastUnique.m", 0 };
+static emlrtBCInfo ke_emlrtBCI = { -1, -1, 6, 10, "uX", "fastUnique",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\fastUnique.m", 0 };
 
-static emlrtRSInfo hq_emlrtRSI = { 51, "diff",
+static emlrtRSInfo lp_emlrtRSI = { 51, "diff",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\datafun\\diff.m"
 };
 
-static emlrtRSInfo cr_emlrtRSI = { 52, "diff",
+static emlrtRSInfo fq_emlrtRSI = { 52, "diff",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\datafun\\diff.m"
 };
 
@@ -54,15 +54,14 @@ void fastUnique(const emlrtStack *sp, const emxArray_real_T *X, emxArray_real_T 
                 uX)
 {
   emxArray_real_T *b_y1;
-  emxArray_real_T *b_X;
   int32_T i;
   boolean_T overflow;
   const mxArray *y;
-  static const int32_T iv60[2] = { 1, 36 };
+  static const int32_T iv32[2] = { 1, 36 };
 
   const mxArray *m7;
-  char_T cv33[36];
-  static const char_T cv34[36] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
+  char_T cv32[36];
+  static const char_T cv33[36] = { 'C', 'o', 'd', 'e', 'r', ':', 't', 'o', 'o',
     'l', 'b', 'o', 'x', ':', 'a', 'u', 't', 'o', 'D', 'i', 'm', 'I', 'n', 'c',
     'o', 'm', 'p', 'a', 't', 'i', 'b', 'i', 'l', 'i', 't', 'y' };
 
@@ -71,11 +70,10 @@ void fastUnique(const emlrtStack *sp, const emxArray_real_T *X, emxArray_real_T 
   int32_T m;
   real_T tmp1;
   real_T tmp2;
-  emxArray_real_T *c_y1;
-  emxArray_boolean_T *r66;
-  emxArray_int32_T *r67;
+  emxArray_boolean_T *r6;
+  emxArray_int32_T *r7;
   emxArray_real_T *b_uX;
-  int32_T i7;
+  int32_T i8;
   emlrtStack st;
   emlrtStack b_st;
   emlrtStack c_st;
@@ -89,25 +87,19 @@ void fastUnique(const emlrtStack *sp, const emxArray_real_T *X, emxArray_real_T 
   d_st.prev = &b_st;
   d_st.tls = b_st.tls;
   emlrtHeapReferenceStackEnterFcnR2012b(sp);
-  b_emxInit_real_T(sp, &b_y1, 2, &pb_emlrtRTEI, true);
-  b_emxInit_real_T(sp, &b_X, 2, &ob_emlrtRTEI, true);
 
-  /* logging input variable 'X' for function 'fastUnique' */
-  emlrt_update_log_5(sp, X, *(emlrtLocationLoggingDataType (*)[613])&
-                     emlrtLocationLoggingDataTables[102U], b_X);
+  /*  Lite version of matlabs unique that is faster */
+  st.site = &me_emlrtRSI;
+  b_st.site = &oe_emlrtRSI;
+  eml_sort(&b_st, X, uX);
   st.site = &ne_emlrtRSI;
-  b_st.site = &pe_emlrtRSI;
-  eml_sort(&b_st, X, b_y1);
-  emlrt_update_log_5(sp, b_y1, *(emlrtLocationLoggingDataType (*)[613])&
-                     emlrtLocationLoggingDataTables[103U], uX);
-  st.site = &oe_emlrtRSI;
-  emxFree_real_T(&b_X);
+  emxInit_real_T(&st, &b_y1, 2, &mb_emlrtRTEI, true);
   if (X->size[1] == 0) {
     i = b_y1->size[0] * b_y1->size[1];
     b_y1->size[0] = 1;
     b_y1->size[1] = 0;
     emxEnsureCapacity(&st, (emxArray__common *)b_y1, i, (int32_T)sizeof(real_T),
-                      &ob_emlrtRTEI);
+                      &lb_emlrtRTEI);
   } else {
     i = X->size[1] - 1;
     if (muIntScalarMin_sint32(i, 1) < 1) {
@@ -115,35 +107,35 @@ void fastUnique(const emlrtStack *sp, const emxArray_real_T *X, emxArray_real_T 
       b_y1->size[0] = 1;
       b_y1->size[1] = 0;
       emxEnsureCapacity(&st, (emxArray__common *)b_y1, i, (int32_T)sizeof(real_T),
-                        &ob_emlrtRTEI);
+                        &lb_emlrtRTEI);
     } else {
       overflow = (X->size[1] != 1);
       if (overflow) {
       } else {
         y = NULL;
-        m7 = emlrtCreateCharArray(2, iv60);
+        m7 = emlrtCreateCharArray(2, iv32);
         for (i = 0; i < 36; i++) {
-          cv33[i] = cv34[i];
+          cv32[i] = cv33[i];
         }
 
-        emlrtInitCharArrayR2013a(&st, 36, m7, cv33);
+        emlrtInitCharArrayR2013a(&st, 36, m7, cv32);
         emlrtAssign(&y, m7);
-        b_st.site = &hq_emlrtRSI;
-        c_st.site = &cr_emlrtRSI;
-        f_error(&b_st, b_message(&c_st, y, &o_emlrtMCI), &p_emlrtMCI);
+        b_st.site = &lp_emlrtRSI;
+        c_st.site = &fq_emlrtRSI;
+        f_error(&b_st, b_message(&c_st, y, &m_emlrtMCI), &n_emlrtMCI);
       }
 
       i = b_y1->size[0] * b_y1->size[1];
       b_y1->size[0] = 1;
       b_y1->size[1] = X->size[1] - 1;
       emxEnsureCapacity(&st, (emxArray__common *)b_y1, i, (int32_T)sizeof(real_T),
-                        &pb_emlrtRTEI);
+                        &mb_emlrtRTEI);
       i = X->size[1] - 1;
       if (!(i == 0)) {
         i = 1;
         iyLead = 0;
         work_data_idx_0 = X->data[0];
-        b_st.site = &ef_emlrtRSI;
+        b_st.site = &df_emlrtRSI;
         if (2 > X->size[1]) {
           overflow = false;
         } else {
@@ -157,7 +149,7 @@ void fastUnique(const emlrtStack *sp, const emxArray_real_T *X, emxArray_real_T 
 
         for (m = 2; m <= X->size[1]; m++) {
           tmp1 = X->data[i];
-          b_st.site = &df_emlrtRSI;
+          b_st.site = &cf_emlrtRSI;
           tmp2 = work_data_idx_0;
           work_data_idx_0 = tmp1;
           tmp1 -= tmp2;
@@ -169,54 +161,48 @@ void fastUnique(const emlrtStack *sp, const emxArray_real_T *X, emxArray_real_T 
     }
   }
 
-  b_emxInit_real_T(&st, &c_y1, 2, &ob_emlrtRTEI, true);
-  i = c_y1->size[0] * c_y1->size[1];
-  c_y1->size[0] = 1;
-  c_y1->size[1] = b_y1->size[1];
-  emxEnsureCapacity(sp, (emxArray__common *)c_y1, i, (int32_T)sizeof(real_T),
-                    &ob_emlrtRTEI);
-  iyLead = b_y1->size[0] * b_y1->size[1];
-  for (i = 0; i < iyLead; i++) {
-    c_y1->data[i] = b_y1->data[i];
-  }
-
-  b_emxInit_boolean_T(sp, &r66, 2, &ob_emlrtRTEI, true);
-  emlrt_update_log_5(sp, c_y1, *(emlrtLocationLoggingDataType (*)[613])&
-                     emlrtLocationLoggingDataTables[105U], b_y1);
-  i = r66->size[0] * r66->size[1];
-  r66->size[0] = 1;
-  r66->size[1] = 1 + b_y1->size[1];
-  emxEnsureCapacity(sp, (emxArray__common *)r66, i, (int32_T)sizeof(boolean_T),
-                    &ob_emlrtRTEI);
-  r66->data[0] = true;
+  b_emxInit_boolean_T(&st, &r6, 2, &lb_emlrtRTEI, true);
+  i = r6->size[0] * r6->size[1];
+  r6->size[0] = 1;
+  r6->size[1] = 1 + b_y1->size[1];
+  emxEnsureCapacity(sp, (emxArray__common *)r6, i, (int32_T)sizeof(boolean_T),
+                    &lb_emlrtRTEI);
+  r6->data[0] = true;
   iyLead = b_y1->size[1];
-  emxFree_real_T(&c_y1);
   for (i = 0; i < iyLead; i++) {
-    r66->data[r66->size[0] * (i + 1)] = (b_y1->data[b_y1->size[0] * i] != 0.0);
+    r6->data[r6->size[0] * (i + 1)] = (b_y1->data[b_y1->size[0] * i] != 0.0);
   }
 
   emxFree_real_T(&b_y1);
-  b_emxInit_int32_T(sp, &r67, 2, &ob_emlrtRTEI, true);
-  b_emxInit_real_T(sp, &b_uX, 2, &ob_emlrtRTEI, true);
-  st.site = &oe_emlrtRSI;
-  eml_li_find(&st, r66, r67);
+  b_emxInit_int32_T(sp, &r7, 2, &lb_emlrtRTEI, true);
+  emxInit_real_T(sp, &b_uX, 2, &lb_emlrtRTEI, true);
+  st.site = &ne_emlrtRSI;
+  eml_li_find(&st, r6, r7);
+  m = uX->size[1];
   i = b_uX->size[0] * b_uX->size[1];
   b_uX->size[0] = 1;
-  b_uX->size[1] = r67->size[1];
+  b_uX->size[1] = r7->size[1];
   emxEnsureCapacity(sp, (emxArray__common *)b_uX, i, (int32_T)sizeof(real_T),
-                    &ob_emlrtRTEI);
-  iyLead = r67->size[0] * r67->size[1];
-  emxFree_boolean_T(&r66);
+                    &lb_emlrtRTEI);
+  iyLead = r7->size[1];
+  emxFree_boolean_T(&r6);
   for (i = 0; i < iyLead; i++) {
-    m = uX->size[1];
-    i7 = r67->data[i];
-    b_uX->data[i] = uX->data[emlrtDynamicBoundsCheckFastR2012b(i7, 1, m,
-      &ke_emlrtBCI, sp) - 1];
+    i8 = r7->data[r7->size[0] * i];
+    b_uX->data[b_uX->size[0] * i] = uX->data[emlrtDynamicBoundsCheckFastR2012b
+      (i8, 1, m, &ke_emlrtBCI, sp) - 1];
   }
 
-  emxFree_int32_T(&r67);
-  emlrt_update_log_5(sp, b_uX, *(emlrtLocationLoggingDataType (*)[613])&
-                     emlrtLocationLoggingDataTables[104U], uX);
+  emxFree_int32_T(&r7);
+  i = uX->size[0] * uX->size[1];
+  uX->size[0] = 1;
+  uX->size[1] = b_uX->size[1];
+  emxEnsureCapacity(sp, (emxArray__common *)uX, i, (int32_T)sizeof(real_T),
+                    &lb_emlrtRTEI);
+  iyLead = b_uX->size[1];
+  for (i = 0; i < iyLead; i++) {
+    uX->data[uX->size[0] * i] = b_uX->data[b_uX->size[0] * i];
+  }
+
   emxFree_real_T(&b_uX);
   emlrtHeapReferenceStackLeaveFcnR2012b(sp);
 }

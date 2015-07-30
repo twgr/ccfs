@@ -1,4 +1,4 @@
-START_DIR = C:\Users\Tom\DOCUME~1\Git\CCF
+START_DIR = C:\Users\Tom\DOCUME~1\Git\CCF\DEVELO~1\COMPIL~1
 
 MATLAB_ROOT = C:\PROGRA~1\MATLAB\R2014a
 MAKEFILE = growManyTreesCompileTest_mex.mk
@@ -29,7 +29,6 @@ SRC_FILES =  \
 	randperm.c \
 	queryIfColumnsVary.c \
 	all.c \
-	randomSubspace.c \
 	randi.c \
 	queryIfOnlyTwoUniqueRows.c \
 	twoPointMaxMarginSplit.c \

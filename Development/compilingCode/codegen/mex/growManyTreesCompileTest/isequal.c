@@ -17,7 +17,7 @@ boolean_T b_isequal(const emxArray_boolean_T *varargin_1)
   boolean_T b_p;
   int32_T k;
   int32_T exitg1;
-  int32_T i6;
+  int32_T i7;
   p = false;
   b_p = false;
   k = 0;
@@ -25,12 +25,12 @@ boolean_T b_isequal(const emxArray_boolean_T *varargin_1)
     exitg1 = 0;
     if (k < 2) {
       if (k + 1 <= 1) {
-        i6 = varargin_1->size[0];
+        i7 = varargin_1->size[0];
       } else {
-        i6 = 1;
+        i7 = 1;
       }
 
-      if (i6 != 0) {
+      if (i7 != 0) {
         exitg1 = 1;
       } else {
         k++;

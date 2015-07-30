@@ -1,8 +1,8 @@
 <deployment-project plugin="plugin.matlabcoder" plugin-version="R2014a_nu">
-  <configuration build-checksum="3882087858" file="/Users/twgr/Documents/Git/CCF/ccf/compilingCode/ccf.prj" location="/Users/twgr/Documents/Git/CCF/ccf/compilingCode" name="ccf" target="target.matlab.coder" target-name="MEX, C, and C++ Code Generation">
+  <configuration build-checksum="1848267220" file="C:\Users\Tom\Documents\Git\CCF\Development\compilingCode\ccf.prj" location="C:\Users\Tom\Documents\Git\CCF\Development\compilingCode" name="ccf" target="target.matlab.coder" target-name="MEX, C, and C++ Code Generation">
     <profile key="profile.mex">
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
-      <param.BuiltInstrumentedMex>true</param.BuiltInstrumentedMex>
+      <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
       <param.WorkingFolder>option.WorkingFolder.Project</param.WorkingFolder>
       <param.SpecifiedWorkingFolder />
@@ -50,6 +50,7 @@
       <param.ConstantInputs>option.ConstantInputs.CheckValues</param.ConstantInputs>
       <unset>
         <param.MergeInstrumentationResults />
+        <param.BuiltInstrumentedMex />
         <param.RanInstrumentedMex />
         <param.WorkingFolder />
         <param.SpecifiedWorkingFolder />
@@ -170,12 +171,12 @@
       <param.HardwareSizeChar.Target>8</param.HardwareSizeChar.Target>
       <param.HardwareSizeShort.Target>16</param.HardwareSizeShort.Target>
       <param.HardwareSizeInt.Target>32</param.HardwareSizeInt.Target>
-      <param.HardwareSizeLong.Target>64</param.HardwareSizeLong.Target>
+      <param.HardwareSizeLong.Target>32</param.HardwareSizeLong.Target>
       <param.HardwareSizeLongLong.Target>64</param.HardwareSizeLongLong.Target>
       <param.HardwareSizeFloat.Target>32</param.HardwareSizeFloat.Target>
       <param.HardwareSizeDouble.Target>64</param.HardwareSizeDouble.Target>
-      <param.HardwareSizeWord.Target>64</param.HardwareSizeWord.Target>
-      <param.HardwareSizePointer.Target>64</param.HardwareSizePointer.Target>
+      <param.HardwareSizeWord.Target>32</param.HardwareSizeWord.Target>
+      <param.HardwareSizePointer.Target>32</param.HardwareSizePointer.Target>
       <param.HardwareEndianness.Target>option.HardwareEndianness.Little</param.HardwareEndianness.Target>
       <param.HardwareArithmeticRightShift.Target>true</param.HardwareArithmeticRightShift.Target>
       <param.HardwareLongLongMode.Target>true</param.HardwareLongLongMode.Target>
@@ -276,9 +277,12 @@
         <param.HardwareSizeChar.Target />
         <param.HardwareSizeShort.Target />
         <param.HardwareSizeInt.Target />
+        <param.HardwareSizeLong.Target />
         <param.HardwareSizeLongLong.Target />
         <param.HardwareSizeFloat.Target />
         <param.HardwareSizeDouble.Target />
+        <param.HardwareSizeWord.Target />
+        <param.HardwareSizePointer.Target />
         <param.HardwareEndianness.Target />
         <param.HardwareAtomicFloatSize.Target />
         <param.Toolchain />
@@ -306,16 +310,16 @@
         <param.UseECoderFeatures />
       </unset>
     </profile>
-    <param.outputfile>${PROJECT_ROOT}/codegen/exe/growManyTreesCompileTest/growManyTreesCompileTest</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\growManyTreesCompileTest_mex.mexw64</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
-    <param.mex.mainhtml>C:\Users\Tom\Documents\Git\CCF\codegen\mex\growManyTreesCompileTest\html\index.html</param.mex.mainhtml>
-    <param.grt.mainhtml>/Users/twgr/Documents/Git/CCF/ccf/compilingCode/codegen/exe/growManyTreesCompileTest/html/index.html</param.grt.mainhtml>
+    <param.mex.mainhtml>C:\Users\Tom\Documents\Git\CCF\Development\compilingCode\codegen\mex\growManyTreesCompileTest\html\index.html</param.mex.mainhtml>
+    <param.grt.mainhtml>C:\Users\Tom\Documents\Git\CCF\Development\compilingCode\codegen\exe\growManyTreesCompileTest\html\index.html</param.grt.mainhtml>
     <param.CallGeneratedCodeFromTest>true</param.CallGeneratedCodeFromTest>
     <param.VerificationMode>option.VerificationMode.None</param.VerificationMode>
     <param.SILDebugging>false</param.SILDebugging>
-    <param.DefaultTestFile>${PROJECT_ROOT}/growCCTnotRecursive.m</param.DefaultTestFile>
-    <param.AutoInferDefaultFile>${PROJECT_ROOT}/growCCTnotRecursive.m</param.AutoInferDefaultFile>
+    <param.DefaultTestFile>${PROJECT_ROOT}\growCCTnotRecursive.m</param.DefaultTestFile>
+    <param.AutoInferDefaultFile>${PROJECT_ROOT}\growCCTnotRecursive.m</param.AutoInferDefaultFile>
     <param.AutoInferUseVariableSize>false</param.AutoInferUseVariableSize>
     <param.AutoInferUseUnboundedSize>false</param.AutoInferUseUnboundedSize>
     <param.AutoInferVariableSizeThreshold>1024</param.AutoInferVariableSizeThreshold>
@@ -323,7 +327,7 @@
     <param.AnnotationChecksum>2996076824</param.AnnotationChecksum>
     <param.mex.outputfile>growManyTreesCompileTest_mex</param.mex.outputfile>
     <param.grt.outputfile>growManyTreesCompileTest</param.grt.outputfile>
-    <param.artifact>option.target.artifact.exe</param.artifact>
+    <param.artifact>option.target.artifact.mex</param.artifact>
     <param.FixedPointTypeProposalMode>option.FixedPointTypeProposalMode.ProposeFractionLengths</param.FixedPointTypeProposalMode>
     <param.DefaultProposedFixedPointType>numerictype([],16,12)</param.DefaultProposedFixedPointType>
     <param.MinMaxSafetyMargin>0</param.MinMaxSafetyMargin>
@@ -375,6 +379,7 @@
       <param.AutoInferUnboundedSizeThreshold />
       <param.mex.outputfile />
       <param.grt.outputfile />
+      <param.artifact />
       <param.FixedPointTypeProposalMode />
       <param.DefaultProposedFixedPointType />
       <param.MinMaxSafetyMargin />
@@ -414,7 +419,7 @@
       <param.DefaultFixedPointSignedness />
     </unset>
     <fileset.entrypoints>
-      <file custom-data-expanded="false" value="${PROJECT_ROOT}/growManyTreesCompileTest.m">
+      <file custom-data-expanded="false" value="${PROJECT_ROOT}\growManyTreesCompileTest.m">
         <Inputs fileName="growManyTreesCompileTest.m" functionName="growManyTreesCompileTest">
           <Input Name="nTrees">
             <Class>double</Class>
@@ -637,20 +642,26 @@
       </file>
     </fileset.entrypoints>
     <fileset.testbench>
-      <file>${PROJECT_ROOT}/growCCTnotRecursive.m</file>
+      <file>${PROJECT_ROOT}\growCCTnotRecursive.m</file>
     </fileset.testbench>
     <fileset.package />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}/codegen/exe/growManyTreesCompileTest" name="growManyTreesCompileTest" optional="false">/Users/twgr/Documents/Git/CCF/ccf/compilingCode/codegen/exe/growManyTreesCompileTest/growManyTreesCompileTest</file>
+      <file location="C:\Users\Tom\Documents\Git\CCF\Development\compilingCode" name="growManyTreesCompileTest_mex.mexw64" optional="false">C:\Users\Tom\Documents\Git\CCF\Development\compilingCode\growManyTreesCompileTest_mex.mexw64</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>/Applications/MATLAB_R2014a.app</root>
+      <root>C:\Program Files\MATLAB\R2014a</root>
       <toolboxes>
+        <toolbox name="matlabhdlcoder" />
         <toolbox name="fixedpoint" />
         <toolbox name="embeddedcoder" />
         <toolbox name="matlabcoder" />
       </toolboxes>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
       <toolbox>
         <fixedpoint>
           <enabled>true</enabled>
@@ -668,18 +679,18 @@
       </toolbox>
     </matlab>
     <platform>
-      <unix>true</unix>
-      <mac>true</mac>
-      <windows>false</windows>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
       <win2k>false</win2k>
       <winxp>false</winxp>
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>10.10.4</osver>
+      <osver>6.1</osver>
       <os32>false</os32>
       <os64>true</os64>
-      <arch>maci64</arch>
+      <arch>win64</arch>
       <matlab>true</matlab>
     </platform>
   </configuration>

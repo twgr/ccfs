@@ -12,7 +12,7 @@
 #include "growManyTreesCompileTest_emxutil.h"
 
 /* Variable Definitions */
-static emlrtRTEInfo he_emlrtRTEI = { 1, 1, "_coder_growManyTreesCompileTest_api",
+static emlrtRTEInfo ud_emlrtRTEI = { 1, 1, "_coder_growManyTreesCompileTest_api",
   "" };
 
 /* Function Declarations */
@@ -75,21 +75,20 @@ static void y_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
 static void ab_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
   emlrtMsgIdentifier *msgId, char_T ret_data[], int32_T ret_size[2])
 {
-  int32_T iv134[2];
-  boolean_T bv10[2];
-  int32_T i78;
-  static const boolean_T bv11[2] = { false, true };
+  int32_T iv97[2];
+  boolean_T bv7[2];
+  int32_T i47;
+  static const boolean_T bv8[2] = { false, true };
 
-  int32_T iv135[2];
-  for (i78 = 0; i78 < 2; i78++) {
-    iv134[i78] = 1 + 19 * i78;
-    bv10[i78] = bv11[i78];
+  int32_T iv98[2];
+  for (i47 = 0; i47 < 2; i47++) {
+    iv97[i47] = 1 + 19 * i47;
+    bv7[i47] = bv8[i47];
   }
 
-  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "char", false, 2U, iv134, bv10,
-    iv135);
-  ret_size[0] = iv135[0];
-  ret_size[1] = iv135[1];
+  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "char", false, 2U, iv97, bv7, iv98);
+  ret_size[0] = iv98[0];
+  ret_size[1] = iv98[1];
   emlrtImportArrayR2011b(src, (void *)ret_data, 1, false);
   emlrtDestroyArray(&src);
 }
@@ -99,43 +98,43 @@ static const mxArray *b_emlrt_marshallOut(const emlrtStack *sp, const
 {
   const mxArray *y;
   emxArray_real_T *b_u;
-  int32_T iv124[1];
+  int32_T iv87[1];
   int32_T i;
   int32_T b_j0;
-  int32_T i73;
+  int32_T i42;
   int32_T loop_ub;
   const mxArray *b_y;
-  const mxArray *m48;
+  const mxArray *m43;
   real_T *pData;
   emlrtHeapReferenceStackEnterFcnR2012b(sp);
-  b_emxInit_real_T(sp, &b_u, 2, (emlrtRTEInfo *)NULL, true);
+  emxInit_real_T(sp, &b_u, 2, (emlrtRTEInfo *)NULL, true);
   y = NULL;
-  iv124[0] = u->size[0];
-  emlrtAssign(&y, emlrtCreateStructArray(1, iv124, 0, NULL));
+  iv87[0] = u->size[0];
+  emlrtAssign(&y, emlrtCreateStructArray(1, iv87, 0, NULL));
   emlrtCreateField(y, "inds");
   i = 0;
   for (b_j0 = 0; b_j0 < u->size[0U]; b_j0++) {
-    i73 = b_u->size[0] * b_u->size[1];
+    i42 = b_u->size[0] * b_u->size[1];
     b_u->size[0] = 1;
     b_u->size[1] = u->data[b_j0].inds->size[1];
-    emxEnsureCapacity(sp, (emxArray__common *)b_u, i73, (int32_T)sizeof(real_T),
+    emxEnsureCapacity(sp, (emxArray__common *)b_u, i42, (int32_T)sizeof(real_T),
                       (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].inds->size[0] * u->data[b_j0].inds->size[1];
-    for (i73 = 0; i73 < loop_ub; i73++) {
-      b_u->data[i73] = u->data[b_j0].inds->data[i73];
+    for (i42 = 0; i42 < loop_ub; i42++) {
+      b_u->data[i42] = u->data[b_j0].inds->data[i42];
     }
 
     b_y = NULL;
-    m48 = emlrtCreateNumericArray(2, *(int32_T (*)[1])b_u->size, mxDOUBLE_CLASS,
+    m43 = emlrtCreateNumericArray(2, *(int32_T (*)[1])b_u->size, mxDOUBLE_CLASS,
       mxREAL);
-    pData = (real_T *)mxGetPr(m48);
-    i73 = 0;
+    pData = (real_T *)mxGetPr(m43);
+    i42 = 0;
     for (loop_ub = 0; loop_ub < b_u->size[1]; loop_ub++) {
-      pData[i73] = b_u->data[b_u->size[0] * loop_ub];
-      i73++;
+      pData[i42] = b_u->data[b_u->size[0] * loop_ub];
+      i42++;
     }
 
-    emlrtAssign(&b_y, m48);
+    emlrtAssign(&b_y, m43);
     emlrtAddField(y, b_y, "inds", i);
     i++;
   }
@@ -148,23 +147,23 @@ static const mxArray *b_emlrt_marshallOut(const emlrtStack *sp, const
 static void bb_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
   emlrtMsgIdentifier *msgId, emxArray_real_T *ret)
 {
-  int32_T iv136[2];
-  boolean_T bv12[2];
-  int32_T i79;
-  static const boolean_T bv13[2] = { false, true };
+  int32_T iv99[2];
+  boolean_T bv9[2];
+  int32_T i48;
+  static const boolean_T bv10[2] = { false, true };
 
-  int32_T iv137[2];
-  for (i79 = 0; i79 < 2; i79++) {
-    iv136[i79] = 1 + -2 * i79;
-    bv12[i79] = bv13[i79];
+  int32_T iv100[2];
+  for (i48 = 0; i48 < 2; i48++) {
+    iv99[i48] = 1 + -2 * i48;
+    bv9[i48] = bv10[i48];
   }
 
-  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "double", false, 2U, iv136, bv12,
-    iv137);
-  i79 = ret->size[0] * ret->size[1];
-  ret->size[0] = iv137[0];
-  ret->size[1] = iv137[1];
-  emxEnsureCapacity(sp, (emxArray__common *)ret, i79, (int32_T)sizeof(real_T),
+  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "double", false, 2U, iv99, bv9,
+    iv100);
+  i48 = ret->size[0] * ret->size[1];
+  ret->size[0] = iv100[0];
+  ret->size[1] = iv100[1];
+  emxEnsureCapacity(sp, (emxArray__common *)ret, i48, (int32_T)sizeof(real_T),
                     (emlrtRTEInfo *)NULL);
   emlrtImportArrayR2011b(src, ret->data, 8, false);
   emlrtDestroyArray(&src);
@@ -185,21 +184,21 @@ static real_T c_emlrt_marshallIn(const emlrtStack *sp, const mxArray *nTrees,
 static void cb_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
   emlrtMsgIdentifier *msgId, emxArray_real_T *ret)
 {
-  int32_T iv138[2];
-  boolean_T bv14[2];
-  int32_T i80;
-  static const boolean_T bv15[2] = { false, true };
+  int32_T iv101[2];
+  boolean_T bv11[2];
+  int32_T i49;
+  static const boolean_T bv12[2] = { false, true };
 
-  int32_T iv139[2];
-  for (i80 = 0; i80 < 2; i80++) {
-    iv138[i80] = 1 + -2 * i80;
-    bv14[i80] = bv15[i80];
+  int32_T iv102[2];
+  for (i49 = 0; i49 < 2; i49++) {
+    iv101[i49] = 1 + -2 * i49;
+    bv11[i49] = bv12[i49];
   }
 
-  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "double", false, 2U, iv138, bv14,
-    iv139);
-  ret->size[0] = iv139[0];
-  ret->size[1] = iv139[1];
+  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "double", false, 2U, iv101, bv11,
+    iv102);
+  ret->size[0] = iv102[0];
+  ret->size[1] = iv102[1];
   ret->allocatedSize = ret->size[0] * ret->size[1];
   ret->data = (real_T *)mxGetData(src);
   ret->canFreeData = false;
@@ -240,12 +239,12 @@ static const mxArray *emlrt_marshallOut(const emlrtStack *sp, const
   emxArray_real_T *j_u;
   emxArray_int64_T *k_u;
   emxArray_real_T *l_u;
-  int32_T iv121[1];
+  int32_T iv84[1];
   int32_T i;
   int32_T b_j0;
   const mxArray *b_y;
-  const mxArray *m47;
-  int32_T i72;
+  const mxArray *m42;
+  int32_T i41;
   int32_T loop_ub;
   const mxArray *c_y;
   const mxArray *d_y;
@@ -256,7 +255,7 @@ static const mxArray *emlrt_marshallOut(const emlrtStack *sp, const
   const mxArray *g_y;
   const mxArray *h_y;
   const mxArray *i_y;
-  int32_T iv122[1];
+  int32_T iv85[1];
   int32_T c_j0;
   const mxArray *j_y;
   int64_T *b_pData;
@@ -264,23 +263,23 @@ static const mxArray *emlrt_marshallOut(const emlrtStack *sp, const
   const mxArray *l_y;
   const mxArray *m_y;
   const mxArray *n_y;
-  int32_T iv123[1];
+  int32_T iv86[1];
   const mxArray *o_y;
   emlrtHeapReferenceStackEnterFcnR2012b(sp);
   emxInit_boolean_T(sp, &b_u, 1, (emlrtRTEInfo *)NULL, true);
-  emxInit_real_T(sp, &c_u, 1, (emlrtRTEInfo *)NULL, true);
+  b_emxInit_real_T(sp, &c_u, 1, (emlrtRTEInfo *)NULL, true);
   emxInit_boolean_T(sp, &d_u, 1, (emlrtRTEInfo *)NULL, true);
-  b_emxInit_real_T(sp, &e_u, 2, (emlrtRTEInfo *)NULL, true);
-  emxInit_real_T(sp, &f_u, 1, (emlrtRTEInfo *)NULL, true);
-  emxInit_real_T(sp, &g_u, 1, (emlrtRTEInfo *)NULL, true);
-  b_emxInit_real_T(sp, &h_u, 2, (emlrtRTEInfo *)NULL, true);
-  emxInit_real_T(sp, &i_u, 1, (emlrtRTEInfo *)NULL, true);
-  emxInit_real_T(sp, &j_u, 1, (emlrtRTEInfo *)NULL, true);
+  emxInit_real_T(sp, &e_u, 2, (emlrtRTEInfo *)NULL, true);
+  b_emxInit_real_T(sp, &f_u, 1, (emlrtRTEInfo *)NULL, true);
+  b_emxInit_real_T(sp, &g_u, 1, (emlrtRTEInfo *)NULL, true);
+  emxInit_real_T(sp, &h_u, 2, (emlrtRTEInfo *)NULL, true);
+  b_emxInit_real_T(sp, &i_u, 1, (emlrtRTEInfo *)NULL, true);
+  b_emxInit_real_T(sp, &j_u, 1, (emlrtRTEInfo *)NULL, true);
   emxInit_int64_T(sp, &k_u, 2, (emlrtRTEInfo *)NULL, true);
-  emxInit_real_T(sp, &l_u, 1, (emlrtRTEInfo *)NULL, true);
+  b_emxInit_real_T(sp, &l_u, 1, (emlrtRTEInfo *)NULL, true);
   y = NULL;
-  iv121[0] = u->size[0];
-  emlrtAssign(&y, emlrtCreateStructArray(1, iv121, 0, NULL));
+  iv84[0] = u->size[0];
+  emlrtAssign(&y, emlrtCreateStructArray(1, iv84, 0, NULL));
   emlrtCreateField(y, "nextChild");
   emlrtCreateField(y, "bExpanded");
   emlrtCreateField(y, "nodeId");
@@ -298,153 +297,153 @@ static const mxArray *emlrt_marshallOut(const emlrtStack *sp, const
   i = 0;
   for (b_j0 = 0; b_j0 < u->size[0U]; b_j0++) {
     b_y = NULL;
-    m47 = emlrtCreateDoubleScalar(u->data[b_j0].nextChild);
-    emlrtAssign(&b_y, m47);
+    m42 = emlrtCreateDoubleScalar(u->data[b_j0].nextChild);
+    emlrtAssign(&b_y, m42);
     emlrtAddField(y, b_y, "nextChild", i);
-    i72 = b_u->size[0];
+    i41 = b_u->size[0];
     b_u->size[0] = u->data[b_j0].bExpanded->size[0];
-    emxEnsureCapacity(sp, (emxArray__common *)b_u, i72, (int32_T)sizeof
+    emxEnsureCapacity(sp, (emxArray__common *)b_u, i41, (int32_T)sizeof
                       (boolean_T), (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].bExpanded->size[0];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      b_u->data[i72] = u->data[b_j0].bExpanded->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      b_u->data[i41] = u->data[b_j0].bExpanded->data[i41];
     }
 
     c_y = NULL;
-    m47 = emlrtCreateLogicalArray(1, *(int32_T (*)[1])b_u->size);
-    emlrtInitLogicalArray(b_u->size[0], m47, b_u->data);
-    emlrtAssign(&c_y, m47);
+    m42 = emlrtCreateLogicalArray(1, *(int32_T (*)[1])b_u->size);
+    emlrtInitLogicalArray(b_u->size[0], m42, b_u->data);
+    emlrtAssign(&c_y, m42);
     emlrtAddField(y, c_y, "bExpanded", i);
-    i72 = c_u->size[0];
+    i41 = c_u->size[0];
     c_u->size[0] = u->data[b_j0].nodeId->size[0];
-    emxEnsureCapacity(sp, (emxArray__common *)c_u, i72, (int32_T)sizeof(real_T),
+    emxEnsureCapacity(sp, (emxArray__common *)c_u, i41, (int32_T)sizeof(real_T),
                       (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].nodeId->size[0];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      c_u->data[i72] = u->data[b_j0].nodeId->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      c_u->data[i41] = u->data[b_j0].nodeId->data[i41];
     }
 
     d_y = NULL;
-    m47 = emlrtCreateNumericArray(1, *(int32_T (*)[1])c_u->size, mxDOUBLE_CLASS,
+    m42 = emlrtCreateNumericArray(1, *(int32_T (*)[1])c_u->size, mxDOUBLE_CLASS,
       mxREAL);
-    pData = (real_T *)mxGetPr(m47);
-    i72 = 0;
+    pData = (real_T *)mxGetPr(m42);
+    i41 = 0;
     for (b_i = 0; b_i < c_u->size[0]; b_i++) {
-      pData[i72] = c_u->data[b_i];
-      i72++;
+      pData[i41] = c_u->data[b_i];
+      i41++;
     }
 
-    emlrtAssign(&d_y, m47);
+    emlrtAssign(&d_y, m42);
     emlrtAddField(y, d_y, "nodeId", i);
-    i72 = d_u->size[0];
+    i41 = d_u->size[0];
     d_u->size[0] = u->data[b_j0].bLeaf->size[0];
-    emxEnsureCapacity(sp, (emxArray__common *)d_u, i72, (int32_T)sizeof
+    emxEnsureCapacity(sp, (emxArray__common *)d_u, i41, (int32_T)sizeof
                       (boolean_T), (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].bLeaf->size[0];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      d_u->data[i72] = u->data[b_j0].bLeaf->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      d_u->data[i41] = u->data[b_j0].bLeaf->data[i41];
     }
 
     e_y = NULL;
-    m47 = emlrtCreateLogicalArray(1, *(int32_T (*)[1])d_u->size);
-    emlrtInitLogicalArray(d_u->size[0], m47, d_u->data);
-    emlrtAssign(&e_y, m47);
+    m42 = emlrtCreateLogicalArray(1, *(int32_T (*)[1])d_u->size);
+    emlrtInitLogicalArray(d_u->size[0], m42, d_u->data);
+    emlrtAssign(&e_y, m42);
     emlrtAddField(y, e_y, "bLeaf", i);
-    i72 = e_u->size[0] * e_u->size[1];
+    i41 = e_u->size[0] * e_u->size[1];
     e_u->size[0] = u->data[b_j0].childIds->size[0];
     e_u->size[1] = 2;
-    emxEnsureCapacity(sp, (emxArray__common *)e_u, i72, (int32_T)sizeof(real_T),
+    emxEnsureCapacity(sp, (emxArray__common *)e_u, i41, (int32_T)sizeof(real_T),
                       (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].childIds->size[0] * u->data[b_j0].childIds->size[1];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      e_u->data[i72] = u->data[b_j0].childIds->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      e_u->data[i41] = u->data[b_j0].childIds->data[i41];
     }
 
     f_y = NULL;
-    m47 = emlrtCreateNumericArray(2, *(int32_T (*)[1])e_u->size, mxDOUBLE_CLASS,
+    m42 = emlrtCreateNumericArray(2, *(int32_T (*)[1])e_u->size, mxDOUBLE_CLASS,
       mxREAL);
-    pData = (real_T *)mxGetPr(m47);
-    i72 = 0;
+    pData = (real_T *)mxGetPr(m42);
+    i41 = 0;
     for (b_i = 0; b_i < 2; b_i++) {
       for (loop_ub = 0; loop_ub < e_u->size[0]; loop_ub++) {
-        pData[i72] = e_u->data[loop_ub + e_u->size[0] * b_i];
-        i72++;
+        pData[i41] = e_u->data[loop_ub + e_u->size[0] * b_i];
+        i41++;
       }
     }
 
-    emlrtAssign(&f_y, m47);
+    emlrtAssign(&f_y, m42);
     emlrtAddField(y, f_y, "childIds", i);
-    i72 = f_u->size[0];
+    i41 = f_u->size[0];
     f_u->size[0] = u->data[b_j0].parentId->size[0];
-    emxEnsureCapacity(sp, (emxArray__common *)f_u, i72, (int32_T)sizeof(real_T),
+    emxEnsureCapacity(sp, (emxArray__common *)f_u, i41, (int32_T)sizeof(real_T),
                       (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].parentId->size[0];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      f_u->data[i72] = u->data[b_j0].parentId->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      f_u->data[i41] = u->data[b_j0].parentId->data[i41];
     }
 
     g_y = NULL;
-    m47 = emlrtCreateNumericArray(1, *(int32_T (*)[1])f_u->size, mxDOUBLE_CLASS,
+    m42 = emlrtCreateNumericArray(1, *(int32_T (*)[1])f_u->size, mxDOUBLE_CLASS,
       mxREAL);
-    pData = (real_T *)mxGetPr(m47);
-    i72 = 0;
+    pData = (real_T *)mxGetPr(m42);
+    i41 = 0;
     for (b_i = 0; b_i < f_u->size[0]; b_i++) {
-      pData[i72] = f_u->data[b_i];
-      i72++;
+      pData[i41] = f_u->data[b_i];
+      i41++;
     }
 
-    emlrtAssign(&g_y, m47);
+    emlrtAssign(&g_y, m42);
     emlrtAddField(y, g_y, "parentId", i);
-    i72 = g_u->size[0];
+    i41 = g_u->size[0];
     g_u->size[0] = u->data[b_j0].depth->size[0];
-    emxEnsureCapacity(sp, (emxArray__common *)g_u, i72, (int32_T)sizeof(real_T),
+    emxEnsureCapacity(sp, (emxArray__common *)g_u, i41, (int32_T)sizeof(real_T),
                       (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].depth->size[0];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      g_u->data[i72] = u->data[b_j0].depth->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      g_u->data[i41] = u->data[b_j0].depth->data[i41];
     }
 
     h_y = NULL;
-    m47 = emlrtCreateNumericArray(1, *(int32_T (*)[1])g_u->size, mxDOUBLE_CLASS,
+    m42 = emlrtCreateNumericArray(1, *(int32_T (*)[1])g_u->size, mxDOUBLE_CLASS,
       mxREAL);
-    pData = (real_T *)mxGetPr(m47);
-    i72 = 0;
+    pData = (real_T *)mxGetPr(m42);
+    i41 = 0;
     for (b_i = 0; b_i < g_u->size[0]; b_i++) {
-      pData[i72] = g_u->data[b_i];
-      i72++;
+      pData[i41] = g_u->data[b_i];
+      i41++;
     }
 
-    emlrtAssign(&h_y, m47);
+    emlrtAssign(&h_y, m42);
     emlrtAddField(y, h_y, "depth", i);
     i_y = NULL;
     loop_ub = u->data[b_j0].iPresent->size[0];
-    iv122[0] = loop_ub;
-    emlrtAssign(&i_y, emlrtCreateStructArray(1, iv122, 0, NULL));
+    iv85[0] = loop_ub;
+    emlrtAssign(&i_y, emlrtCreateStructArray(1, iv85, 0, NULL));
     emlrtCreateField(i_y, "inds");
     b_i = 0;
     for (c_j0 = 0; c_j0 < u->data[b_j0].iPresent->size[0U]; c_j0++) {
-      i72 = k_u->size[0] * k_u->size[1];
+      i41 = k_u->size[0] * k_u->size[1];
       k_u->size[0] = 1;
       k_u->size[1] = u->data[b_j0].iPresent->data[c_j0].inds->size[1];
-      emxEnsureCapacity(sp, (emxArray__common *)k_u, i72, (int32_T)sizeof
+      emxEnsureCapacity(sp, (emxArray__common *)k_u, i41, (int32_T)sizeof
                         (int64_T), (emlrtRTEInfo *)NULL);
       loop_ub = u->data[b_j0].iPresent->data[c_j0].inds->size[0] * u->data[b_j0]
         .iPresent->data[c_j0].inds->size[1];
-      for (i72 = 0; i72 < loop_ub; i72++) {
-        k_u->data[i72] = u->data[b_j0].iPresent->data[c_j0].inds->data[i72];
+      for (i41 = 0; i41 < loop_ub; i41++) {
+        k_u->data[i41] = u->data[b_j0].iPresent->data[c_j0].inds->data[i41];
       }
 
       j_y = NULL;
-      m47 = emlrtCreateNumericArray(2, *(int32_T (*)[1])k_u->size, mxINT64_CLASS,
+      m42 = emlrtCreateNumericArray(2, *(int32_T (*)[1])k_u->size, mxINT64_CLASS,
         mxREAL);
-      b_pData = (int64_T *)mxGetData(m47);
-      i72 = 0;
+      b_pData = (int64_T *)mxGetData(m42);
+      i41 = 0;
       for (loop_ub = 0; loop_ub < k_u->size[1]; loop_ub++) {
-        b_pData[i72] = k_u->data[k_u->size[0] * loop_ub];
-        i72++;
+        b_pData[i41] = k_u->data[k_u->size[0] * loop_ub];
+        i41++;
       }
 
-      emlrtAssign(&j_y, m47);
+      emlrtAssign(&j_y, m42);
       emlrtAddField(i_y, j_y, "inds", b_i);
       b_i++;
     }
@@ -452,102 +451,102 @@ static const mxArray *emlrt_marshallOut(const emlrtStack *sp, const
     emlrtAddField(y, i_y, "iPresent", i);
     emlrtAddField(y, b_emlrt_marshallOut(sp, u->data[b_j0].iFeatNum), "iFeatNum",
                   i);
-    i72 = h_u->size[0] * h_u->size[1];
+    i41 = h_u->size[0] * h_u->size[1];
     h_u->size[0] = u->data[b_j0].trainingCounts->size[0];
     h_u->size[1] = u->data[b_j0].trainingCounts->size[1];
-    emxEnsureCapacity(sp, (emxArray__common *)h_u, i72, (int32_T)sizeof(real_T),
+    emxEnsureCapacity(sp, (emxArray__common *)h_u, i41, (int32_T)sizeof(real_T),
                       (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].trainingCounts->size[0] * u->data[b_j0].
       trainingCounts->size[1];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      h_u->data[i72] = u->data[b_j0].trainingCounts->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      h_u->data[i41] = u->data[b_j0].trainingCounts->data[i41];
     }
 
     k_y = NULL;
-    m47 = emlrtCreateNumericArray(2, *(int32_T (*)[1])h_u->size, mxDOUBLE_CLASS,
+    m42 = emlrtCreateNumericArray(2, *(int32_T (*)[1])h_u->size, mxDOUBLE_CLASS,
       mxREAL);
-    pData = (real_T *)mxGetPr(m47);
-    i72 = 0;
+    pData = (real_T *)mxGetPr(m42);
+    i41 = 0;
     for (b_i = 0; b_i < h_u->size[1]; b_i++) {
       for (loop_ub = 0; loop_ub < h_u->size[0]; loop_ub++) {
-        pData[i72] = h_u->data[loop_ub + h_u->size[0] * b_i];
-        i72++;
+        pData[i41] = h_u->data[loop_ub + h_u->size[0] * b_i];
+        i41++;
       }
     }
 
-    emlrtAssign(&k_y, m47);
+    emlrtAssign(&k_y, m42);
     emlrtAddField(y, k_y, "trainingCounts", i);
-    i72 = i_u->size[0];
+    i41 = i_u->size[0];
     i_u->size[0] = u->data[b_j0].labelClassId->size[0];
-    emxEnsureCapacity(sp, (emxArray__common *)i_u, i72, (int32_T)sizeof(real_T),
+    emxEnsureCapacity(sp, (emxArray__common *)i_u, i41, (int32_T)sizeof(real_T),
                       (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].labelClassId->size[0];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      i_u->data[i72] = u->data[b_j0].labelClassId->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      i_u->data[i41] = u->data[b_j0].labelClassId->data[i41];
     }
 
     l_y = NULL;
-    m47 = emlrtCreateNumericArray(1, *(int32_T (*)[1])i_u->size, mxDOUBLE_CLASS,
+    m42 = emlrtCreateNumericArray(1, *(int32_T (*)[1])i_u->size, mxDOUBLE_CLASS,
       mxREAL);
-    pData = (real_T *)mxGetPr(m47);
-    i72 = 0;
+    pData = (real_T *)mxGetPr(m42);
+    i41 = 0;
     for (b_i = 0; b_i < i_u->size[0]; b_i++) {
-      pData[i72] = i_u->data[b_i];
-      i72++;
+      pData[i41] = i_u->data[b_i];
+      i41++;
     }
 
-    emlrtAssign(&l_y, m47);
+    emlrtAssign(&l_y, m42);
     emlrtAddField(y, l_y, "labelClassId", i);
-    i72 = j_u->size[0];
+    i41 = j_u->size[0];
     j_u->size[0] = u->data[b_j0].partitionPoint->size[0];
-    emxEnsureCapacity(sp, (emxArray__common *)j_u, i72, (int32_T)sizeof(real_T),
+    emxEnsureCapacity(sp, (emxArray__common *)j_u, i41, (int32_T)sizeof(real_T),
                       (emlrtRTEInfo *)NULL);
     loop_ub = u->data[b_j0].partitionPoint->size[0];
-    for (i72 = 0; i72 < loop_ub; i72++) {
-      j_u->data[i72] = u->data[b_j0].partitionPoint->data[i72];
+    for (i41 = 0; i41 < loop_ub; i41++) {
+      j_u->data[i41] = u->data[b_j0].partitionPoint->data[i41];
     }
 
     m_y = NULL;
-    m47 = emlrtCreateNumericArray(1, *(int32_T (*)[1])j_u->size, mxDOUBLE_CLASS,
+    m42 = emlrtCreateNumericArray(1, *(int32_T (*)[1])j_u->size, mxDOUBLE_CLASS,
       mxREAL);
-    pData = (real_T *)mxGetPr(m47);
-    i72 = 0;
+    pData = (real_T *)mxGetPr(m42);
+    i41 = 0;
     for (b_i = 0; b_i < j_u->size[0]; b_i++) {
-      pData[i72] = j_u->data[b_i];
-      i72++;
+      pData[i41] = j_u->data[b_i];
+      i41++;
     }
 
-    emlrtAssign(&m_y, m47);
+    emlrtAssign(&m_y, m42);
     emlrtAddField(y, m_y, "partitionPoint", i);
     emlrtAddField(y, b_emlrt_marshallOut(sp, u->data[b_j0].iIn), "iIn", i);
     n_y = NULL;
     loop_ub = u->data[b_j0].decisionProjection->size[0];
-    iv123[0] = loop_ub;
-    emlrtAssign(&n_y, emlrtCreateStructArray(1, iv123, 0, NULL));
+    iv86[0] = loop_ub;
+    emlrtAssign(&n_y, emlrtCreateStructArray(1, iv86, 0, NULL));
     emlrtCreateField(n_y, "phi");
     b_i = 0;
     for (c_j0 = 0; c_j0 < u->data[b_j0].decisionProjection->size[0U]; c_j0++) {
-      i72 = l_u->size[0];
+      i41 = l_u->size[0];
       l_u->size[0] = u->data[b_j0].decisionProjection->data[c_j0].phi->size[0];
-      emxEnsureCapacity(sp, (emxArray__common *)l_u, i72, (int32_T)sizeof(real_T),
+      emxEnsureCapacity(sp, (emxArray__common *)l_u, i41, (int32_T)sizeof(real_T),
                         (emlrtRTEInfo *)NULL);
       loop_ub = u->data[b_j0].decisionProjection->data[c_j0].phi->size[0];
-      for (i72 = 0; i72 < loop_ub; i72++) {
-        l_u->data[i72] = u->data[b_j0].decisionProjection->data[c_j0].phi->
-          data[i72];
+      for (i41 = 0; i41 < loop_ub; i41++) {
+        l_u->data[i41] = u->data[b_j0].decisionProjection->data[c_j0].phi->
+          data[i41];
       }
 
       o_y = NULL;
-      m47 = emlrtCreateNumericArray(1, *(int32_T (*)[1])l_u->size,
+      m42 = emlrtCreateNumericArray(1, *(int32_T (*)[1])l_u->size,
         mxDOUBLE_CLASS, mxREAL);
-      pData = (real_T *)mxGetPr(m47);
-      i72 = 0;
+      pData = (real_T *)mxGetPr(m42);
+      i41 = 0;
       for (loop_ub = 0; loop_ub < l_u->size[0]; loop_ub++) {
-        pData[i72] = l_u->data[loop_ub];
-        i72++;
+        pData[i41] = l_u->data[loop_ub];
+        i41++;
       }
 
-      emlrtAssign(&o_y, m47);
+      emlrtAssign(&o_y, m42);
       emlrtAddField(n_y, o_y, "phi", b_i);
       b_i++;
     }
@@ -768,19 +767,18 @@ static real_T t_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
 static void u_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
   emlrtMsgIdentifier *msgId, emxArray_real_T *ret)
 {
-  int32_T iv126[2];
-  boolean_T bv4[2];
+  int32_T iv89[2];
+  boolean_T bv1[2];
   int32_T i;
-  int32_T iv127[2];
+  int32_T iv90[2];
   for (i = 0; i < 2; i++) {
-    iv126[i] = -1;
-    bv4[i] = true;
+    iv89[i] = -1;
+    bv1[i] = true;
   }
 
-  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "double", false, 2U, iv126, bv4,
-    iv127);
-  ret->size[0] = iv127[0];
-  ret->size[1] = iv127[1];
+  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "double", false, 2U, iv89, bv1, iv90);
+  ret->size[0] = iv90[0];
+  ret->size[1] = iv90[1];
   ret->allocatedSize = ret->size[0] * ret->size[1];
   ret->data = (real_T *)mxGetData(src);
   ret->canFreeData = false;
@@ -790,19 +788,19 @@ static void u_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
 static void v_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
   emlrtMsgIdentifier *msgId, emxArray_boolean_T *ret)
 {
-  int32_T iv128[2];
-  boolean_T bv5[2];
-  int32_T i75;
-  int32_T iv129[2];
-  for (i75 = 0; i75 < 2; i75++) {
-    iv128[i75] = 10001 * i75 - 1;
-    bv5[i75] = true;
+  int32_T iv91[2];
+  boolean_T bv2[2];
+  int32_T i44;
+  int32_T iv92[2];
+  for (i44 = 0; i44 < 2; i44++) {
+    iv91[i44] = 10001 * i44 - 1;
+    bv2[i44] = true;
   }
 
-  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "logical", false, 2U, iv128, bv5,
-    iv129);
-  ret->size[0] = iv129[0];
-  ret->size[1] = iv129[1];
+  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "logical", false, 2U, iv91, bv2,
+    iv92);
+  ret->size[0] = iv92[0];
+  ret->size[1] = iv92[1];
   ret->allocatedSize = ret->size[0] * ret->size[1];
   ret->data = (boolean_T *)mxGetData(src);
   ret->canFreeData = false;
@@ -822,20 +820,20 @@ static boolean_T w_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src,
 static void x_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
   emlrtMsgIdentifier *msgId, char_T ret_data[], int32_T ret_size[2])
 {
-  int32_T iv130[2];
-  boolean_T bv6[2];
-  int32_T i76;
-  static const boolean_T bv7[2] = { false, true };
+  int32_T iv93[2];
+  boolean_T bv3[2];
+  int32_T i45;
+  static const boolean_T bv4[2] = { false, true };
 
-  int32_T iv131[2];
-  for (i76 = 0; i76 < 2; i76++) {
-    iv130[i76] = 1 + 9 * i76;
-    bv6[i76] = bv7[i76];
+  int32_T iv94[2];
+  for (i45 = 0; i45 < 2; i45++) {
+    iv93[i45] = 1 + 9 * i45;
+    bv3[i45] = bv4[i45];
   }
 
-  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "char", false, 2U, iv130, bv6, iv131);
-  ret_size[0] = iv131[0];
-  ret_size[1] = iv131[1];
+  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "char", false, 2U, iv93, bv3, iv94);
+  ret_size[0] = iv94[0];
+  ret_size[1] = iv94[1];
   emlrtImportArrayR2011b(src, (void *)ret_data, 1, false);
   emlrtDestroyArray(&src);
 }
@@ -843,21 +841,20 @@ static void x_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
 static void y_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src, const
   emlrtMsgIdentifier *msgId, real_T ret_data[], int32_T ret_size[2])
 {
-  int32_T iv132[2];
-  boolean_T bv8[2];
-  int32_T i77;
-  static const boolean_T bv9[2] = { false, true };
+  int32_T iv95[2];
+  boolean_T bv5[2];
+  int32_T i46;
+  static const boolean_T bv6[2] = { false, true };
 
-  int32_T iv133[2];
-  for (i77 = 0; i77 < 2; i77++) {
-    iv132[i77] = 1 + (i77 << 1);
-    bv8[i77] = bv9[i77];
+  int32_T iv96[2];
+  for (i46 = 0; i46 < 2; i46++) {
+    iv95[i46] = 1 + (i46 << 1);
+    bv5[i46] = bv6[i46];
   }
 
-  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "double", false, 2U, iv132, bv8,
-    iv133);
-  ret_size[0] = iv133[0];
-  ret_size[1] = iv133[1];
+  emlrtCheckVsBuiltInR2012b(sp, msgId, src, "double", false, 2U, iv95, bv5, iv96);
+  ret_size[0] = iv96[0];
+  ret_size[1] = iv96[1];
   emlrtImportArrayR2011b(src, (void *)ret_data, 8, false);
   emlrtDestroyArray(&src);
 }
@@ -875,11 +872,11 @@ void growManyTreesCompileTest_api(c_growManyTreesCompileTestStack *SD, const
 
   st.tls = emlrtRootTLSGlobal;
   emlrtHeapReferenceStackEnterFcnR2012b(&st);
-  b_emxInit_real_T(&st, &XTrain, 2, &he_emlrtRTEI, true);
-  b_emxInit_boolean_T(&st, &YTrain, 2, &he_emlrtRTEI, true);
-  emxInitStruct_struct0_T(&st, &options, &he_emlrtRTEI, true);
-  b_emxInit_real_T(&st, &iFeatureNum, 2, &he_emlrtRTEI, true);
-  emxInit_struct2_T(&st, &trees, 1, &he_emlrtRTEI, true);
+  emxInit_real_T(&st, &XTrain, 2, &ud_emlrtRTEI, true);
+  b_emxInit_boolean_T(&st, &YTrain, 2, &ud_emlrtRTEI, true);
+  emxInitStruct_struct0_T(&st, &options, &ud_emlrtRTEI, true);
+  emxInit_real_T(&st, &iFeatureNum, 2, &ud_emlrtRTEI, true);
+  emxInit_struct2_T(&st, &trees, 1, &ud_emlrtRTEI, true);
 
   /* Marshall function inputs */
   nTrees = c_emlrt_marshallIn(&st, emlrtAliasP(prhs[0]), "nTrees");

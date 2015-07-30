@@ -27,8 +27,13 @@ extern void eml_li_find(const emlrtStack *sp, const emxArray_boolean_T *x,
   emxArray_int32_T *y);
 extern void growCCTnotRecursive(c_growManyTreesCompileTestStack *SD, const
   emlrtStack *sp, const emxArray_real_T *XTrain, const emxArray_boolean_T
-  *YTrain, const struct0_T *options, emxArray_real_T *iFeatureNum, struct2_T
-  *tree);
+  *YTrain, boolean_T options_bProjBoot, real_T options_lambda, const char_T
+  options_splitCriterion_data[], const int32_T options_splitCriterion_size[2],
+  real_T options_minPointsForSplit, const char_T options_dirIfEqual_data[],
+  const int32_T options_dirIfEqual_size[2], boolean_T
+  c_options_bContinueProjBootDege, real_T options_epsilonCCA, boolean_T
+  options_includeOriginalAxes, real_T options_maxDepthSplit, real_T
+  options_XVariationTol, emxArray_real_T *iFeatureNum, struct2_T *tree);
 
 #endif
 

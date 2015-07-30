@@ -15,10 +15,6 @@ static void b_emxCopy_real_T(const emlrtStack *sp, emxArray_real_T **dst,
   emxArray_real_T * const *src, const emlrtRTEInfo *srcLocation);
 static void emxCopy_boolean_T(const emlrtStack *sp, emxArray_boolean_T **dst,
   emxArray_boolean_T * const *src, const emlrtRTEInfo *srcLocation);
-static void emxCopy_char_T_1x10(emxArray_char_T_1x10 *dst, const
-  emxArray_char_T_1x10 *src);
-static void emxCopy_char_T_1x20(emxArray_char_T_1x20 *dst, const
-  emxArray_char_T_1x20 *src);
 static void emxCopy_int64_T(const emlrtStack *sp, emxArray_int64_T **dst,
   emxArray_int64_T * const *src, const emlrtRTEInfo *srcLocation);
 static void emxCopy_real_T(const emlrtStack *sp, emxArray_real_T **dst,
@@ -37,16 +33,14 @@ static void emxExpand_struct4_T(const emlrtStack *sp, emxArray_struct4_T
   *emxArray, int32_T fromIndex, int32_T toIndex, const emlrtRTEInfo *srcLocation);
 static void emxExpand_struct5_T(const emlrtStack *sp, emxArray_struct5_T
   *emxArray, int32_T fromIndex, int32_T toIndex, const emlrtRTEInfo *srcLocation);
-static void emxFreeStruct_struct3_T(struct3_T *pStruct);
-static void emxFreeStruct_struct4_T(struct4_T *pStruct);
 static void emxFreeStruct_struct5_T(struct5_T *pStruct);
+static void emxFree_struct3_T(emxArray_struct3_T **pEmxArray);
 static void emxInitStruct_struct1_T(struct1_T *pStruct);
-static void emxInitStruct_struct3_T(const emlrtStack *sp, struct3_T *pStruct,
-  const emlrtRTEInfo *srcLocation, boolean_T doPush);
-static void emxInitStruct_struct4_T(const emlrtStack *sp, struct4_T *pStruct,
-  const emlrtRTEInfo *srcLocation, boolean_T doPush);
 static void emxInitStruct_struct5_T(const emlrtStack *sp, struct5_T *pStruct,
   const emlrtRTEInfo *srcLocation, boolean_T doPush);
+static void emxInit_struct3_T(const emlrtStack *sp, emxArray_struct3_T
+  **pEmxArray, int32_T numDimensions, const emlrtRTEInfo *srcLocation, boolean_T
+  doPush);
 static void emxTrim_struct2_T(emxArray_struct2_T *emxArray, int32_T fromIndex,
   int32_T toIndex);
 static void emxTrim_struct3_T(emxArray_struct3_T *emxArray, int32_T fromIndex,
@@ -102,44 +96,6 @@ static void emxCopy_boolean_T(const emlrtStack *sp, emxArray_boolean_T **dst,
                     (boolean_T), srcLocation);
   for (i = 0; i < numElSrc; i++) {
     (*dst)->data[i] = (*src)->data[i];
-  }
-}
-
-static void emxCopy_char_T_1x10(emxArray_char_T_1x10 *dst, const
-  emxArray_char_T_1x10 *src)
-{
-  int32_T numElSrc;
-  int32_T i;
-  numElSrc = 1;
-  for (i = 0; i < 2; i++) {
-    numElSrc *= src->size[i];
-  }
-
-  for (i = 0; i < 2; i++) {
-    dst->size[i] = src->size[i];
-  }
-
-  for (i = 0; i < numElSrc; i++) {
-    dst->data[i] = src->data[i];
-  }
-}
-
-static void emxCopy_char_T_1x20(emxArray_char_T_1x20 *dst, const
-  emxArray_char_T_1x20 *src)
-{
-  int32_T numElSrc;
-  int32_T i;
-  numElSrc = 1;
-  for (i = 0; i < 2; i++) {
-    numElSrc *= src->size[i];
-  }
-
-  for (i = 0; i < 2; i++) {
-    dst->size[i] = src->size[i];
-  }
-
-  for (i = 0; i < numElSrc; i++) {
-    dst->data[i] = src->data[i];
   }
 }
 
@@ -296,19 +252,35 @@ static void emxExpand_struct5_T(const emlrtStack *sp, emxArray_struct5_T
   }
 }
 
-static void emxFreeStruct_struct3_T(struct3_T *pStruct)
-{
-  emxFree_int64_T(&pStruct->inds);
-}
-
-static void emxFreeStruct_struct4_T(struct4_T *pStruct)
-{
-  emxFree_real_T(&pStruct->inds);
-}
-
 static void emxFreeStruct_struct5_T(struct5_T *pStruct)
 {
   emxFree_real_T(&pStruct->phi);
+}
+
+static void emxFree_struct3_T(emxArray_struct3_T **pEmxArray)
+{
+  int32_T numEl;
+  int32_T i;
+  if (*pEmxArray != (emxArray_struct3_T *)NULL) {
+    if ((*pEmxArray)->data != (struct3_T *)NULL) {
+      numEl = 1;
+      for (i = 0; i < (*pEmxArray)->numDimensions; i++) {
+        numEl *= (*pEmxArray)->size[i];
+      }
+
+      for (i = 0; i < numEl; i++) {
+        emxFreeStruct_struct3_T(&(*pEmxArray)->data[i]);
+      }
+
+      if ((*pEmxArray)->canFreeData) {
+        emlrtFreeMex((void *)(*pEmxArray)->data);
+      }
+    }
+
+    emlrtFreeMex((void *)(*pEmxArray)->size);
+    emlrtFreeMex((void *)*pEmxArray);
+    *pEmxArray = (emxArray_struct3_T *)NULL;
+  }
 }
 
 static void emxInitStruct_struct1_T(struct1_T *pStruct)
@@ -317,22 +289,42 @@ static void emxInitStruct_struct1_T(struct1_T *pStruct)
   pStruct->Rand.size[1] = 0;
 }
 
-static void emxInitStruct_struct3_T(const emlrtStack *sp, struct3_T *pStruct,
-  const emlrtRTEInfo *srcLocation, boolean_T doPush)
-{
-  emxInit_int64_T(sp, &pStruct->inds, 2, srcLocation, doPush);
-}
-
-static void emxInitStruct_struct4_T(const emlrtStack *sp, struct4_T *pStruct,
-  const emlrtRTEInfo *srcLocation, boolean_T doPush)
-{
-  b_emxInit_real_T(sp, &pStruct->inds, 2, srcLocation, doPush);
-}
-
 static void emxInitStruct_struct5_T(const emlrtStack *sp, struct5_T *pStruct,
   const emlrtRTEInfo *srcLocation, boolean_T doPush)
 {
-  emxInit_real_T(sp, &pStruct->phi, 1, srcLocation, doPush);
+  b_emxInit_real_T(sp, &pStruct->phi, 1, srcLocation, doPush);
+}
+
+static void emxInit_struct3_T(const emlrtStack *sp, emxArray_struct3_T
+  **pEmxArray, int32_T numDimensions, const emlrtRTEInfo *srcLocation, boolean_T
+  doPush)
+{
+  emxArray_struct3_T *emxArray;
+  int32_T i;
+  *pEmxArray = (emxArray_struct3_T *)emlrtMallocMex(sizeof(emxArray_struct3_T));
+  if ((void *)*pEmxArray == NULL) {
+    emlrtHeapAllocationErrorR2012b(srcLocation, sp);
+  }
+
+  if (doPush) {
+    emlrtPushHeapReferenceStackR2012b(sp, (void *)pEmxArray, (void (*)(void *))
+      emxFree_struct3_T);
+  }
+
+  emxArray = *pEmxArray;
+  emxArray->data = (struct3_T *)NULL;
+  emxArray->numDimensions = numDimensions;
+  emxArray->size = (int32_T *)emlrtMallocMex((uint32_T)(sizeof(int32_T)
+    * numDimensions));
+  if ((void *)emxArray->size == NULL) {
+    emlrtHeapAllocationErrorR2012b(srcLocation, sp);
+  }
+
+  emxArray->allocatedSize = 0;
+  emxArray->canFreeData = true;
+  for (i = 0; i < numDimensions; i++) {
+    emxArray->size[i] = 0;
+  }
 }
 
 static void emxTrim_struct2_T(emxArray_struct2_T *emxArray, int32_T fromIndex,
@@ -465,45 +457,21 @@ void b_emxInit_real_T(const emlrtStack *sp, emxArray_real_T **pEmxArray, int32_T
   }
 }
 
-void emxCopyStruct_struct0_T(const emlrtStack *sp, struct0_T *dst, const
-  struct0_T *src, const emlrtRTEInfo *srcLocation)
-{
-  dst->bProjBoot = src->bProjBoot;
-  dst->lambda = src->lambda;
-  emxCopy_char_T_1x10(&dst->splitCriterion, &src->splitCriterion);
-  dst->minPointsForSplit = src->minPointsForSplit;
-  emxCopy_char_T_1x10(&dst->dirIfEqual, &src->dirIfEqual);
-  dst->bContinueProjBootDegenerate = src->bContinueProjBootDegenerate;
-  dst->epsilonCCA = src->epsilonCCA;
-  dst->bBagTrees = src->bBagTrees;
-  dst->bUseParallel = src->bUseParallel;
-  dst->projections = src->projections;
-  dst->includeOriginalAxes = src->includeOriginalAxes;
-  emxCopy_char_T_1x20(&dst->treeRotation, &src->treeRotation);
-  dst->RotForM = src->RotForM;
-  dst->RotForpS = src->RotForpS;
-  dst->RotForpClassLeaveOut = src->RotForpClassLeaveOut;
-  dst->bRandomRotationStart = src->bRandomRotationStart;
-  b_emxCopy_real_T(sp, &dst->voteFactor, &src->voteFactor, srcLocation);
-  dst->maxDepthSplit = src->maxDepthSplit;
-  dst->XVariationTol = src->XVariationTol;
-}
-
 void emxCopyStruct_struct2_T(const emlrtStack *sp, struct2_T *dst, const
   struct2_T *src, const emlrtRTEInfo *srcLocation)
 {
   dst->nextChild = src->nextChild;
   emxCopy_boolean_T(sp, &dst->bExpanded, &src->bExpanded, srcLocation);
-  emxCopy_real_T(sp, &dst->nodeId, &src->nodeId, srcLocation);
+  b_emxCopy_real_T(sp, &dst->nodeId, &src->nodeId, srcLocation);
   emxCopy_boolean_T(sp, &dst->bLeaf, &src->bLeaf, srcLocation);
-  b_emxCopy_real_T(sp, &dst->childIds, &src->childIds, srcLocation);
-  emxCopy_real_T(sp, &dst->parentId, &src->parentId, srcLocation);
-  emxCopy_real_T(sp, &dst->depth, &src->depth, srcLocation);
+  emxCopy_real_T(sp, &dst->childIds, &src->childIds, srcLocation);
+  b_emxCopy_real_T(sp, &dst->parentId, &src->parentId, srcLocation);
+  b_emxCopy_real_T(sp, &dst->depth, &src->depth, srcLocation);
   emxCopy_struct3_T(sp, &dst->iPresent, &src->iPresent, srcLocation);
   emxCopy_struct4_T(sp, &dst->iFeatNum, &src->iFeatNum, srcLocation);
-  b_emxCopy_real_T(sp, &dst->trainingCounts, &src->trainingCounts, srcLocation);
-  emxCopy_real_T(sp, &dst->labelClassId, &src->labelClassId, srcLocation);
-  emxCopy_real_T(sp, &dst->partitionPoint, &src->partitionPoint, srcLocation);
+  emxCopy_real_T(sp, &dst->trainingCounts, &src->trainingCounts, srcLocation);
+  b_emxCopy_real_T(sp, &dst->labelClassId, &src->labelClassId, srcLocation);
+  b_emxCopy_real_T(sp, &dst->partitionPoint, &src->partitionPoint, srcLocation);
   emxCopy_struct4_T(sp, &dst->iIn, &src->iIn, srcLocation);
   emxCopy_struct5_T(sp, &dst->decisionProjection, &src->decisionProjection,
                     srcLocation);
@@ -518,13 +486,13 @@ void emxCopyStruct_struct3_T(const emlrtStack *sp, struct3_T *dst, const
 void emxCopyStruct_struct4_T(const emlrtStack *sp, struct4_T *dst, const
   struct4_T *src, const emlrtRTEInfo *srcLocation)
 {
-  b_emxCopy_real_T(sp, &dst->inds, &src->inds, srcLocation);
+  emxCopy_real_T(sp, &dst->inds, &src->inds, srcLocation);
 }
 
 void emxCopyStruct_struct5_T(const emlrtStack *sp, struct5_T *dst, const
   struct5_T *src, const emlrtRTEInfo *srcLocation)
 {
-  emxCopy_real_T(sp, &dst->phi, &src->phi, srcLocation);
+  b_emxCopy_real_T(sp, &dst->phi, &src->phi, srcLocation);
 }
 
 void emxEnsureCapacity(const emlrtStack *sp, emxArray__common *emxArray, int32_T
@@ -813,9 +781,14 @@ void emxFreeStruct_struct2_T(struct2_T *pStruct)
   emxFree_struct5_T(&pStruct->decisionProjection);
 }
 
-void emxFreeStruct_struct_T(d_struct_T *pStruct)
+void emxFreeStruct_struct3_T(struct3_T *pStruct)
 {
-  emxFree_real_T(&pStruct->trainingCounts);
+  emxFree_int64_T(&pStruct->inds);
+}
+
+void emxFreeStruct_struct4_T(struct4_T *pStruct)
+{
+  emxFree_real_T(&pStruct->inds);
 }
 
 void emxFree_boolean_T(emxArray_boolean_T **pEmxArray)
@@ -894,32 +867,6 @@ void emxFree_struct2_T(emxArray_struct2_T **pEmxArray)
     emlrtFreeMex((void *)(*pEmxArray)->size);
     emlrtFreeMex((void *)*pEmxArray);
     *pEmxArray = (emxArray_struct2_T *)NULL;
-  }
-}
-
-void emxFree_struct3_T(emxArray_struct3_T **pEmxArray)
-{
-  int32_T numEl;
-  int32_T i;
-  if (*pEmxArray != (emxArray_struct3_T *)NULL) {
-    if ((*pEmxArray)->data != (struct3_T *)NULL) {
-      numEl = 1;
-      for (i = 0; i < (*pEmxArray)->numDimensions; i++) {
-        numEl *= (*pEmxArray)->size[i];
-      }
-
-      for (i = 0; i < numEl; i++) {
-        emxFreeStruct_struct3_T(&(*pEmxArray)->data[i]);
-      }
-
-      if ((*pEmxArray)->canFreeData) {
-        emlrtFreeMex((void *)(*pEmxArray)->data);
-      }
-    }
-
-    emlrtFreeMex((void *)(*pEmxArray)->size);
-    emlrtFreeMex((void *)*pEmxArray);
-    *pEmxArray = (emxArray_struct3_T *)NULL;
   }
 }
 
@@ -1012,31 +959,37 @@ void emxInitStruct_struct0_T(const emlrtStack *sp, struct0_T *pStruct, const
   emxInitStruct_struct1_T(&pStruct->projections);
   pStruct->treeRotation.size[0] = 0;
   pStruct->treeRotation.size[1] = 0;
-  b_emxInit_real_T(sp, &pStruct->voteFactor, 2, srcLocation, doPush);
+  emxInit_real_T(sp, &pStruct->voteFactor, 2, srcLocation, doPush);
 }
 
 void emxInitStruct_struct2_T(const emlrtStack *sp, struct2_T *pStruct, const
   emlrtRTEInfo *srcLocation, boolean_T doPush)
 {
   emxInit_boolean_T(sp, &pStruct->bExpanded, 1, srcLocation, doPush);
-  emxInit_real_T(sp, &pStruct->nodeId, 1, srcLocation, doPush);
+  b_emxInit_real_T(sp, &pStruct->nodeId, 1, srcLocation, doPush);
   emxInit_boolean_T(sp, &pStruct->bLeaf, 1, srcLocation, doPush);
-  b_emxInit_real_T(sp, &pStruct->childIds, 2, srcLocation, doPush);
-  emxInit_real_T(sp, &pStruct->parentId, 1, srcLocation, doPush);
-  emxInit_real_T(sp, &pStruct->depth, 1, srcLocation, doPush);
+  emxInit_real_T(sp, &pStruct->childIds, 2, srcLocation, doPush);
+  b_emxInit_real_T(sp, &pStruct->parentId, 1, srcLocation, doPush);
+  b_emxInit_real_T(sp, &pStruct->depth, 1, srcLocation, doPush);
   emxInit_struct3_T(sp, &pStruct->iPresent, 1, srcLocation, doPush);
   emxInit_struct4_T(sp, &pStruct->iFeatNum, 1, srcLocation, doPush);
-  b_emxInit_real_T(sp, &pStruct->trainingCounts, 2, srcLocation, doPush);
-  emxInit_real_T(sp, &pStruct->labelClassId, 1, srcLocation, doPush);
-  emxInit_real_T(sp, &pStruct->partitionPoint, 1, srcLocation, doPush);
+  emxInit_real_T(sp, &pStruct->trainingCounts, 2, srcLocation, doPush);
+  b_emxInit_real_T(sp, &pStruct->labelClassId, 1, srcLocation, doPush);
+  b_emxInit_real_T(sp, &pStruct->partitionPoint, 1, srcLocation, doPush);
   emxInit_struct4_T(sp, &pStruct->iIn, 1, srcLocation, doPush);
   emxInit_struct5_T(sp, &pStruct->decisionProjection, 1, srcLocation, doPush);
 }
 
-void emxInitStruct_struct_T(const emlrtStack *sp, d_struct_T *pStruct, const
+void emxInitStruct_struct3_T(const emlrtStack *sp, struct3_T *pStruct, const
   emlrtRTEInfo *srcLocation, boolean_T doPush)
 {
-  b_emxInit_real_T(sp, &pStruct->trainingCounts, 2, srcLocation, doPush);
+  emxInit_int64_T(sp, &pStruct->inds, 2, srcLocation, doPush);
+}
+
+void emxInitStruct_struct4_T(const emlrtStack *sp, struct4_T *pStruct, const
+  emlrtRTEInfo *srcLocation, boolean_T doPush)
+{
+  emxInit_real_T(sp, &pStruct->inds, 2, srcLocation, doPush);
 }
 
 void emxInit_boolean_T(const emlrtStack *sp, emxArray_boolean_T **pEmxArray,
@@ -1183,37 +1136,6 @@ void emxInit_struct2_T(const emlrtStack *sp, emxArray_struct2_T **pEmxArray,
 
   emxArray = *pEmxArray;
   emxArray->data = (struct2_T *)NULL;
-  emxArray->numDimensions = numDimensions;
-  emxArray->size = (int32_T *)emlrtMallocMex((uint32_T)(sizeof(int32_T)
-    * numDimensions));
-  if ((void *)emxArray->size == NULL) {
-    emlrtHeapAllocationErrorR2012b(srcLocation, sp);
-  }
-
-  emxArray->allocatedSize = 0;
-  emxArray->canFreeData = true;
-  for (i = 0; i < numDimensions; i++) {
-    emxArray->size[i] = 0;
-  }
-}
-
-void emxInit_struct3_T(const emlrtStack *sp, emxArray_struct3_T **pEmxArray,
-  int32_T numDimensions, const emlrtRTEInfo *srcLocation, boolean_T doPush)
-{
-  emxArray_struct3_T *emxArray;
-  int32_T i;
-  *pEmxArray = (emxArray_struct3_T *)emlrtMallocMex(sizeof(emxArray_struct3_T));
-  if ((void *)*pEmxArray == NULL) {
-    emlrtHeapAllocationErrorR2012b(srcLocation, sp);
-  }
-
-  if (doPush) {
-    emlrtPushHeapReferenceStackR2012b(sp, (void *)pEmxArray, (void (*)(void *))
-      emxFree_struct3_T);
-  }
-
-  emxArray = *pEmxArray;
-  emxArray->data = (struct3_T *)NULL;
   emxArray->numDimensions = numDimensions;
   emxArray->size = (int32_T *)emlrtMallocMex((uint32_T)(sizeof(int32_T)
     * numDimensions));

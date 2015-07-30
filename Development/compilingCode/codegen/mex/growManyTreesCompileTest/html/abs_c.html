@@ -24,23 +24,23 @@
 <a name="12"><font color="#888888 "><i>   12   </i></font></a><font color="#992211">#</font><font color="#992211"><b>include</b></font> <font color="#992211">&quot;growManyTreesCompileTest_emxutil.h&quot;</font>
 <a name="13"><font color="#888888 "><i>   13   </i></font></a>
 <a name="14"><font color="#888888 "><i>   14   </i></font></a><font color="#117755"><i>/* Variable Definitions */</i></font>
-<a name="15"><font color="#888888 "><i>   15   </i></font></a><font color="#112266"><b>static</b></font> emlrtRTEInfo <a name="var_nb_emlrtRTEI">nb_emlrtRTEI</a> = <b>{</b> 16, 5, <font color="#1122ff">&quot;abs&quot;</font>,
+<a name="15"><font color="#888888 "><i>   15   </i></font></a><font color="#112266"><b>static</b></font> emlrtRTEInfo <a name="var_kb_emlrtRTEI">kb_emlrtRTEI</a> = <b>{</b> 16, 5, <font color="#1122ff">&quot;abs&quot;</font>,
 <a name="16"><font color="#888888 "><i>   16   </i></font></a>  <font color="#1122ff">&quot;C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\elfun\\abs.m&quot;</font> <b>}</b>;
 <a name="17"><font color="#888888 "><i>   17   </i></font></a>
 <a name="18"><font color="#888888 "><i>   18   </i></font></a><font color="#117755"><i>/* Function Definitions */</i></font>
 <a name="19"><font color="#888888 "><i>   19   </i></font></a><font color="#112266"><b>void</b></font> <a name="fcn_b_abs">b_abs</a>(<font color="#112266"><b>const</b></font> emlrtStack *sp, <font color="#112266"><b>const</b></font> <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *x, <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *y)
 <a name="20"><font color="#888888 "><i>   20   </i></font></a><b>{</b>
-<a name="21"><font color="#888888 "><i>   21   </i></font></a>  int16_T iv55[2];
+<a name="21"><font color="#888888 "><i>   21   </i></font></a>  int16_T iv27[2];
 <a name="22"><font color="#888888 "><i>   22   </i></font></a>  int32_T k;
 <a name="23"><font color="#888888 "><i>   23   </i></font></a>  <font color="#112266"><b>for</b></font> (k = 0; k &lt; 2; k++) <b>{</b>
-<a name="24"><font color="#888888 "><i>   24   </i></font></a>    iv55[k] = (int16_T)x-&gt;size[k];
+<a name="24"><font color="#888888 "><i>   24   </i></font></a>    iv27[k] = (int16_T)x-&gt;size[k];
 <a name="25"><font color="#888888 "><i>   25   </i></font></a>  <b>}</b>
 <a name="26"><font color="#888888 "><i>   26   </i></font></a>
 <a name="27"><font color="#888888 "><i>   27   </i></font></a>  k = y-&gt;size[0] * y-&gt;size[1];
 <a name="28"><font color="#888888 "><i>   28   </i></font></a>  y-&gt;size[0] = 1;
-<a name="29"><font color="#888888 "><i>   29   </i></font></a>  y-&gt;size[1] = iv55[1];
+<a name="29"><font color="#888888 "><i>   29   </i></font></a>  y-&gt;size[1] = iv27[1];
 <a name="30"><font color="#888888 "><i>   30   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(sp, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, k, (int32_T)<font color="#112266"><b>sizeof</b></font>(real_T),
-<a name="31"><font color="#888888 "><i>   31   </i></font></a>                    &amp;<a href="#var_nb_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_nb_emlrtRTEI');" target="_self"><font color="#1122aa">nb_emlrtRTEI</font></a>);
+<a name="31"><font color="#888888 "><i>   31   </i></font></a>                    &amp;<a href="#var_kb_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_kb_emlrtRTEI');" target="_self"><font color="#1122aa">kb_emlrtRTEI</font></a>);
 <a name="32"><font color="#888888 "><i>   32   </i></font></a>  <font color="#112266"><b>for</b></font> (k = 0; k &lt; x-&gt;size[1]; k++) <b>{</b>
 <a name="33"><font color="#888888 "><i>   33   </i></font></a>    y-&gt;data[k] = muDoubleScalarAbs(x-&gt;data[k]);
 <a name="34"><font color="#888888 "><i>   34   </i></font></a>  <b>}</b>
@@ -49,19 +49,19 @@
 <a name="37"><font color="#888888 "><i>   37   </i></font></a><font color="#112266"><b>void</b></font> <a name="fcn_c_abs">c_abs</a>(<font color="#112266"><b>const</b></font> emlrtStack *sp, <font color="#112266"><b>const</b></font> <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *x, <a href="growManyTreesCompileTest_types_h.html#type_emxArray_real_T" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray_real_T');" target="_self"><font color="#1122aa">emxArray_real_T</font></a> *y)
 <a name="38"><font color="#888888 "><i>   38   </i></font></a><b>{</b>
 <a name="39"><font color="#888888 "><i>   39   </i></font></a>  uint32_T uv0[2];
-<a name="40"><font color="#888888 "><i>   40   </i></font></a>  int32_T i9;
+<a name="40"><font color="#888888 "><i>   40   </i></font></a>  int32_T i10;
 <a name="41"><font color="#888888 "><i>   41   </i></font></a>  int32_T k;
-<a name="42"><font color="#888888 "><i>   42   </i></font></a>  <font color="#112266"><b>for</b></font> (i9 = 0; i9 &lt; 2; i9++) <b>{</b>
-<a name="43"><font color="#888888 "><i>   43   </i></font></a>    uv0[i9] = (uint32_T)x-&gt;size[i9];
+<a name="42"><font color="#888888 "><i>   42   </i></font></a>  <font color="#112266"><b>for</b></font> (i10 = 0; i10 &lt; 2; i10++) <b>{</b>
+<a name="43"><font color="#888888 "><i>   43   </i></font></a>    uv0[i10] = (uint32_T)x-&gt;size[i10];
 <a name="44"><font color="#888888 "><i>   44   </i></font></a>  <b>}</b>
 <a name="45"><font color="#888888 "><i>   45   </i></font></a>
-<a name="46"><font color="#888888 "><i>   46   </i></font></a>  i9 = y-&gt;size[0] * y-&gt;size[1];
+<a name="46"><font color="#888888 "><i>   46   </i></font></a>  i10 = y-&gt;size[0] * y-&gt;size[1];
 <a name="47"><font color="#888888 "><i>   47   </i></font></a>  y-&gt;size[0] = (int32_T)uv0[0];
 <a name="48"><font color="#888888 "><i>   48   </i></font></a>  y-&gt;size[1] = (int32_T)uv0[1];
-<a name="49"><font color="#888888 "><i>   49   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(sp, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i9, (int32_T)<font color="#112266"><b>sizeof</b></font>(real_T),
-<a name="50"><font color="#888888 "><i>   50   </i></font></a>                    &amp;<a href="#var_nb_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_nb_emlrtRTEI');" target="_self"><font color="#1122aa">nb_emlrtRTEI</font></a>);
-<a name="51"><font color="#888888 "><i>   51   </i></font></a>  i9 = x-&gt;size[0] * x-&gt;size[1];
-<a name="52"><font color="#888888 "><i>   52   </i></font></a>  <font color="#112266"><b>for</b></font> (k = 0; k &lt; i9; k++) <b>{</b>
+<a name="49"><font color="#888888 "><i>   49   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(sp, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, i10, (int32_T)<font color="#112266"><b>sizeof</b></font>(real_T),
+<a name="50"><font color="#888888 "><i>   50   </i></font></a>                    &amp;<a href="#var_kb_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_kb_emlrtRTEI');" target="_self"><font color="#1122aa">kb_emlrtRTEI</font></a>);
+<a name="51"><font color="#888888 "><i>   51   </i></font></a>  i10 = x-&gt;size[0] * x-&gt;size[1];
+<a name="52"><font color="#888888 "><i>   52   </i></font></a>  <font color="#112266"><b>for</b></font> (k = 0; k &lt; i10; k++) <b>{</b>
 <a name="53"><font color="#888888 "><i>   53   </i></font></a>    y-&gt;data[k] = muDoubleScalarAbs(x-&gt;data[k]);
 <a name="54"><font color="#888888 "><i>   54   </i></font></a>  <b>}</b>
 <a name="55"><font color="#888888 "><i>   55   </i></font></a><b>}</b>
@@ -74,7 +74,7 @@
 <a name="62"><font color="#888888 "><i>   62   </i></font></a>  k = y-&gt;size[0];
 <a name="63"><font color="#888888 "><i>   63   </i></font></a>  y-&gt;size[0] = (int32_T)unnamed_idx_0;
 <a name="64"><font color="#888888 "><i>   64   </i></font></a>  <a href="growManyTreesCompileTest_emxutil_c.html#fcn_emxEnsureCapacity" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'fcn_emxEnsureCapacity');" target="_self"><font color="#1122aa">emxEnsureCapacity</font></a>(sp, (<a href="growManyTreesCompileTest_types_h.html#type_emxArray__common" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'type_emxArray__common');" target="_self"><font color="#1122aa">emxArray__common</font></a> *)y, k, (int32_T)<font color="#112266"><b>sizeof</b></font>(real_T),
-<a name="65"><font color="#888888 "><i>   65   </i></font></a>                    &amp;<a href="#var_nb_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_nb_emlrtRTEI');" target="_self"><font color="#1122aa">nb_emlrtRTEI</font></a>);
+<a name="65"><font color="#888888 "><i>   65   </i></font></a>                    &amp;<a href="#var_kb_emlrtRTEI" onclick="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_kb_emlrtRTEI');" target="_self"><font color="#1122aa">kb_emlrtRTEI</font></a>);
 <a name="66"><font color="#888888 "><i>   66   </i></font></a>  <font color="#112266"><b>for</b></font> (k = 0; k &lt; x-&gt;size[0]; k++) <b>{</b>
 <a name="67"><font color="#888888 "><i>   67   </i></font></a>    y-&gt;data[k] = muDoubleScalarAbs(x-&gt;data[k]);
 <a name="68"><font color="#888888 "><i>   68   </i></font></a>  <b>}</b>

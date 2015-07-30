@@ -14,11 +14,11 @@
 #include "growManyTreesCompileTest_data.h"
 
 /* Variable Definitions */
-static emlrtRSInfo bg_emlrtRSI = { 87, "diff",
+static emlrtRSInfo ag_emlrtRSI = { 87, "diff",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\datafun\\diff.m"
 };
 
-static emlrtRTEInfo lc_emlrtRTEI = { 1, 14, "diff",
+static emlrtRTEInfo ic_emlrtRTEI = { 1, 14, "diff",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\datafun\\diff.m"
 };
 
@@ -41,16 +41,16 @@ void b_diff(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T *y)
     ixLead = y->size[0];
     y->size[0] = 0;
     emxEnsureCapacity(sp, (emxArray__common *)y, ixLead, (int32_T)sizeof(real_T),
-                      &lc_emlrtRTEI);
+                      &ic_emlrtRTEI);
   } else {
     ixLead = y->size[0];
     y->size[0] = x->size[0] - 1;
     emxEnsureCapacity(sp, (emxArray__common *)y, ixLead, (int32_T)sizeof(real_T),
-                      &pb_emlrtRTEI);
+                      &mb_emlrtRTEI);
     ixLead = 1;
     iyLead = 0;
     work = x->data[0];
-    st.site = &ef_emlrtRSI;
+    st.site = &df_emlrtRSI;
     overflow = (x->size[0] > 2147483646);
     if (overflow) {
       b_st.site = &v_emlrtRSI;
@@ -94,11 +94,11 @@ void diff(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T *y)
     ixStart = y->size[0] * y->size[1];
     y->size[0] = 0;
     emxEnsureCapacity(sp, (emxArray__common *)y, ixStart, (int32_T)sizeof(real_T),
-                      &lc_emlrtRTEI);
+                      &ic_emlrtRTEI);
     ixStart = y->size[0] * y->size[1];
     y->size[1] = (int32_T)ySize[1];
     emxEnsureCapacity(sp, (emxArray__common *)y, ixStart, (int32_T)sizeof(real_T),
-                      &lc_emlrtRTEI);
+                      &ic_emlrtRTEI);
   } else {
     for (ixStart = 0; ixStart < 2; ixStart++) {
       ySize[ixStart] = (uint32_T)x->size[ixStart];
@@ -108,11 +108,11 @@ void diff(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T *y)
     y->size[0] = x->size[0] - 1;
     y->size[1] = (int32_T)ySize[1];
     emxEnsureCapacity(sp, (emxArray__common *)y, ixStart, (int32_T)sizeof(real_T),
-                      &pb_emlrtRTEI);
+                      &mb_emlrtRTEI);
     if (!((int32_T)ySize[1] == 0)) {
       ixStart = 1;
       iyStart = 0;
-      st.site = &bg_emlrtRSI;
+      st.site = &ag_emlrtRSI;
       if (1 > x->size[1]) {
         overflow = false;
       } else {
@@ -128,7 +128,7 @@ void diff(const emlrtStack *sp, const emxArray_real_T *x, emxArray_real_T *y)
         ixLead = ixStart;
         iyLead = iyStart;
         work = x->data[ixStart - 1];
-        st.site = &ef_emlrtRSI;
+        st.site = &df_emlrtRSI;
         overflow = (x->size[0] > 2147483646);
         if (overflow) {
           b_st.site = &v_emlrtRSI;

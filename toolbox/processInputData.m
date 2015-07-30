@@ -86,10 +86,9 @@ if iscell(XTrain)
     XTrain = cell2mat(XTrain);
 end
 XCat = XTrainRC(:,~bOrdinal);
-if ~iscell(XCat)
-    XCat = num2cell(XCat);
+if iscell(XCat)
+    XCat = makeSureString(XCat,10);
 end
-XCat = makeSureString(XCat,10);
 
 iFeatureNum = 1:size(XTrain,2);
 featureNames = featureNamesOrig(bOrdinal);
@@ -101,7 +100,11 @@ Cats = cell(size(XCat,2),1);
 % Expand the categorical features
 for n=1:size(XCat,2)
     Cats{n} = unique(XCat(:,n))';
-    newNames = cellfun(@(x) [featureBaseNames{n}, 'Cat', x], Cats{n}, 'UniformOutput', false);
+    if iscell(Cats{n})
+        newNames = cellfun(@(x) [featureBaseNames{n}, 'Cat', x], Cats{n}, 'UniformOutput', false);
+    else
+        newNames = arrayfun(@(x) [featureBaseNames{n}, 'Cat', num2str(x)], Cats{n}, 'UniformOutput', false);
+    end
     featureNames = [featureNames, newNames]; %#ok<AGROW>
     nCats = numel(Cats{n});
     if nCats==1
@@ -116,7 +119,11 @@ for n=1:size(XCat,2)
     end
     XTrain = [XTrain,zeros(size(XTrain,1),nCats)]; %#ok<AGROW>
     for c=1:nCats
-        XTrain(strcmp(XCat(:,n),Cats{n}{c}),(sizeSoFar+c)) = 1;
+        if iscell(XCat)
+            XTrain(strcmp(XCat(:,n),Cats{n}{c}),(sizeSoFar+c)) = 1;
+        else
+            XTrain(XCat(:,n)==Cats{n}(c),(sizeSoFar+c)) = 1;
+        end
     end
 end
 
@@ -175,10 +182,9 @@ if iscell(X)
 end
 
 XCat = Xrc(:,~bOrdinal);
-if ~iscell(XCat)
-    XCat = num2cell(XCat);
+if iscell(XCat)
+    XCat = makeSureString(XCat,10);
 end
-XCat = makeSureString(XCat,10);
 
 for n=1:size(XCat,2)
     nCats = numel(Cats{n});
@@ -188,7 +194,11 @@ for n=1:size(XCat,2)
     sizeSoFar = size(X,2);
     X = [X,zeros(size(X,1),nCats)]; %#ok<AGROW>
     for c=1:nCats
-        X(strcmp(XCat(:,n),Cats{n}{c}),(sizeSoFar+c)) = 1;
+        if iscell(Cats{n})
+            X(strcmp(XCat(:,n),Cats{n}{c}),(sizeSoFar+c)) = 1;
+        else
+            X(XCat(:,n)==Cats{n}(c),(sizeSoFar+c)) = 1;
+        end
     end
 end
 

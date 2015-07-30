@@ -9,59 +9,58 @@
 #include "rt_nonfinite.h"
 #include "growManyTreesCompileTest.h"
 #include "queryIfOnlyTwoUniqueRows.h"
-#include "expandNode.h"
 #include "growManyTreesCompileTest_emxutil.h"
 #include "growCCTnotRecursive.h"
 #include "all.h"
 #include "bsxfun.h"
 #include "eml_int_forloop_overflow_check.h"
-#include "twoPointMaxMarginSplit.h"
 #include "growManyTreesCompileTest_mexutil.h"
 #include "growManyTreesCompileTest_data.h"
 
 /* Variable Definitions */
-static emlrtRSInfo mh_emlrtRSI = { 8, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
+static emlrtRSInfo rg_emlrtRSI = { 8, "queryIfOnlyTwoUniqueRows",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m" };
 
-static emlrtRSInfo nh_emlrtRSI = { 9, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
+static emlrtRSInfo sg_emlrtRSI = { 9, "queryIfOnlyTwoUniqueRows",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m" };
 
-static emlrtRSInfo oh_emlrtRSI = { 14, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
+static emlrtRSInfo tg_emlrtRSI = { 14, "queryIfOnlyTwoUniqueRows",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m" };
 
-static emlrtRSInfo ph_emlrtRSI = { 15, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
+static emlrtRSInfo ug_emlrtRSI = { 15, "queryIfOnlyTwoUniqueRows",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m" };
 
-static emlrtRSInfo qh_emlrtRSI = { 16, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
+static emlrtRSInfo vg_emlrtRSI = { 16, "queryIfOnlyTwoUniqueRows",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m" };
 
-static emlrtRTEInfo vc_emlrtRTEI = { 1, 35, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
+static emlrtRTEInfo kc_emlrtRTEI = { 1, 35, "queryIfOnlyTwoUniqueRows",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m" };
 
-static emlrtRTEInfo wc_emlrtRTEI = { 8, 1, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
+static emlrtRTEInfo lc_emlrtRTEI = { 8, 1, "queryIfOnlyTwoUniqueRows",
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m" };
 
-static emlrtRTEInfo xc_emlrtRTEI = { 14, 1, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
-
-static emlrtBCInfo df_emlrtBCI = { -1, -1, 15, 45, "X",
+static emlrtBCInfo se_emlrtBCI = { -1, -1, 15, 45, "X",
   "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m", 0 };
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m", 0
+};
 
 static emlrtECInfo lb_emlrtECI = { -1, 14, 18, "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m" };
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m" };
 
-static emlrtBCInfo ef_emlrtBCI = { -1, -1, 14, 18, "bEqualFirst",
+static emlrtBCInfo te_emlrtBCI = { -1, -1, 14, 18, "bEqualFirst",
   "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m", 0 };
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m", 0
+};
 
-static emlrtBCInfo ff_emlrtBCI = { -1, -1, 8, 34, "X",
+static emlrtBCInfo ue_emlrtBCI = { -1, -1, 8, 34, "X",
   "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m", 0 };
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m", 0
+};
 
-static emlrtBCInfo gf_emlrtBCI = { -1, -1, 15, 31, "X",
+static emlrtBCInfo ve_emlrtBCI = { -1, -1, 15, 31, "X",
   "queryIfOnlyTwoUniqueRows",
-  "C:\\Users\\Tom\\Documents\\Git\\CCF\\queryIfOnlyTwoUniqueRows.m", 0 };
+  "C:\\Users\\Tom\\Documents\\Git\\CCF\\toolbox\\queryIfOnlyTwoUniqueRows.m", 0
+};
 
 /* Function Definitions */
 boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
@@ -69,17 +68,14 @@ boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
 {
   boolean_T bLessThanTwoUniqueRows;
   emxArray_real_T *b_X;
-  emxArray_real_T *c_X;
-  int32_T i18;
+  int32_T i15;
   int32_T loop_ub;
-  emxArray_boolean_T *r81;
-  emxArray_boolean_T *r82;
   emxArray_boolean_T *bEqualFirst;
-  emxArray_boolean_T *b_bEqualFirst;
+  emxArray_boolean_T *r12;
   emxArray_boolean_T *x;
   int32_T k;
   const mxArray *y;
-  const mxArray *m14;
+  const mxArray *m13;
   int32_T idx;
   int32_T ii_data[1];
   boolean_T overflow;
@@ -87,22 +83,15 @@ boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
   boolean_T exitg2;
   const mxArray *b_y;
   int32_T b_ii_data[1];
-  real_T c_ii_data[1];
-  int32_T ii_size[1];
-  real_T iFirstNotEqual_data[1];
+  int32_T iFirstNotEqual_data[1];
   emxArray_int32_T *b_ii;
   boolean_T exitg1;
   boolean_T guard1 = false;
   const mxArray *c_y;
   emxArray_int32_T *c_ii;
-  emxArray_real_T *d_ii;
-  emxArray_real_T *iToCheck;
-  emxArray_real_T *b_iToCheck;
+  emxArray_real_T *c_X;
+  int32_T i16;
   emxArray_real_T *d_X;
-  int32_T i19;
-  emxArray_real_T *e_X;
-  emxArray_boolean_T *r83;
-  emxArray_boolean_T *c_bEqualFirst;
   emlrtStack st;
   emlrtStack b_st;
   emlrtStack c_st;
@@ -116,76 +105,41 @@ boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
   d_st.prev = &c_st;
   d_st.tls = c_st.tls;
   emlrtHeapReferenceStackEnterFcnR2012b(sp);
-  b_emxInit_real_T(sp, &b_X, 2, &vc_emlrtRTEI, true);
-
-  /* logging input variable 'X' for function 'queryIfOnlyTwoUniqueRows' */
-  emlrt_update_log_2(sp, X, *(emlrtLocationLoggingDataType (*)[613])&
-                     emlrtLocationLoggingDataTables[152U], b_X);
 
   /*  Function that checks if an array has only two unique rows as this can */
   /*  cause failure of for example LDA */
-  emxFree_real_T(&b_X);
   if (X->size[0] == 2) {
-    bLessThanTwoUniqueRows = emlrt_update_log_31(true,
-      *(emlrtLocationLoggingDataType (*)[613])&emlrtLocationLoggingDataTables
-      [153U]);
+    bLessThanTwoUniqueRows = true;
   } else {
-    b_emxInit_real_T(sp, &c_X, 2, &vc_emlrtRTEI, true);
-    i18 = X->size[0];
-    emlrtDynamicBoundsCheckFastR2012b(1, 1, i18, &ff_emlrtBCI, sp);
+    emxInit_real_T(sp, &b_X, 2, &kc_emlrtRTEI, true);
+    i15 = X->size[0];
+    emlrtDynamicBoundsCheckFastR2012b(1, 1, i15, &ue_emlrtBCI, sp);
     loop_ub = X->size[1];
-    i18 = c_X->size[0] * c_X->size[1];
-    c_X->size[0] = 1;
-    c_X->size[1] = loop_ub;
-    emxEnsureCapacity(sp, (emxArray__common *)c_X, i18, (int32_T)sizeof(real_T),
-                      &vc_emlrtRTEI);
-    for (i18 = 0; i18 < loop_ub; i18++) {
-      c_X->data[c_X->size[0] * i18] = X->data[X->size[0] * i18];
+    i15 = b_X->size[0] * b_X->size[1];
+    b_X->size[0] = 1;
+    b_X->size[1] = loop_ub;
+    emxEnsureCapacity(sp, (emxArray__common *)b_X, i15, (int32_T)sizeof(real_T),
+                      &kc_emlrtRTEI);
+    for (i15 = 0; i15 < loop_ub; i15++) {
+      b_X->data[b_X->size[0] * i15] = X->data[X->size[0] * i15];
     }
 
-    b_emxInit_boolean_T(sp, &r81, 2, &vc_emlrtRTEI, true);
-    b_emxInit_boolean_T(sp, &r82, 2, &vc_emlrtRTEI, true);
-    st.site = &mh_emlrtRSI;
-    c_bsxfun(&st, X, c_X, r81);
-    i18 = r82->size[0] * r82->size[1];
-    r82->size[0] = r81->size[0];
-    r82->size[1] = r81->size[1];
-    emxEnsureCapacity(sp, (emxArray__common *)r82, i18, (int32_T)sizeof
-                      (boolean_T), &vc_emlrtRTEI);
-    loop_ub = r81->size[0] * r81->size[1];
-    emxFree_real_T(&c_X);
-    for (i18 = 0; i18 < loop_ub; i18++) {
-      r82->data[i18] = r81->data[i18];
-    }
-
-    emxInit_boolean_T(sp, &bEqualFirst, 1, &wc_emlrtRTEI, true);
-    emxInit_boolean_T(sp, &b_bEqualFirst, 1, &vc_emlrtRTEI, true);
-    emlrt_update_log_30(sp, r82, *(emlrtLocationLoggingDataType (*)[613])&
-                        emlrtLocationLoggingDataTables[155U], r81);
-    st.site = &mh_emlrtRSI;
-    b_all(&st, r81, bEqualFirst);
-    i18 = b_bEqualFirst->size[0];
-    b_bEqualFirst->size[0] = bEqualFirst->size[0];
-    emxEnsureCapacity(sp, (emxArray__common *)b_bEqualFirst, i18, (int32_T)
-                      sizeof(boolean_T), &vc_emlrtRTEI);
-    loop_ub = bEqualFirst->size[0];
-    emxFree_boolean_T(&r82);
-    for (i18 = 0; i18 < loop_ub; i18++) {
-      b_bEqualFirst->data[i18] = bEqualFirst->data[i18];
-    }
-
-    emxInit_boolean_T(sp, &x, 1, &vc_emlrtRTEI, true);
-    emlrt_update_log_19(sp, b_bEqualFirst, *(emlrtLocationLoggingDataType (*)
-      [613])&emlrtLocationLoggingDataTables[154U], bEqualFirst);
-    st.site = &nh_emlrtRSI;
-    i18 = x->size[0];
+    emxInit_boolean_T(sp, &bEqualFirst, 1, &lc_emlrtRTEI, true);
+    b_emxInit_boolean_T(sp, &r12, 2, &kc_emlrtRTEI, true);
+    emxInit_boolean_T(sp, &x, 1, &kc_emlrtRTEI, true);
+    st.site = &rg_emlrtRSI;
+    c_bsxfun(&st, X, b_X, r12);
+    st.site = &rg_emlrtRSI;
+    b_all(&st, r12, bEqualFirst);
+    st.site = &sg_emlrtRSI;
+    i15 = x->size[0];
     x->size[0] = bEqualFirst->size[0];
-    emxEnsureCapacity(&st, (emxArray__common *)x, i18, (int32_T)sizeof(boolean_T),
-                      &vc_emlrtRTEI);
+    emxEnsureCapacity(&st, (emxArray__common *)x, i15, (int32_T)sizeof(boolean_T),
+                      &kc_emlrtRTEI);
     loop_ub = bEqualFirst->size[0];
-    emxFree_boolean_T(&b_bEqualFirst);
-    for (i18 = 0; i18 < loop_ub; i18++) {
-      x->data[i18] = !bEqualFirst->data[i18];
+    emxFree_real_T(&b_X);
+    for (i15 = 0; i15 < loop_ub; i15++) {
+      x->data[i15] = !bEqualFirst->data[i15];
     }
 
     b_st.site = &w_emlrtRSI;
@@ -193,10 +147,10 @@ boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
     if (k <= x->size[0]) {
     } else {
       y = NULL;
-      m14 = emlrtCreateString("Assertion failed.");
-      emlrtAssign(&y, m14);
-      c_st.site = &cq_emlrtRSI;
-      f_error(&c_st, y, &i_emlrtMCI);
+      m13 = emlrtCreateString("Assertion failed.");
+      emlrtAssign(&y, m13);
+      c_st.site = &gp_emlrtRSI;
+      f_error(&c_st, y, &g_emlrtMCI);
     }
 
     idx = 0;
@@ -227,10 +181,10 @@ boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
     if (idx <= k) {
     } else {
       b_y = NULL;
-      m14 = emlrtCreateString("Assertion failed.");
-      emlrtAssign(&b_y, m14);
-      c_st.site = &bq_emlrtRSI;
-      f_error(&c_st, b_y, &j_emlrtMCI);
+      m13 = emlrtCreateString("Assertion failed.");
+      emlrtAssign(&b_y, m13);
+      c_st.site = &fp_emlrtRSI;
+      f_error(&c_st, b_y, &h_emlrtMCI);
     }
 
     if (k == 1) {
@@ -244,62 +198,57 @@ boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
         loop_ub = 0;
       }
 
-      i18 = 0;
-      while (i18 <= loop_ub) {
+      i15 = 0;
+      while (i15 <= loop_ub) {
         b_ii_data[0] = ii_data[0];
-        i18 = 1;
+        i15 = 1;
       }
 
       k = loop_ub + 1;
       loop_ub++;
-      i18 = 0;
-      while (i18 <= loop_ub - 1) {
+      i15 = 0;
+      while (i15 <= loop_ub - 1) {
         ii_data[0] = b_ii_data[0];
-        i18 = 1;
+        i15 = 1;
       }
     }
 
-    ii_size[0] = k;
-    for (i18 = 0; i18 < k; i18++) {
-      c_ii_data[i18] = ii_data[i18];
+    for (i15 = 0; i15 < k; i15++) {
+      iFirstNotEqual_data[i15] = ii_data[i15];
     }
 
-    emlrt_update_log_32(c_ii_data, ii_size, *(emlrtLocationLoggingDataType (*)
-      [613])&emlrtLocationLoggingDataTables[156U], iFirstNotEqual_data, ii_data);
-    if (ii_data[0] == 0) {
-      bLessThanTwoUniqueRows = emlrt_update_log_31(true,
-        *(emlrtLocationLoggingDataType (*)[613])&emlrtLocationLoggingDataTables
-        [157U]);
+    if (k == 0) {
+      bLessThanTwoUniqueRows = true;
     } else {
       if (2 > bEqualFirst->size[0]) {
-        i18 = 0;
+        i15 = 0;
         ii = 0;
       } else {
-        i18 = 1;
+        i15 = 1;
         ii = bEqualFirst->size[0];
         idx = bEqualFirst->size[0];
-        ii = emlrtDynamicBoundsCheckFastR2012b(idx, 1, ii, &ef_emlrtBCI, sp);
+        ii = emlrtDynamicBoundsCheckFastR2012b(idx, 1, ii, &te_emlrtBCI, sp);
       }
 
-      emlrtVectorVectorIndexCheckR2012b(bEqualFirst->size[0], 1, 1, ii - i18,
+      emlrtVectorVectorIndexCheckR2012b(bEqualFirst->size[0], 1, 1, ii - i15,
         &lb_emlrtECI, sp);
-      st.site = &oh_emlrtRSI;
+      st.site = &tg_emlrtRSI;
       idx = x->size[0];
-      x->size[0] = ii - i18;
+      x->size[0] = ii - i15;
       emxEnsureCapacity(&st, (emxArray__common *)x, idx, (int32_T)sizeof
-                        (boolean_T), &vc_emlrtRTEI);
-      loop_ub = ii - i18;
+                        (boolean_T), &kc_emlrtRTEI);
+      loop_ub = ii - i15;
       for (ii = 0; ii < loop_ub; ii++) {
-        x->data[ii] = !bEqualFirst->data[i18 + ii];
+        x->data[ii] = !bEqualFirst->data[i15 + ii];
       }
 
-      emxInit_int32_T(&st, &b_ii, 1, &n_emlrtRTEI, true);
+      emxInit_int32_T(&st, &b_ii, 1, &j_emlrtRTEI, true);
       b_st.site = &w_emlrtRSI;
       idx = 0;
-      i18 = b_ii->size[0];
+      i15 = b_ii->size[0];
       b_ii->size[0] = x->size[0];
-      emxEnsureCapacity(&b_st, (emxArray__common *)b_ii, i18, (int32_T)sizeof
-                        (int32_T), &h_emlrtRTEI);
+      emxEnsureCapacity(&b_st, (emxArray__common *)b_ii, i15, (int32_T)sizeof
+                        (int32_T), &g_emlrtRTEI);
       c_st.site = &x_emlrtRSI;
       if (1 > x->size[0]) {
         overflow = false;
@@ -336,18 +285,18 @@ boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
       if (idx <= x->size[0]) {
       } else {
         c_y = NULL;
-        m14 = emlrtCreateString("Assertion failed.");
-        emlrtAssign(&c_y, m14);
-        c_st.site = &bq_emlrtRSI;
-        f_error(&c_st, c_y, &j_emlrtMCI);
+        m13 = emlrtCreateString("Assertion failed.");
+        emlrtAssign(&c_y, m13);
+        c_st.site = &fp_emlrtRSI;
+        f_error(&c_st, c_y, &h_emlrtMCI);
       }
 
       if (x->size[0] == 1) {
         if (idx == 0) {
-          i18 = b_ii->size[0];
+          i15 = b_ii->size[0];
           b_ii->size[0] = 0;
-          emxEnsureCapacity(&b_st, (emxArray__common *)b_ii, i18, (int32_T)
-                            sizeof(int32_T), &vc_emlrtRTEI);
+          emxEnsureCapacity(&b_st, (emxArray__common *)b_ii, i15, (int32_T)
+                            sizeof(int32_T), &kc_emlrtRTEI);
         }
       } else {
         if (1 > idx) {
@@ -356,129 +305,72 @@ boolean_T queryIfOnlyTwoUniqueRows(const emlrtStack *sp, const emxArray_real_T
           loop_ub = idx;
         }
 
-        emxInit_int32_T(&b_st, &c_ii, 1, &vc_emlrtRTEI, true);
-        i18 = c_ii->size[0];
+        emxInit_int32_T(&b_st, &c_ii, 1, &kc_emlrtRTEI, true);
+        i15 = c_ii->size[0];
         c_ii->size[0] = loop_ub;
-        emxEnsureCapacity(&b_st, (emxArray__common *)c_ii, i18, (int32_T)sizeof
-                          (int32_T), &vc_emlrtRTEI);
-        for (i18 = 0; i18 < loop_ub; i18++) {
-          c_ii->data[i18] = b_ii->data[i18];
+        emxEnsureCapacity(&b_st, (emxArray__common *)c_ii, i15, (int32_T)sizeof
+                          (int32_T), &kc_emlrtRTEI);
+        for (i15 = 0; i15 < loop_ub; i15++) {
+          c_ii->data[i15] = b_ii->data[i15];
         }
 
-        i18 = b_ii->size[0];
+        i15 = b_ii->size[0];
         b_ii->size[0] = c_ii->size[0];
-        emxEnsureCapacity(&b_st, (emxArray__common *)b_ii, i18, (int32_T)sizeof
-                          (int32_T), &vc_emlrtRTEI);
+        emxEnsureCapacity(&b_st, (emxArray__common *)b_ii, i15, (int32_T)sizeof
+                          (int32_T), &kc_emlrtRTEI);
         loop_ub = c_ii->size[0];
-        for (i18 = 0; i18 < loop_ub; i18++) {
-          b_ii->data[i18] = c_ii->data[i18];
+        for (i15 = 0; i15 < loop_ub; i15++) {
+          b_ii->data[i15] = c_ii->data[i15];
         }
 
         emxFree_int32_T(&c_ii);
       }
 
-      emxInit_real_T(&b_st, &d_ii, 1, &vc_emlrtRTEI, true);
-      i18 = d_ii->size[0];
-      d_ii->size[0] = b_ii->size[0];
-      emxEnsureCapacity(sp, (emxArray__common *)d_ii, i18, (int32_T)sizeof
-                        (real_T), &vc_emlrtRTEI);
-      loop_ub = b_ii->size[0];
-      for (i18 = 0; i18 < loop_ub; i18++) {
-        d_ii->data[i18] = b_ii->data[i18];
-      }
-
-      emxFree_int32_T(&b_ii);
-      emxInit_real_T(sp, &iToCheck, 1, &xc_emlrtRTEI, true);
-      emxInit_real_T(sp, &b_iToCheck, 1, &vc_emlrtRTEI, true);
-      emlrt_update_log_20(sp, d_ii, *(emlrtLocationLoggingDataType (*)[613])&
-                          emlrtLocationLoggingDataTables[159U], iToCheck);
-      i18 = b_iToCheck->size[0];
-      b_iToCheck->size[0] = iToCheck->size[0];
-      emxEnsureCapacity(sp, (emxArray__common *)b_iToCheck, i18, (int32_T)sizeof
-                        (real_T), &vc_emlrtRTEI);
-      loop_ub = iToCheck->size[0];
-      emxFree_real_T(&d_ii);
-      for (i18 = 0; i18 < loop_ub; i18++) {
-        b_iToCheck->data[i18] = iToCheck->data[i18] + 1.0;
-      }
-
-      b_emxInit_real_T(sp, &d_X, 2, &vc_emlrtRTEI, true);
-      emlrt_update_log_20(sp, b_iToCheck, *(emlrtLocationLoggingDataType (*)[613])
-                          &emlrtLocationLoggingDataTables[158U], iToCheck);
+      emxInit_real_T(&b_st, &c_X, 2, &kc_emlrtRTEI, true);
       loop_ub = X->size[1];
-      i18 = d_X->size[0] * d_X->size[1];
-      d_X->size[0] = iToCheck->size[0];
-      d_X->size[1] = loop_ub;
-      emxEnsureCapacity(sp, (emxArray__common *)d_X, i18, (int32_T)sizeof(real_T),
-                        &vc_emlrtRTEI);
-      emxFree_real_T(&b_iToCheck);
-      for (i18 = 0; i18 < loop_ub; i18++) {
-        k = iToCheck->size[0];
+      i15 = c_X->size[0] * c_X->size[1];
+      c_X->size[0] = b_ii->size[0];
+      c_X->size[1] = loop_ub;
+      emxEnsureCapacity(sp, (emxArray__common *)c_X, i15, (int32_T)sizeof(real_T),
+                        &kc_emlrtRTEI);
+      for (i15 = 0; i15 < loop_ub; i15++) {
+        k = b_ii->size[0];
         for (ii = 0; ii < k; ii++) {
           idx = X->size[0];
-          i19 = (int32_T)iToCheck->data[ii];
-          d_X->data[ii + d_X->size[0] * i18] = X->data
-            [(emlrtDynamicBoundsCheckFastR2012b(i19, 1, idx, &gf_emlrtBCI, sp) +
-              X->size[0] * i18) - 1];
+          i16 = b_ii->data[ii] + 1;
+          c_X->data[ii + c_X->size[0] * i15] = X->data
+            [(emlrtDynamicBoundsCheckFastR2012b(i16, 1, idx, &ve_emlrtBCI, sp) +
+              X->size[0] * i15) - 1];
         }
       }
 
-      emxFree_real_T(&iToCheck);
-      b_emxInit_real_T(sp, &e_X, 2, &vc_emlrtRTEI, true);
+      emxFree_int32_T(&b_ii);
+      emxInit_real_T(sp, &d_X, 2, &kc_emlrtRTEI, true);
       loop_ub = X->size[1];
-      i18 = X->size[0];
-      ii = (int32_T)iFirstNotEqual_data[0];
-      ii = emlrtDynamicBoundsCheckFastR2012b(ii, 1, i18, &df_emlrtBCI, sp);
-      i18 = e_X->size[0] * e_X->size[1];
-      e_X->size[0] = 1;
-      e_X->size[1] = loop_ub;
-      emxEnsureCapacity(sp, (emxArray__common *)e_X, i18, (int32_T)sizeof(real_T),
-                        &vc_emlrtRTEI);
-      for (i18 = 0; i18 < loop_ub; i18++) {
-        e_X->data[e_X->size[0] * i18] = X->data[(ii + X->size[0] * i18) - 1];
+      i15 = X->size[0];
+      ii = iFirstNotEqual_data[0];
+      ii = emlrtDynamicBoundsCheckFastR2012b(ii, 1, i15, &se_emlrtBCI, sp);
+      i15 = d_X->size[0] * d_X->size[1];
+      d_X->size[0] = 1;
+      d_X->size[1] = loop_ub;
+      emxEnsureCapacity(sp, (emxArray__common *)d_X, i15, (int32_T)sizeof(real_T),
+                        &kc_emlrtRTEI);
+      for (i15 = 0; i15 < loop_ub; i15++) {
+        d_X->data[d_X->size[0] * i15] = X->data[(ii + X->size[0] * i15) - 1];
       }
 
-      b_emxInit_boolean_T(sp, &r83, 2, &vc_emlrtRTEI, true);
-      st.site = &ph_emlrtRSI;
-      c_bsxfun(&st, d_X, e_X, r81);
-      i18 = r83->size[0] * r83->size[1];
-      r83->size[0] = r81->size[0];
-      r83->size[1] = r81->size[1];
-      emxEnsureCapacity(sp, (emxArray__common *)r83, i18, (int32_T)sizeof
-                        (boolean_T), &vc_emlrtRTEI);
-      loop_ub = r81->size[0] * r81->size[1];
-      emxFree_real_T(&e_X);
+      st.site = &ug_emlrtRSI;
+      c_bsxfun(&st, c_X, d_X, r12);
+      st.site = &ug_emlrtRSI;
+      b_all(&st, r12, bEqualFirst);
+      st.site = &vg_emlrtRSI;
+      bLessThanTwoUniqueRows = c_all(&st, bEqualFirst);
       emxFree_real_T(&d_X);
-      for (i18 = 0; i18 < loop_ub; i18++) {
-        r83->data[i18] = r81->data[i18];
-      }
-
-      emxInit_boolean_T(sp, &c_bEqualFirst, 1, &vc_emlrtRTEI, true);
-      emlrt_update_log_30(sp, r83, *(emlrtLocationLoggingDataType (*)[613])&
-                          emlrtLocationLoggingDataTables[161U], r81);
-      st.site = &ph_emlrtRSI;
-      b_all(&st, r81, bEqualFirst);
-      i18 = c_bEqualFirst->size[0];
-      c_bEqualFirst->size[0] = bEqualFirst->size[0];
-      emxEnsureCapacity(sp, (emxArray__common *)c_bEqualFirst, i18, (int32_T)
-                        sizeof(boolean_T), &vc_emlrtRTEI);
-      loop_ub = bEqualFirst->size[0];
-      emxFree_boolean_T(&r83);
-      for (i18 = 0; i18 < loop_ub; i18++) {
-        c_bEqualFirst->data[i18] = bEqualFirst->data[i18];
-      }
-
-      emlrt_update_log_19(sp, c_bEqualFirst, *(emlrtLocationLoggingDataType (*)
-        [613])&emlrtLocationLoggingDataTables[160U], bEqualFirst);
-      st.site = &qh_emlrtRSI;
-      bLessThanTwoUniqueRows = emlrt_update_log_31(c_all(&st, bEqualFirst),
-        *(emlrtLocationLoggingDataType (*)[613])&emlrtLocationLoggingDataTables
-        [162U]);
-      emxFree_boolean_T(&c_bEqualFirst);
+      emxFree_real_T(&c_X);
     }
 
-    emxFree_boolean_T(&r81);
     emxFree_boolean_T(&x);
+    emxFree_boolean_T(&r12);
     emxFree_boolean_T(&bEqualFirst);
   }
 

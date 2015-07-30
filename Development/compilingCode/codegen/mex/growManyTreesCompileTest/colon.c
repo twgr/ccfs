@@ -14,13 +14,13 @@
 #include "growManyTreesCompileTest_data.h"
 
 /* Variable Definitions */
-static emlrtRSInfo nj_emlrtRSI = { 151, "colon",
+static emlrtRSInfo si_emlrtRSI = { 151, "colon",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\colon.m" };
 
-static emlrtRSInfo oj_emlrtRSI = { 156, "colon",
+static emlrtRSInfo ti_emlrtRSI = { 156, "colon",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\colon.m" };
 
-static emlrtRTEInfo od_emlrtRTEI = { 152, 1, "colon",
+static emlrtRTEInfo cd_emlrtRTEI = { 152, 1, "colon",
   "C:\\Program Files\\MATLAB\\R2014a\\toolbox\\eml\\lib\\matlab\\ops\\colon.m" };
 
 /* Function Definitions */
@@ -29,13 +29,13 @@ void eml_signed_integer_colon(const emlrtStack *sp, int32_T b, emxArray_int32_T 
 {
   int32_T n;
   int32_T yk;
-  boolean_T b12;
+  boolean_T b9;
   int32_T k;
   emlrtStack st;
   emlrtStack b_st;
   st.prev = sp;
   st.tls = sp->tls;
-  st.site = &nj_emlrtRSI;
+  st.site = &si_emlrtRSI;
   b_st.prev = &st;
   b_st.tls = st.tls;
   if (b < 1) {
@@ -48,18 +48,18 @@ void eml_signed_integer_colon(const emlrtStack *sp, int32_T b, emxArray_int32_T 
   y->size[0] = 1;
   y->size[1] = n;
   emxEnsureCapacity(sp, (emxArray__common *)y, yk, (int32_T)sizeof(int32_T),
-                    &od_emlrtRTEI);
+                    &cd_emlrtRTEI);
   if (n > 0) {
     y->data[0] = 1;
     yk = 1;
-    st.site = &oj_emlrtRSI;
+    st.site = &ti_emlrtRSI;
     if (2 > n) {
-      b12 = false;
+      b9 = false;
     } else {
-      b12 = (n > 2147483646);
+      b9 = (n > 2147483646);
     }
 
-    if (b12) {
+    if (b9) {
       b_st.site = &v_emlrtRSI;
       check_forloop_overflow_error(&b_st);
     }
