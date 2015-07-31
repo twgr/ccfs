@@ -58,7 +58,8 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %                  generation if they are initially set to 'default'
 %                  values.  Note predictFromCCF applies inputProcess so
 %                  this does not need to be done manually.
-%        forPred = Complete forest predictions for XTest
+%        forPred = Forest predictions for XTest
+%       forProbs = Forest probabilities for XTest
 %       treePred = Individual tree predictiosn for XTest
 %     cumForPred = Predictions of forest for XTest cumulative in the
 %                  individual trees.  cumForPred(:,end)==forPred

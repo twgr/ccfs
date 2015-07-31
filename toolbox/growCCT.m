@@ -138,6 +138,12 @@ if ~isempty(options.projections) && ((size(XTrainBag,1)==2) || queryIfOnlyTwoUni
 else
     % Generate the new features as required
     
+    if options.bRCCA
+        [wZ,bZ] = genFeatureExpansionParameters(XTrainBag,options.rccaNFeatures,options.rccaLengthScale);
+        fExp = makeExpansionFunc(wZ,bZ,options.rccaIncludeOriginal);
+        XTrainBag = fExp(XTrainBag);
+    end
+    
     if ~isempty(options.projections)
         projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections,options.epsilonCCA);
     end
@@ -159,7 +165,11 @@ else
         error('Invalid option for includeOriginalAxes');
     end
     
-    UTrain = XTrain(:,iIn)*projMat;
+    if options.bRCCA
+        UTrain = fExp(XTrain(:,iIn))*projMat;
+    else
+        UTrain = XTrain(:,iIn)*projMat;
+    end
     % This step catches splits based on no significant variation
     bUTrainVaries = queryIfColumnsVary(UTrain,options.XVariationTol);
     
@@ -289,6 +299,9 @@ treeRight = growCCT(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),options,
 tree.bLeaf = false;
 tree.trainingCounts = countsNode;
 tree.iIn = iIn;
+if options.bRCCA && exist('fExp','var')
+    tree.featureExpansion = fExp;
+end
 tree.decisionProjection = projMat(:,iDir);
 tree.paritionPoint = partitionPoint;
 tree.lessthanChild = treeLeft;
@@ -328,4 +341,12 @@ end
 tree.bLeaf = true;
 tree.labelClassId = label;
 tree.trainingCounts = countsNode;
+end
+
+function f = makeExpansionFunc(wZ,bZ,bIncOrig)
+    if bIncOrig
+        f = @(x) [x,featureExpansion(x,wZ,bZ)];
+    else
+        f = @(x) featureExpansion(x,wZ,bZ);
+    end
 end

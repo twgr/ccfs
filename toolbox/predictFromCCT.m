@@ -24,7 +24,11 @@ function [classLabelIds, countsLeaf] = predictFromCCT(tree,X)
             X = bsxfun(@minus,X,tree.rotDetails.muX)*tree.rotDetails.R;
         end
         
-        bLessChild = (X(:,tree.iIn)*tree.decisionProjection)<=tree.paritionPoint;
+        if isfield(tree,'featureExpansion') && ~isempty(tree.featureExpansion)
+            bLessChild = (tree.featureExpansion(X(:,tree.iIn))*tree.decisionProjection)<=tree.paritionPoint;
+        else
+            bLessChild = (X(:,tree.iIn)*tree.decisionProjection)<=tree.paritionPoint;
+        end
         
         classLabelIds = NaN(size(X,1),1);
         if nargout>1

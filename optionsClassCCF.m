@@ -129,6 +129,16 @@ classdef optionsClassCCF
         % class.
         voteFactor = 'default';
         
+        % Options that allow nonlinear features to be included in the CCA
+        % in accordance with Lopez-Paz's randomized cca.  Initial results
+        % suggest that this is not a useful expansion of the model
+        
+        bRCCA = false;
+        rccaLengthScale = 0.1;
+        rccaNFeatures = 50;
+        rccaIncludeOriginal = false;
+        
+        
         % TODO An option for the RF-Ensemble of Zhang might be useful
         
         %% NUMERICAL OPTIONS
