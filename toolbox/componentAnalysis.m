@@ -1,4 +1,4 @@
-function [projMat, U] = componentAnalysis(X,Y,processes,epsilon)
+function [projMat, yprojMat, r, U] = componentAnalysis(X,Y,processes,epsilon)
 %componentAnalysis  Carries out a series of specified component analyses
 %
 % [projRot, U] = componentAnalysis(X,Y,processes,epsilon)
@@ -53,6 +53,7 @@ end
 K = size(Y,2);
 
 projMat = NaN(size(X,2),0);
+yprojMat = NaN(size(Y,2),0);
 
 if toDo(2)
     
@@ -83,7 +84,7 @@ if any(toDo([1,3]))
         % This code is a reduction of the function canoncorr.  This
         % method is explained in the supplementary material
         
-        [q2,r2,~] = qr(Y,0);
+        [q2,r2,p2] = qr(Y,0);
         % Reduce to full rank within some tolerance
         rankY = sum(abs(diag(r2)) >= (epsilon*abs(r2(1))));
         if rankY == 0
@@ -99,13 +100,24 @@ if any(toDo([1,3]))
         
         % Solve CCA using the decompositions
         d = min(rankX,rankY);
-        [L,~,~] = svd(q1' * q2,0);
+        [L,D,M] = svd(q1' * q2,0);
         A = r1 \ L(:,1:d) * sqrt(x1-1);
-        
+                
         % Put coefficients back to their full size and their correct order
         A(p1,:) = [A; zeros(x2-rankX,d)];
-        
         projMat = [projMat,A];
+        
+        if nargout>1
+            % If requested also return projection for Y
+            r2 = r2(1:rankY,1:rankY);
+            B = r2 \ M(:,1:d) * sqrt(x1-1);
+            B(p2,:) = [B; zeros(K-rankY,d)];
+            yprojMat = [yprojMat,B];
+        end
+        
+        if nargout>2
+            r = min(max(diag(D(:,1:d))', 0), 1);
+        end
     end
     
     if toDo(3)
@@ -132,7 +144,7 @@ end
 projMat = bsxfun(@rdivide,projMat,sqrt(sum(projMat.^2,1)));
 
 
-if nargout>1
+if nargout>3
     % Note that as in general only a projection matrix is given, we need to
     % add the mean back to be consistent with general use.  This equates to
     % addition of a constant term to each column in U
