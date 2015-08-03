@@ -21,8 +21,8 @@ Any conversions to other code formats would be appreciated though we are current
 
 Although not all datasets could be added to the repository due to license issues, all are available freely online (the majority are from the UCI repository https://archive.ics.uci.edu/ml/datasets.html, others are referenced in the paper).  
 
-In each case the last column corresponds to class label.
-
+In each case the last column corresponds to class label, while the first row indicates whether the variable is oridinal (1) or an unordered categorical (0).  Datasets can be easily loaded using the loadDataset.m function.
+ 
 ### Who do I talk to? ###
 
 * Tom Rainforth: twgr@robots.ox.ac.uk
