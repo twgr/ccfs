@@ -49,15 +49,15 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 % Outputs:
 %            CCF = Structure with three fields, trees giving a Cell array of 
 %                  CCTs, options giving the options structure and 
-%                  inputProcess which is used to apply the same processing
-%                  to input features as done during the training. Forest
-%                  Prediction can be made using predictFromCCF function or 
-%                  individual trees using the predictFromCCT function.
-%                  Note that some of options, e.g. voteFactor, are used in
-%                  prediction and some options are changed during the
-%                  generation if they are initially set to 'default'
-%                  values.  Note predictFromCCF applies inputProcess so
-%                  this does not need to be done manually.
+%                  inputProcessDetails giving details required to replicate
+%                  input feature transform as done during the training. 
+%                  Forest prediction can be made using predictFromCCF 
+%                  function or  individual trees using the predictFromCCT 
+%                  function. Note that some of options, e.g. voteFactor, 
+%                  are used in prediction and some options are changed
+%                  during the generation if they are initially set to 
+%                  'default' values.  Note predictFromCCF applies the
+%                  inputProcess so this does not need to be done manually.
 %        forPred = Forest predictions for XTest
 %       forProbs = Forest probabilities for XTest
 %       treePred = Individual tree predictiosn for XTest
@@ -87,17 +87,18 @@ if ~isnumeric(XTrain) || ~exist('iFeatureNum','var') || isempty(iFeatureNum)
         warning('iFeatureNum provided but XTrain not in array format, over-riding');
     end
     if ~exist('XTest','var') || isempty(XTest)
-        [XTrain, iFeatureNum, inputProcess] = processInputData(XTrain,bOrdinal);
+        [XTrain, iFeatureNum, inputProcessDetails] = processInputData(XTrain,bOrdinal);
     else
-        [XTrain, iFeatureNum, inputProcess, XTest] = processInputData(XTrain,bOrdinal,XTest);
+        [XTrain, iFeatureNum, inputProcessDetails, XTest] = processInputData(XTrain,bOrdinal,XTest);
     end
 else
     mu_XTrain = nanmean(XTrain,1);
     std_XTrain = nanstd(XTrain,[],1);
-    inputProcess = setupInputProcessFunc(mu_XTrain,std_XTrain);
-    XTrain = inputProcess(XTrain);
+    inputProcessDetails = struct('bOrdinal',true(1,size(XTrain,2)),'mu_XTrain',mu_XTrain,'std_XTrain',std_XTrain);
+    inputProcessDetails.Cats = cell(0,1);
+    XTrain = replicateInputProcess(XTrain,inputProcessDetails);
     if ~isempty(XTest)
-        XTest = inputProcess(XTest);
+        XTest = replicateInputProcess(XTest,inputProcessDetails);
     end
 end
 
@@ -168,7 +169,7 @@ end
 
 CCF.Trees = forest;
 CCF.options = optionsFor;
-CCF.inputProcess = inputProcess;
+CCF.inputProcessDetails = inputProcessDetails;
 
 if nOut<2
     return
@@ -230,10 +231,6 @@ if ~strcmpi(optionsFor.treeRotation,'none')
     tree.rotDetails = struct('R',R,'muX',muX);
 end
 
-end
-
-function f = setupInputProcessFunc(mu,std)
-    f = @(x) converToZScores(x,mu,std);
 end
 
 function x = converToZScores(x,mu,std)

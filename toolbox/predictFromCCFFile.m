@@ -73,5 +73,5 @@ OutStruct.classNames = CCF.options.classNames;
 
 if bSave
     mkdir(outputLocation);
-    writeResultCSVs(outputLocation,OutStruct,nOutputsToStore,YTest);
+    writeResultCSVs(outputLocation,OutStruct,nOutputsToStore+1,YTest);
 end

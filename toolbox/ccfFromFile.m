@@ -164,6 +164,8 @@ if nOutputsToStore>4
     OutStruct.cumulativeForestPercentMissclassified = 100*(1-cumForestAccuracy);
 end
 
+OutStruct.CCF.options = struct(OutStruct.CCF.options);
+
 OutStruct.nTrees = nTrees;
 OutStruct.iTest = iTest;
 if ~isnumeric(YTest)

@@ -1,8 +1,8 @@
-function [XTrain, iFeatureNum, inputProcess, XTest, featureNames] = processInputData(XTrainRC,bOrdinal,XTestRC)
+function [XTrain, iFeatureNum, inputProcessDetails, XTest, featureNames] = processInputData(XTrainRC,bOrdinal,XTestRC)
 %processInputData Process input features, expanding categoricals and
 %converting to zScores
 %
-% function [XTrain, iFeatureNum, inputProcess, XTest, featureNames] ...
+% function [XTrain, iFeatureNum, inputProcessDetails, XTest, featureNames] ...
 %                       = processInputData(XTrain,bOrdinal,XTest)
 %
 % Required Inputs
@@ -25,8 +25,8 @@ function [XTrain, iFeatureNum, inputProcess, XTest, featureNames] = processInput
 %  iFeatureNum   = Array idenitifying groups of expanded features.
 %                  Expanded features with the same iFeatureNum value come 
 %                  from the same original non-ordinal feature.
-%  inputProcess  = Anonymous function that can be used for converting
-%                  new data requiring only the new data as an input.
+%  inputProcessDetails = Details required to convert new data in the same
+%                  way
 %  XTest         = Additional processed input features
 %  featureNames  = Names of the expanded features.  Variable names are
 %                  taken from the table properties if in the input is a
@@ -137,72 +137,11 @@ XTrain(isnan(XTrain)) = 0;
 % If required, generate function for converting additional data and
 % calculate conversion for any test data provided.
 if nargout>2
-    inputProcess = createFutureConverterFunc(bOrdinal,Cats,mu_XTrain,std_XTrain);
+    inputProcessDetails = struct('bOrdinal',bOrdinal,'mu_XTrain',mu_XTrain,'std_XTrain',std_XTrain);
+    inputProcessDetails.Cats = Cats;
     if nargout>3
-        XTest = inputProcess(XTestRC);
+        XTest = replicateInputProcess(XTestRC,inputProcessDetails);
     end
 end
     
-end
-
-function A = makeSureString(A,nSigFigTol)
-% Ensure that all numerical values are strings (noting that the
-
-bNum = isnumeric(A);
-A(bNum) = num2str(A(bNum),nSigFigTol);
-end
-
-function f = createFutureConverterFunc(bOrdinal,Cats,mu_XTrain,std_XTrain)
-    f = @(Xrc) futureConvert(Xrc,bOrdinal,Cats,mu_XTrain,std_XTrain);
-end
-
-function X = futureConvert(Xrc,bOrdinal,Cats,mu_XTrain,std_XTrain)
-% This can be used to create an anonymous function that applies the same
-% data transformation as was done by on the training data to new data
-
-if size(Xrc,2)~=numel(bOrdinal)
-    error('Incorrect number of features');
-end
-
-if istable(Xrc)
-    try
-        Xrc = table2array(Xrc);
-    catch
-        Xrc = table2cell(Xrc);
-    end
-end
-
-X = Xrc(:,bOrdinal);
-if iscell(X)
-    bNumeric = cellfun(@isnumeric,X);
-    Xrep = cellfun(@(x) sscanf(x,'%f'), X(~bNumeric),'UniformOutput',false);
-    Xrep(cellfun(@isempty,Xrep)) = {NaN};
-    X(~bNumeric) = Xrep;
-    X = cell2mat(X);
-end
-
-XCat = Xrc(:,~bOrdinal);
-if iscell(XCat)
-    XCat = makeSureString(XCat,10);
-end
-
-for n=1:size(XCat,2)
-    nCats = numel(Cats{n});
-    if nCats==1
-        continue
-    end
-    sizeSoFar = size(X,2);
-    X = [X,zeros(size(X,1),nCats)]; %#ok<AGROW>
-    for c=1:nCats
-        if iscell(Cats{n})
-            X(strcmp(XCat(:,n),Cats{n}{c}),(sizeSoFar+c)) = 1;
-        else
-            X(XCat(:,n)==Cats{n}(c),(sizeSoFar+c)) = 1;
-        end
-    end
-end
-
-X = bsxfun(@rdivide,bsxfun(@minus,X,mu_XTrain),std_XTrain);
-X(isnan(X)) = 0;
-
 end

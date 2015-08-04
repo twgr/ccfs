@@ -18,7 +18,7 @@ function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts
 %
 % 14/06/15
 
-X = CCF.inputProcess(X);
+X = replicateInputProcess(X,CCF.inputProcessDetails);
 
 nTrees = numel(CCF.Trees);
 treePredictions = NaN(size(X,1),nTrees);
