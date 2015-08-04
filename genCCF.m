@@ -136,8 +136,12 @@ if nOut<2 && ~bKeepTrees
     warning('Selected not to keep trees but only requested a single output of the trees, reseting bKeepTrees to true');
 end
 
-if nOut>1 && (~exist('XTest','var') || isempty(XTest))
-    error('To return more than just the trees themselves, must input the test points');
+if ~exist('XTest','var') || isempty(XTest)
+    if nOut>1
+        error('To return more than just the trees themselves, must input the test points');
+    else
+        XTest = NaN(0,size(XTrain,1));
+    end
 end
 
 forest = cell(1,nTrees);

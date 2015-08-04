@@ -1,4 +1,4 @@
-function [A,B,r] = regCCA(X,Y,gammaX,gammaY,corrTol)
+function [A,B,r] = regCCA_alt(X,Y,gammaX,gammaY,corrTol)
 %regCCA Fast regularized CCA
 
 D = size(X,2);

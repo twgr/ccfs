@@ -136,6 +136,7 @@ classdef optionsClassCCF
         bRCCA = false;
         rccaLengthScale = 0.1;
         rccaNFeatures = 50;
+        rccaRegLambda = 0.1;
         rccaIncludeOriginal = false;
         
         

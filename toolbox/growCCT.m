@@ -142,7 +142,7 @@ else
         [wZ,bZ] = genFeatureExpansionParameters(XTrainBag,options.rccaNFeatures,options.rccaLengthScale);
         fExp = makeExpansionFunc(wZ,bZ,options.rccaIncludeOriginal);
         XTrainBag = fExp(XTrainBag);
-        projMat = regCCA_alt(XTrainBag,YTrainBag,1e-3,1e-3,1e-8);
+        projMat = regCCA_alt(XTrainBag,YTrainBag,options.rccaRegLambda,options.rccaRegLambda,1e-8);
     elseif ~isempty(options.projections)
         projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections,options.epsilonCCA);
     end
