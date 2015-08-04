@@ -1,23 +1,31 @@
-function ccfFromFile(inputLocation, outputLocation, nTrees, propTrain, bRandTrainTestSplit, nOutputsToStore, varargin)
+function OutStruct = ccfFromFile(inputLocation, outputLocation, nTrees, ...
+    propTrain, bRandTrainTestSplit, bKeepTrees, nOutputsToStore, varargin)
 %ccfFromFile Wrapper function to call genCCF using csvs directly
 %
 % Allows a CCF to be generated and predictions to be made directly from a
-% csv file.  Use is mostly as a base for generating the compiled
-% ccfFromFile.exe.  Note that ccfFromFile.exe is currently only interpreted
-% MATLAB code and therefore does not offer speed ups.  However, we intend
-% to have a version made using ported C code, and therefore offering speed
-% improvements, in the near future.  As the code is to be compiled, when
-% arguements are numeric the function also accepts strings of numerical
-% characters.
+% csv file.  Prints results to the folder given by output location
+% including a Results.mat file cotaining the forest and results.  Various 
+% numerical results (depending on the nOutputsToStore) are also printed to 
+% csv files in the directory.  Predictions for new data can be made using 
+% the predictFromCCFFile function.  If desired then an output structure
+% containing the same information is saved in Results.mat can be returned.
 %
-% ccfFromFile(inputLocation, outputLocation, nTrees, propTrain, ...
+% Use is mostly as a base for generating the compiled ccfFromFile.exe.  
+% Note that ccfFromFile.exe is currently only interpreted MATLAB code and 
+% therefore does not offer speed ups.  However, we intend to have a version 
+% made using ported C code in the near future.  As the code is to be c
+% compiled, when arguements are numeric the function also accepts strings 
+% of numerical characters.
+%
+% OutStruct = ccfFromFile(inputLocation, outputLocation, nTrees, propTrain,
 %                       bRandTrainTestSplit, nOutputsToStore, varargin)
 %
 % Required Inputs
 %      inputLocation = Location of csv input file.  See loadCSVDataSet.m
 %                      details on availible format
 %     outputLocation = Location and name of directory to be generated into
-%                      which the results will be placed.
+%                      which the results will be placed.  If set to 'none'
+%                      then the results are not saved.
 %
 % Optional Inputs
 %             nTrees = Number of trees to train (default = 100)
@@ -27,6 +35,10 @@ function ccfFromFile(inputLocation, outputLocation, nTrees, propTrain, bRandTrai
 %                       training are taken at random from provided data,
 %                       else the order is preserved with the first
 %                       round(propTrain*N) data points used for training
+%         bKeepTrees = If true (default) the generated trees are stored in
+%                      Results.mat and future predictions can be made using
+%                      predictFromCCFFile.  Otherwise these are discarded
+%                      to save memory
 %    nOutputsToStore = Number of outputs from genCCF to store
 %           varargin = List of options as per optionsClassCCF.  These
 %                      should be in pairs of name then value.  For example
@@ -36,11 +48,10 @@ function ccfFromFile(inputLocation, outputLocation, nTrees, propTrain, bRandTrai
 %                      'projections_PCA', 1 to also consider PCA
 %                      projections.
 %
-% The function returns no arguments but creates a folder in the directory
-% outputLocation containing a Results.mat file cotaining the forest and
-% results.  Various numerical results (depending on the nOutputsToStore)
-% are also printed to csv files in the directory.  Predictions for new data
-% can be made using the predictFromCCFFile function
+% Outputs
+%         Outstruct = Structure with fields corresponding to the saved
+%                     file Results.mat, including the CCF itself, details
+%                     about the run and any made predictions.
 %
 % Tom Rainforth 04/08/15
 
@@ -63,12 +74,20 @@ elseif ischar(bRandTrainTestSplit)
     bRandTrainTestSplit = logical(str2double(bRandTrainTestSplit));
 end
 
+if ~exist('bKeepTrees','var') || isempty(bKeepTrees)
+    bKeepTrees = true;
+elseif ischar(bKeepTrees)
+    bKeepTrees = logical(str2double(bKeepTrees));
+end
+
 if ~exist('nOutputsToStore','var') || isempty(nOutputsToStore)
     nOutputsToStore = 3;
 elseif ischar(nOutputsToStore)
     nOutputsToStore = str2double(nOutputsToStore);
 end
 nOutputsToStore = min(nOutputsToStore,5);
+
+bSave = ~strcmpi(outputLocation,'none');
 
 
 %% Load data and split into train test
@@ -88,6 +107,9 @@ YTrain = Y(iTrain,:);
 XTest = X(iTest,:);
 YTest = Y(iTest,:);
 
+if isempty(XTest)
+    nOutputsToStore = 1;
+end
 
 %% Setup options
 optionsCell = reshape(varargin,2,[]);
@@ -119,11 +141,11 @@ namesOut = {'CCF','forestPredictsTest','forestProbsTest','treePredictsTest','cum
 
 OutStruct = cell(nOutputsToStore,1);
 
-[OutStruct{:}] = genCCF(nTrees,XTrain,YTrain,optionsFor,XTest,false,[],bOrdinal);
+[OutStruct{:}] = genCCF(nTrees,XTrain,YTrain,optionsFor,XTest,bKeepTrees,[],bOrdinal);
 
 OutStruct = cell2struct(OutStruct,namesOut(1:nOutputsToStore));
 
-%% Process and print outputs
+%% Process outputs
 if nOutputsToStore>1
     if isnumeric(YTest)
         accuracy = mean(OutStruct.forestPredictsTest==YTest);
@@ -142,49 +164,20 @@ if nOutputsToStore>4
     OutStruct.cumulativeForestPercentMissclassified = 100*(1-cumForestAccuracy);
 end
 
-mkdir(outputLocation);
-
 OutStruct.nTrees = nTrees;
 OutStruct.iTest = iTest;
 if ~isnumeric(YTest)
     OutStruct.classNames = OutStruct.CCF.options.classNames;
 end
+OutStruct.sizeXTrain = size(XTrain);
 
-save([outputLocation filesep() 'Results.mat'],'-struct','OutStruct');
 
-if nOutputsToStore>1
-    if isnumeric(YTest)
-        csvwrite([outputLocation filesep() 'TrueTestLabels.csv'],YTest);
-        csvwrite([outputLocation filesep() 'PredictedTestLabels.csv'],OutStruct.forestPredictsTest);
-    else
-        writetable(cell2table(YTest),[outputLocation filesep() 'TrueTestLabels.csv'],'WriteVariableNames',false);
-        writetable(cell2table(OutStruct.forestPredictsTest),[outputLocation filesep() 'PredictedTestLabels.csv'],'WriteVariableNames',false);
-    end
-    csvwrite([outputLocation filesep() 'PercentTestMissclassified.csv'],OutStruct.percentMissclassified);
-    if nOutputsToStore>2
-        if isnumeric(YTest)
-            csvwrite([outputLocation filesep() 'PredictedTestProbabilities.csv'],OutStruct.forestProbsTest);
-        else
-            tableProbs = array2table(OutStruct.forestProbsTest);
-            tableProbs.Properties.VariableNames = OutStruct.classNames;
-            writetable(tableProbs,[outputLocation filesep() 'PredictedTestProbabilities.csv']);
-        end
-        if nOutputsToStore>3
-            if isnumeric(OutStruct.treePredictsTest)
-                csvwrite([outputLocation filesep() 'IndividualTreePredictions.csv'],OutStruct.treePredictsTest);
-            else
-                writetable(cell2table(OutStruct.treePredictsTest),[outputLocation filesep() 'IndividualTreePredictions.csv'],'WriteVariableNames',false);
-            end
-            if nOutputsToStore>4
-                if isnumeric(OutStruct.cumulativeForestPredictsTest)
-                    csvwrite([outputLocation filesep() 'CumulativeForestPredictsTest.csv'],OutStruct.cumulativeForestPredictsTest);
-                else
-                    writetable(cell2table(OutStruct.cumulativeForestPredictsTest),[outputLocation filesep() 'CumulativeForestPredictsTest.csv'],'WriteVariableNames',false);
-                end
-                csvwrite([outputLocation filesep() 'CumulativeForestPercentTestMissclassified.csv'],OutStruct.cumulativeForestPercentMissclassified);
-            end
-        end
-    end
+%% Save outputs
+
+if bSave
+    mkdir(outputLocation);
+    save([outputLocation filesep() 'Results.mat'],'-struct','OutStruct');
+    writeResultCSVs(outputLocation,OutStruct,nOutputsToStore,YTest);
 end
 
 

@@ -12,9 +12,10 @@ function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation)
 %     non-numeric symbols or by specifying a header line of the form 
 %               bOrdinal%1%1%0%1%... 
 %     where % indicates the delimiter used, 1 indicates the respective 
-%     feature is ordinal and 0 that it is an unordered categorical.  For an
-%     example of these see the processed datasets in Dataset folder of the
-%     directory.
+%     feature is ordinal and 0 that it is an unordered categorical.  If
+%     bOrdinal is not specified, all features are assumed to be ordinal.
+%     For an example of these see the processed datasets in Dataset folder 
+%     of the directory (soybean gives an example where bOrdinal is used).
 %
 % Outpus:   X = Features, this will be a numeric array if possible and
 %               otherwise a cell array
