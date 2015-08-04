@@ -157,9 +157,9 @@ else
         projMat = [projMat,eye(size(projMat,1))];
     elseif strcmpi(options.includeOriginalAxes,'all')
         projMatNew = zeros(size(XTrain,2),size(projMat,2));
-        projMatNew(iIn,iIn) = projMat;
+        projMatNew(iIn,:) = projMat;
         iIn = find(~isnan(iFeatureNum));
-        projMat = [projMatNew(iIn,iIn),eye(numel(iIn))];
+        projMat = [projMatNew(iIn,:),eye(numel(iIn))];
     else
         error('Invalid option for includeOriginalAxes');
     end

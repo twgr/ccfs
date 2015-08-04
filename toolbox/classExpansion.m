@@ -22,7 +22,7 @@ if size(Y,2)==1 && ~islogical(Y)
         % logical array
         YVec = Y;
         if iscell(YVec)
-            Y = cellfun(@(x) strcmpi(x,classes{2}) || (x==classes{2}), YVec);
+            Y = cellfun(@(x) strcmpi(x,classes{2}) || (~ischar(x) && ~ischar(classes{2}) && (x==classes{2})), YVec);
         else
             Y = YVec==classes(2);
         end
@@ -31,7 +31,7 @@ if size(Y,2)==1 && ~islogical(Y)
         Y = false(size(YVec,1),numel(classes));
         if iscell(YVec)
             for k=1:numel(classes)
-                Y(:,k) = cellfun(@(x) strcmpi(x,classes{k}) || (x==classes{k}), YVec);
+                Y(:,k) = cellfun(@(x) strcmpi(x,classes{k}) || (~ischar(x) && ~ischar(classes{k}) && (x==classes{k})), YVec);
             end
         else
             for k=1:numel(classes)

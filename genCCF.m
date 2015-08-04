@@ -74,10 +74,6 @@ if ~bInPath
     addpath(locToolbox);
 end
     
-if ~isnumeric(XTrain) || any(isnan(XTrain(:)))
-    error('Data is not processed, please use processInputData function');
-end
-
 if ~exist('bOrdinal','var')
     bOrdinal = [];
 elseif ~isempty(bOrdinal)
