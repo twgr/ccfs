@@ -2,7 +2,9 @@
 
 ### How do I get set up? ###
 
-Download.  Make sure that the toolbox folder is in your path.  
+If using the matlab code make sure that the toolbox folder is in your path.  
+
+In addition to the matlab code, standalone applications are available (currently windows and mac).  Details for installation of these is given in the corresponding readme files.
 
 ### Usage ###
 
