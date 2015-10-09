@@ -1,6 +1,6 @@
 function [percentTestMissClassfiedCCF, percentTestMissClassfiedRF, ...
-    percentTestMissClassfiedCCFDefault] = ...
-    crossValTests(X,Y,bOrdinal,nFolds,nTrees,optionsFor,bPrint,bDoRF)
+    percentTestMissClassfiedCCFDefault, rf_PCA, rf_LDA] = ...
+    crossValTestsWith_RFLDA_andRFPCA(X,Y,bOrdinal,nFolds,nTrees,optionsFor,bPrint,bDoRF)
 %crossValMissClassifications Performs crossvalidation tests using CCFs
 %
 % percentTestMissClassfiedCCF = crossValTests(X,Y)
@@ -61,38 +61,57 @@ percentTestMissClassfiedCCF = NaN(nFolds,1);
 percentTestMissClassfiedRF = NaN(nFolds,1);
 percentTestMissClassfiedCCFDefault = NaN(nFolds,1);
 
-for n=1:nFolds
+rf_PCA = NaN(nFolds,1);
+rf_LDA = NaN(nFolds,1);
+
+parfor n=1:nFolds
+    tC = tic;
     CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),optionsFor,[],[],[],bOrdinal);
     yPreds = predictFromCCF(CCF,X(iTest{n},:));
     percentTestMissClassfiedCCF(n) = 100*(1-mean(yPreds==Y(iTest{n},:)));
+    timeC = toc(tC);
+    dispMessage = ['Fold ' num2str(n) ', % of test missclassified: CCF = ' ...
+        num2str(percentTestMissClassfiedCCF(n),6)];
     
-    dispMessage = ['Fold ' num2str(n) ', test error (lower is better): CCF = ' ...
-        num2str(percentTestMissClassfiedCCF(n),6) '%'];
-    
-    if nargout>1 && bDoRF
-        if isempty(optionsFor) || strcmpi(optionsFor.lambda,'log')
-            mtry = ceil(log2(size(X(iTrain{n},:),2))+1);
-        elseif strcmpi(optionsFor.lambda,'sqrt')
-            mtry = ceil(sqrt(size(X(iTrain{n},:),2)));
-        else
-            mtry = optionsFor.lambda;
-        end        
-        RF = TreeBagger(nTrees,X(iTrain{n},:),Y(iTrain{n},:),'CategoricalPredictors',~bOrdinal,'nvartosample',mtry);
+   tR = tic; 
+   % if nargout>1 && bDoRF
+        RF = TreeBagger(nTrees,X(iTrain{n},:),Y(iTrain{n},:),'NVarToSample',ceil(log2(size(X,2))+1));
         ypredsRF = cellfun(@str2double,predict(RF,X(iTest{n},:)));
         percentTestMissClassfiedRF(n) = 100*(1-(mean(ypredsRF==Y(iTest{n},:))));
-        dispMessage = [dispMessage, ' RF = ' num2str(percentTestMissClassfiedRF(n),6) '%']; %#ok<AGROW>
-    end
+        dispMessage = [dispMessage, ' RF = ' num2str(percentTestMissClassfiedRF(n),6)]; %#ok<AGROW>
+   % end
+   timeR = toc(tR);
     
-    if nargout>2
-        CCFdef = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],[],[],[],bOrdinal);
-        yPredsCCFdef = predictFromCCF(CCFdef,X(iTest{n},:));
-        percentTestMissClassfiedCCFDefault(n) = 100*(1-mean(yPredsCCFdef==Y(iTest{n},:)));
-        dispMessage = [dispMessage ' CCFDef = ' ...
-            num2str(percentTestMissClassfiedCCFDefault(n),6) '%']; %#ok<AGROW>
-    end
-    
+%    % if nargout==3
+%         CCFdef = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],[],[],[],bOrdinal);
+%         yPredsCCFdef = predictFromCCF(CCFdef,X(iTest{n},:));
+%         percentTestMissClassfiedCCFDefault(n) = 100*(1-mean(yPredsCCFdef==Y(iTest{n},:)));
+%         dispMessage = [dispMessage ' CCFDef = ' ...
+%             num2str(percentTestMissClassfiedCCFDefault(n),6)]; %#ok<AGROW>
+%    % end
+   
+   tP = tic;  
+   % if nargout>3
+        model5=ObliqueRF_train(X(iTrain{n},:),Y(iTrain{n},:),'ntrees',nTrees,'nvartosample',round(sqrt(size(X,2))),'oblique',5);
+        [Y5,~]=ObliqueRF_predict(X(iTest{n},:),model5);
+        rf_PCA(n) = 100*(1-mean(Y5==Y(iTest{n},:)));
+        dispMessage = [dispMessage ' RF-PCA = ' ...
+            num2str(rf_PCA(n),6)]; %#ok<AGROW>
+  %  end
+  timeP = toc(tP);  
+  
+  tL = tic; 
+  %  if nargout>4
+        model6=ObliqueRF_train(X(iTrain{n},:),Y(iTrain{n},:),'ntrees',nTrees,'nvartosample',round(sqrt(size(X,2))),'oblique',6);
+        [Y6,~]=ObliqueRF_predict(X(iTest{n},:),model6);
+        rf_LDA(n) = 100*(1-mean(Y6==Y(iTest{n},:)));
+        dispMessage = [dispMessage ' RF-LDA = ' ...
+            num2str(rf_LDA(n),6)]; %#ok<AGROW>
+  %  end
+  timeL = toc(tL);
+  disp(['CCF ' num2str(timeC) ' RF ' num2str(timeR) ' RF_PCA ' num2str(timeP) ' RF_LDA ' num2str(timeL)]);  
     if bPrint
-       disp(dispMessage);
+        disp(dispMessage);
     end
 end
 

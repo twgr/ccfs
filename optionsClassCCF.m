@@ -1,7 +1,10 @@
 classdef optionsClassCCF
 % Options class for individual CCTs and CCF.  Please examine file for
 % complete options.  Common options are given below, default option is in
-% parens.
+% parens.  To run CCF-Bag then use options = obj = defaultOptionsCCFBag
+% which will set bProjBoot = false and bBagTrees = true.  Note CCF-Bag
+% should be used is access to out of bag error is required as CCFs do not
+% by default use bagging.
 % 
 % bProjBoot = ('default') | true | false  % Whether to use projection 
 %       % bootstrapping.  Default is false when there are only two features
@@ -34,7 +37,7 @@ classdef optionsClassCCF
 % epsilonCCA = (1e-4) | +ve real % Tolerance parameter for rank reduction 
 %       % during the CCA
 %
-% 14/06/15
+% 09/10/15
     
     
     properties            
@@ -136,7 +139,7 @@ classdef optionsClassCCF
         bRCCA = false;
         rccaLengthScale = 0.1;
         rccaNFeatures = 50;
-        rccaRegLambda = 0.1;
+        rccaRegLambda = 1e-3;
         rccaIncludeOriginal = false;
         
         
@@ -174,7 +177,7 @@ classdef optionsClassCCF
                 obj = obj.updateForBaseCounts(baseCounts);
             end
         end
-        
+                
         function obj = updateForD(obj,D)            
             % Updates the options for a particular D when lambda
             % has been set to 'sqrt' or 'log'
@@ -188,7 +191,7 @@ classdef optionsClassCCF
             end
             
             if strcmpi(obj.bProjBoot,'default')
-                if D>=obj.lambda
+                if D<=obj.lambda
                     obj.bProjBoot = false;
                 else
                     obj.bProjBoot = true;
@@ -196,7 +199,7 @@ classdef optionsClassCCF
             end
             
             if strcmpi(obj.bBagTrees,'default')
-                if D>=obj.lambda
+                if D<=obj.lambda
                     obj.bBagTrees = true;
                 else
                     obj.bBagTrees = false;
@@ -229,6 +232,20 @@ classdef optionsClassCCF
     end
     
     methods (Static)
+        
+        
+        function obj = defaultOptionsCCFBag
+            % Automatically sets up options for running CCF-Bag which using
+            % bagging instead of projection bootstrapping (please see the
+            % paper for further details).  This options should be used if
+            % the oob error is needed (e.g. for hyperparameter
+            % optimization).
+            
+            obj = optionsClassCCF;
+            obj.bProjBoot = false;
+            obj.bBagTrees = true;
+        end
+        
         function obj = defaultOptionsForSingleCCTUsage(D,baseCounts)
            % Allows easy calling of a default options set for when growing
            % a single CCT tree for individual use rather than as part of a

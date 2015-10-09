@@ -29,7 +29,7 @@ else
     B = invCholCyy*L;
 end
 
-bGreaterThanTol = abs(r)>abs(corrTol);
+bGreaterThanTol = abs(r)>abs(corrTol*max(abs(r)));
 A = A(:,bGreaterThanTol);
 B = B(:,bGreaterThanTol);
 r = r(bGreaterThanTol);

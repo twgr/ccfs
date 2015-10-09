@@ -9,7 +9,7 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 % class labels.
 %
 % Required Inputs: 
-%         nTrees = Number of trees to create
+%         nTrees = Number of trees to create (default 500)
 %         XTrain = Array giving training features.  Each row should be a
 %                  seperate data point and each column a seperate feature.
 %                  Must be numerical array with missing values marked as
@@ -47,10 +47,15 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %                  behaviour see processInputData.m
 %
 % Outputs:
-%            CCF = Structure with three fields, trees giving a Cell array of 
-%                  CCTs, options giving the options structure and 
+%            CCF = Structure with four fields, trees giving a Cell array of 
+%                  CCTs, options giving the options structure,
 %                  inputProcessDetails giving details required to replicate
-%                  input feature transform as done during the training. 
+%                  input feature transform as done during the training and
+%                  if bagging has been used (i.e. running CCF-BAG) then an
+%                  out of bag error is also provided. Thus if trying to use
+%                  the out of bag error for parameter selection, CCF-BAG
+%                  must be used, an options structure for which can be
+%                  made using optionsClassCCF.defaultOptionsCCFBag.
 %                  Forest prediction can be made using predictFromCCF 
 %                  function or  individual trees using the predictFromCCT 
 %                  function. Note that some of options, e.g. voteFactor, 
@@ -64,11 +69,15 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %     cumForPred = Predictions of forest for XTest cumulative in the
 %                  individual trees.  cumForPred(:,end)==forPred
 %
-% Tom Rainforth 20/07/15 
+% Tom Rainforth 09/10/15 
 
 mypath = path;
 locToolbox = [regexprep(mfilename('fullpath'),'genCCF',''), 'toolbox'];
 bInPath = ~isempty(strfind(mypath,locToolbox));
+
+if ~exist('nTrees','var')
+    nTrees = 500;
+end
 
 if ~bInPath
     addpath(locToolbox);
@@ -175,6 +184,20 @@ CCF.Trees = forest;
 CCF.options = optionsFor;
 CCF.inputProcessDetails = inputProcessDetails;
 
+if optionsFor.bBagTrees
+   votesOOb = zeros(size(YTrain));
+   for nTO=1:numel(CCF.Trees)
+      indAdd = sub2ind(size(votesOOb),CCF.Trees{nTO}.iOutOfBag,CCF.Trees{nTO}.predictsOutOfBag);
+      votesOOb(indAdd) = votesOOb(indAdd)+1;
+   end
+   forestProbs = bsxfun(@rdivide,votesOOb,sum(votesOOb,2));
+   [~,forestPredicts] = max(bsxfun(@times,forestProbs,CCF.options.voteFactor(:)'),[],2);
+   YTrainVec = sum(bsxfun(@times,YTrain,1:size(YTrain,2)),2);
+   CCF.percentageOutOfBagError = 100*(1-mean(forestPredicts==YTrainVec));
+else
+   CCF.percentageOutOfBagError = 'OOB error only returned if bagging used.  Please use CCF-Bag instead via options=optionsClassCCF.defaultOptionsCCFBag';
+end
+
 if nOut<2
     return
 end
@@ -210,6 +233,7 @@ function tree = genTree(XTrain,YTrain,optionsFor,iFeatureNum,N)
 
 if optionsFor.bBagTrees
     iTrainThis = datasample(1:N,N);
+    iOob = setdiff(1:N,iTrainThis)';
 else
     iTrainThis = 1:N;
 end
@@ -230,6 +254,11 @@ elseif strcmpi(optionsFor.treeRotation,'pca')
 end
 
 tree = growCCT(XTrainBag,YTrainBag,optionsFor,iFeatureNum,0);
+
+if optionsFor.bBagTrees
+    tree.iOutOfBag = iOob;
+    tree.predictsOutOfBag = predictFromCCT(tree,XTrain(iOob,:));
+end
 
 if ~strcmpi(optionsFor.treeRotation,'none')
     tree.rotDetails = struct('R',R,'muX',muX);

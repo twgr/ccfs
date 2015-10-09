@@ -143,9 +143,14 @@ else
         fExp = makeExpansionFunc(wZ,bZ,options.rccaIncludeOriginal);
         XTrainBag = fExp(XTrainBag);
         projMat = regCCA_alt(XTrainBag,YTrainBag,options.rccaRegLambda,options.rccaRegLambda,1e-8);
+        if isempty(projMat)
+            projMat = ones(size(XTrainBag,2),1);
+        end
     elseif ~isempty(options.projections)
         projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections,options.epsilonCCA);
     end
+    
+    
     
     %% Choose the features to use
     

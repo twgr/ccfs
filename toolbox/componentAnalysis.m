@@ -98,9 +98,16 @@ if any(toDo([1,3]))
             q2 = q2(:,1:rankY);
         end
         
-        % Solve CCA using the decompositions
+        % Solve CCA using the decompositions, taking care to use minimal
+        % complexity orientation for SVD.  Note the two calculations are
+        % equivalent except in computational complexity
+        
         d = min(rankX,rankY);
-        [L,D,M] = svd(q1' * q2,0);
+        if rankX>=rankY
+            [L,D,M] = svd(q1' * q2,0);
+        else
+            [M,D,L] = svd(q2' * q1,0);
+        end
         A = r1 \ L(:,1:d) * sqrt(x1-1);
                 
         % Put coefficients back to their full size and their correct order

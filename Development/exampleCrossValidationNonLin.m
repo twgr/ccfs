@@ -5,18 +5,17 @@
 %
 % Tom Rainforth 27/07/15
 
-%clear all
-dataSetsToTest = {'breastTissue','yeast','balanceScale','banknote','hillValley','ILPD','ionosphere','iris','seeds','soybean','spirals','zoo'};
-%dataSetsToTest = {'libras'};
+clear all
+dataSetsToTest = {'balanceScale','banknote','hillValley','ILPD','ionosphere','iris','seeds','soybean','spirals','zoo'};
 nFolds = 10;
 nTrees = 100;
 optionsFor = optionsClassCCF;
 optionsFor.bRCCA = true;
-optionsFor.bBagTrees = true;
-optionsFor.bProjBoot = false;
+%optionsFor.bBagTrees = true;
+%optionsFor.bProjBoot = false;
 optionsFor.bUseParallel = true;
-optionsFor.epsilonCCA = 0.05;
-optionsFor.rccaNFeatures = 100;
+%optionsFor.epsilonCCA = 0.05;
+%optionsFor.rccaNFeatures = 100;
 [percentTestMissClassfiedCCF,percentTestMissClassfiedRF] = deal(cell(numel(dataSetsToTest),1));
 
 for n=1:numel(dataSetsToTest)
