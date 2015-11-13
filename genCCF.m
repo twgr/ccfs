@@ -20,8 +20,7 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %                  and contains only a single non zero term the column of 
 %                  which indicates the class, a numeric vector with unique
 %                  values taken as seperate class labels or a cell array of
-%                  either class labels which can be either numeric or
-%                  strings.
+%                  strings giving the name.
 %
 % Advanced usage:
 %
@@ -117,6 +116,11 @@ end
 
 [YTrain, classes] = classExpansion(YTrain);
 
+if numel(classes)==1
+    warning('Only 1 class present in training data!');
+end
+
+
 N = size(XTrain,1);
 D = numel(fastUnique(iFeatureNum)); % Note that setting of number of features to subsample is based only 
                                 % number of features before expansion of categoricals.
@@ -184,8 +188,8 @@ CCF.Trees = forest;
 CCF.options = optionsFor;
 CCF.inputProcessDetails = inputProcessDetails;
 
-if optionsFor.bBagTrees
-   votesOOb = zeros(size(YTrain));
+if optionsFor.bBagTrees && bKeepTrees
+   votesOOb = zeros(size(YTrain,1),max(2,size(YTrain,2)));
    for nTO=1:numel(CCF.Trees)
       indAdd = sub2ind(size(votesOOb),CCF.Trees{nTO}.iOutOfBag,CCF.Trees{nTO}.predictsOutOfBag);
       votesOOb(indAdd) = votesOOb(indAdd)+1;

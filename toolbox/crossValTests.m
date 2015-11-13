@@ -1,6 +1,6 @@
-function [percentTestMissClassfiedCCF, percentTestMissClassfiedRF, ...
+function [percentTestMissClassfiedCCF, percentTestMissClassfiedRF,...
     percentTestMissClassfiedCCFDefault] = ...
-    crossValTests(X,Y,bOrdinal,nFolds,nTrees,optionsFor,bPrint,bDoRF)
+    crossValTests(X,Y,bOrdinal,nFolds,nTrees,optionsFor,bPrint,bDoRF,iTrain,iTest)
 %crossValMissClassifications Performs crossvalidation tests using CCFs
 %
 % percentTestMissClassfiedCCF = crossValTests(X,Y)
@@ -56,16 +56,24 @@ if ~exist('bDoRF','var') || isempty(bDoRF)
     bDoRF = true;
 end
 
-[iTrain, iTest] = setupCrossValSampleIds(size(X,1),nFolds);
+if ~exist('iTrain','var') || ~exist('iTest','var') || isempty(iTrain) || isempty(iTest)
+    [iTrain, iTest] = setupCrossValSampleIds(size(X,1),nFolds);
+end
+
 percentTestMissClassfiedCCF = NaN(nFolds,1);
 percentTestMissClassfiedRF = NaN(nFolds,1);
 percentTestMissClassfiedCCFDefault = NaN(nFolds,1);
 
 for n=1:nFolds
+    tCCF = tic;
     CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),optionsFor,[],[],[],bOrdinal);
     yPreds = predictFromCCF(CCF,X(iTest{n},:));
-    percentTestMissClassfiedCCF(n) = 100*(1-mean(yPreds==Y(iTest{n},:)));
-    
+    if iscell(Y)
+        percentTestMissClassfiedCCF(n) = 100*(1-mean(cellfun(@strcmpi,CCF.options.classNames(yPreds),Y(iTest{n}))));
+    else
+        percentTestMissClassfiedCCF(n) = 100*(1-mean(yPreds==Y(iTest{n},:)));
+    end
+    timeCCF = toc(tCCF);
     dispMessage = ['Fold ' num2str(n) ', test error (lower is better): CCF = ' ...
         num2str(percentTestMissClassfiedCCF(n),6) '%'];
     
@@ -76,23 +84,35 @@ for n=1:nFolds
             mtry = ceil(sqrt(size(X(iTrain{n},:),2)));
         else
             mtry = optionsFor.lambda;
-        end        
+        end
+        tRF = tic;
         RF = TreeBagger(nTrees,X(iTrain{n},:),Y(iTrain{n},:),'CategoricalPredictors',~bOrdinal,'nvartosample',mtry);
-        ypredsRF = cellfun(@str2double,predict(RF,X(iTest{n},:)));
-        percentTestMissClassfiedRF(n) = 100*(1-(mean(ypredsRF==Y(iTest{n},:))));
+        if iscell(Y)
+            percentTestMissClassfiedRF(n) = 100*(1-mean(cellfun(@strcmpi,predict(RF,X(iTest{n},:)),Y(iTest{n}))));
+        else
+            ypredsRF = cellfun(@str2double,predict(RF,X(iTest{n},:)));
+            percentTestMissClassfiedRF(n) = 100*(1-(mean(ypredsRF==Y(iTest{n},:))));
+        end
+        timeRF = toc(tRF);
         dispMessage = [dispMessage, ' RF = ' num2str(percentTestMissClassfiedRF(n),6) '%']; %#ok<AGROW>
     end
     
     if nargout>2
         CCFdef = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],[],[],[],bOrdinal);
-        yPredsCCFdef = predictFromCCF(CCFdef,X(iTest{n},:));
-        percentTestMissClassfiedCCFDefault(n) = 100*(1-mean(yPredsCCFdef==Y(iTest{n},:)));
+        yPredsCCFdef = predictFromCCF(CCFdef,X(iTest{n},:));        
+        if iscell(Y)
+            percentTestMissClassfiedCCFDefault(n) = 100*(1-mean(cellfun(@strcmpi,CCFdef.options.classNames(yPredsCCFdef),Y(iTest{n}))));
+        else
+            percentTestMissClassfiedCCFDefault(n) = 100*(1-mean(yPredsCCFdef==Y(iTest{n},:)));
+        end
         dispMessage = [dispMessage ' CCFDef = ' ...
             num2str(percentTestMissClassfiedCCFDefault(n),6) '%']; %#ok<AGROW>
     end
     
+    dispMessage = [dispMessage, '.     Timings CCF ' num2str(timeCCF) ' sec, RF ' num2str(timeRF) ' sec']; %#ok<AGROW>
+    
     if bPrint
-       disp(dispMessage);
+        disp(dispMessage);
     end
 end
 

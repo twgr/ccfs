@@ -10,7 +10,12 @@ function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts
 %                           X = input features, each row should be a 
 %                               seperate data point
 % Outputs:  forestPredictions = Vector of numeric predictions corresponding to
-%                               the class label
+%                               the class label if the labels where
+%                               provided as a numeric array or the indexes
+%                               if they were provided as a cell array of
+%                               strings.  Note that in the latter case, the
+%                               classes labels to which this indexes is
+%                               given by CCF.options.classes.
 %                 forestProbs = Assigned probability to each class
 %             treePredictions = Individual tree predictions
 %    cumulativeForestPredicts = Predictions of forest cumaltive with adding
@@ -38,6 +43,11 @@ if nargout>3
 else
    forestProbs = squeeze(sum(bsxfun(@eq,treePredictions,reshape(1:K,[1,1,K])),2))/nTrees;
    [~,forestPredicts] = max(bsxfun(@times,forestProbs,CCF.options.voteFactor(:)'),[],2);
+end
+
+if isnumeric(CCF.options.classNames) || islogical(CCF.options.classNames)
+    forestPredicts = CCF.options.classNames(forestPredicts);
+    treePredictions = CCF.options.classNames(treePredictions);
 end
 
 end

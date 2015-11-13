@@ -15,37 +15,30 @@ function [Y, classes] = classExpansion(Y)
 %
 % Tom Rainforth 22/06/15
 
-if size(Y,2)==1 && ~islogical(Y)
-    classes = unique(Y);
+if size(Y,2)==1 && ~islogical(Y) && (iscell(Y) || ~all(Y==0 | Y==1))
+    [classes,~,Yindexes] = unique(Y);
     if numel(classes)==2
         % If there are only 2 classes the binary expansion can be a single
         % logical array
         YVec = Y;
         if iscell(YVec)
-            Y = cellfun(@(x) strcmpi(x,classes{2}) || (~ischar(x) && ~ischar(classes{2}) && (x==classes{2})), YVec);
+            Y = cellfun(@(x) strcmpi(x,classes{2}), YVec);
         else
             Y = YVec==classes(2);
         end
     else
-        YVec = Y;
-        Y = false(size(YVec,1),numel(classes));
-        if iscell(YVec)
-            for k=1:numel(classes)
-                Y(:,k) = cellfun(@(x) strcmpi(x,classes{k}) || (~ischar(x) && ~ischar(classes{k}) && (x==classes{k})), YVec);
-            end
-        else
-            for k=1:numel(classes)
-                Y(:,k) = YVec==classes(k);
-            end
+        Y = false(size(Yindexes,1),numel(classes));
+        for k=1:numel(classes)
+            Y(:,k) = k==Yindexes;
         end
     end
 else
     % Already in binary format but make sure Y is logical type to minimize 
     % memory requirement in recursion
     Y = logical(Y);
-    if size(Y,2)==2
-        classes = [false,true];
+    if size(Y,2)==1
+        classes = [false;true];
     else
-        classes = 1:size(Y,2);
+        classes = (1:size(Y,2))';
     end
 end
