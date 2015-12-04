@@ -1,4 +1,4 @@
-losingDataSets = {'balanceScale','satimage','polya','voweln','wholeRegion','wiscCancer','yeast'};
+losingDataSets = {'banknote','iris','libras','parkinsons'};
 
 for nL = 1:numel(losingDataSets)
     
@@ -50,34 +50,34 @@ for nL = 1:numel(losingDataSets)
     X = [XTrain;XTest];
     Y = [YTrain;YTest];
     
-    save(['C:\Users\Tom\Documents\DataSets\Formatted for Experiments\ArtificialCorrelations\crossVal', filesep(), losingDataSets{nL}],'X','Y');
+    %save(['C:\Users\Tom\Documents\DataSets\Formatted for Experiments\ArtificialCorrelations\crossVal', filesep(), losingDataSets{nL}, datestr(now,30)],'X','Y');
     
 end
 
 
 %%
-
-possibleLabels = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-YlabelTrain = cell(size(YTrain,1),1);
-YlabelTest = cell(size(YTest,1),1); K = max(YTrain);
-for k=1:K
-    YlabelTrain(YTrain==k) = {possibleLabels(k)};
-    YlabelTest(YTest==k) = {possibleLabels(k)};
-end
-fullCell = [num2cell([XTrain;XTest]),[YlabelTrain;YlabelTest]];
-fullTable = cell2table(fullCell);
-writetable(fullTable,'doubleBalance.csv');
-
-%%
-
-optionsFor = optionsClassCCF;
-%optionsFor.bUseParallel = true;
-optionsFor.epsilonCCA = 1e-12;
-optionsFor.XVariationTol = 1e-12;
-tic; [CCF,locPreds,probs,treePreds,cumForPreds] = genCCF(100,XTrain,YTrain,optionsFor,XTest,true); toc
-tic; Bag = TreeBagger(100,XTrain,YTrain,'NVarToSample',3); ypreds = predict(Bag,XTest); ypreds = cellfun(@str2double,ypreds); toc
-mean(locPreds==YTest)
-mean(ypreds==YTest)
+% 
+% possibleLabels = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+% YlabelTrain = cell(size(YTrain,1),1);
+% YlabelTest = cell(size(YTest,1),1); K = max(YTrain);
+% for k=1:K
+%     YlabelTrain(YTrain==k) = {possibleLabels(k)};
+%     YlabelTest(YTest==k) = {possibleLabels(k)};
+% end
+% fullCell = [num2cell([XTrain;XTest]),[YlabelTrain;YlabelTest]];
+% fullTable = cell2table(fullCell);
+% writetable(fullTable,'doubleBalance.csv');
+% 
+% %%
+% 
+% optionsFor = optionsClassCCF;
+% %optionsFor.bUseParallel = true;
+% optionsFor.epsilonCCA = 1e-12;
+% optionsFor.XVariationTol = 1e-12;
+% tic; [CCF,locPreds,probs,treePreds,cumForPreds] = genCCF(100,XTrain,YTrain,optionsFor,XTest,true); toc
+% tic; Bag = TreeBagger(100,XTrain,YTrain,'NVarToSample',3); ypreds = predict(Bag,XTest); ypreds = cellfun(@str2double,ypreds); toc
+% mean(locPreds==YTest)
+% mean(ypreds==YTest)
 
 %%
 
