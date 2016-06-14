@@ -3,7 +3,7 @@ function uX = fastUnique(X)
 
 uX = sort(X);
 if isrow(X)
-    uX = uX([true,diff(X)~=0]);
+    uX = uX([true,diff(uX)~=0]);
 else
-    uX = uX([true;diff(X)~=0]);
+    uX = uX([true;diff(uX)~=0]);
 end
