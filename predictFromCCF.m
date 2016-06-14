@@ -1,7 +1,8 @@
 function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts] = predictFromCCF(CCF,X)
 %predictFromCCF predicts class using trained forest
 %
-% [prediction, countsLeaf] = predictFromCCF(CCF,X)
+% [forestPredicts, forestProbs, treePredictions, cumulativeForestPredict] ...
+%                                                   = predictFromCCF(CCF,X)
 %
 % Inputs:                 CCF = output from genCCF.  This is a structure
 %                               with a field Trees, giving a cell array of
@@ -9,8 +10,8 @@ function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts
 %                               object of type optionsClassCCF
 %                           X = input features, each row should be a 
 %                               seperate data point
-% Outputs:  forestPredictions = Vector of numeric predictions corresponding to
-%                               the class label if the labels where
+% Outputs:     forestPredicts = Vector of numeric predictions corresponding
+%                               to the class label if the labels where
 %                               provided as a numeric array or the indexes
 %                               if they were provided as a cell array of
 %                               strings.  Note that in the latter case, the
