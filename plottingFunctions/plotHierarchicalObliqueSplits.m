@@ -1,4 +1,5 @@
 function plotHierarchicalObliqueSplits(starts,ends,labels,minX,maxX,bPlotEdges,colors,alpha)
+% Works on output of CATTreeToLines
 
 figure
 

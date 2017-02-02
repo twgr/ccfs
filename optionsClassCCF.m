@@ -1,14 +1,13 @@
 classdef optionsClassCCF
 % Options class for individual CCTs and CCF.  Please examine file for
 % complete options.  Common options are given below, default option is in
-% parens.  To run CCF-Bag then use options = obj = defaultOptionsCCFBag
+% parens.  To run CCF-Bag then use options = defaultOptionsCCFBag
 % which will set bProjBoot = false and bBagTrees = true.  Note CCF-Bag
-% should be used is access to out of bag error is required as CCFs do not
+% should be used if access to out of bag error is required as CCFs do not
 % by default use bagging.
 % 
-% bProjBoot = ('default') | true | false  % Whether to use projection 
-%       % bootstrapping.  Default is false when there are only two features
-%       % and true otherwise.
+% Although no options require setting, it may be beneficial to change some
+% of the following options in certain scenarios.
 %
 % lambda    = ('log') | 'sqrt' | +ve integer  % Number of features to 
 %       % subsample at each node or 'log' for ceil(log2(D)+1)) or 'sqrt'
@@ -16,12 +15,10 @@ classdef optionsClassCCF
 %
 % splitCriterion = ('info') | 'gini'
 % 
-% minPointsForSplit = 2;            % Minimum number of points at which a
-%       % node is allowed to split
+% bProjBoot = ('default') | true | false  % Whether to use projection 
+%       % bootstrapping.  Default is false when there are only two features
+%       % and true otherwise.
 %
-% dirIfEqual = ('first') | 'rand'   % Direction to choose when multiple
-%       % projections can deliver same criterion score
-% 
 % bBagTrees = ('default') | true | false  % Whether to use Breiman's bagging 
 %       % and train each tree on a bootstrap sample  Default is true when 
 %       % there are only two features and false otherwise.
@@ -29,13 +26,10 @@ classdef optionsClassCCF
 % bUseParallel = (false) | true     % If true then trees are learnt in 
 %       % parallel
 %
-% bContinueProjBootDegenerate = (true) | false   %  In the scenario where 
-%       % the projection bootstrap makes the local data pure or have no X
-%       % variation, the algorithm can either set the node to be a leaf or
-%       % resort to using the original data for the CCA
-%
 % epsilonCCA = (1e-4) | +ve real % Tolerance parameter for rank reduction 
-%       % during the CCA
+%       % during the CCA.  It can be desirable to lower these if the data
+%       % has extreme correlation.  Otherwise I small amount of
+%       % regularization against noise / numerical instability is useful.
 %
 % 09/10/15
     
@@ -133,8 +127,8 @@ classdef optionsClassCCF
         voteFactor = 'default';
         
         % Options that allow nonlinear features to be included in the CCA
-        % in accordance with Lopez-Paz's randomized cca.  Initial results
-        % suggest that this is not a useful expansion of the model
+        % in accordance with Lopez-Paz's randomized kernel cca.  Initial 
+        % results suggest that this is not a useful expansion of the model
         
         bRCCA = false;
         rccaLengthScale = 0.1;
@@ -250,7 +244,7 @@ classdef optionsClassCCF
            % Allows easy calling of a default options set for when growing
            % a single CCT tree for individual use rather than as part of a
            % forest.  First input is number of features prior to expansion
-           % D and second is the baseCounts of each class           
+           % D and second is the total number of each counts for each class           
            
             obj = optionsClassCCF(D,baseCounts);
             obj.bProjBoot = false;

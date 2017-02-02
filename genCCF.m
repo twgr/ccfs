@@ -74,7 +74,7 @@ mypath = path;
 locToolbox = [regexprep(mfilename('fullpath'),'genCCF',''), 'toolbox'];
 bInPath = ~isempty(strfind(mypath,locToolbox));
 
-if ~exist('nTrees','var')
+if ~exist('nTrees','var') || isempty(nTrees)
     nTrees = 500;
 end
 
