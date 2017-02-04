@@ -1,8 +1,8 @@
-function [bSp, rmm, cmm] = twoPointMaxMarginSplit(X,Y,tol)
+function [bSp, rmm, cmm] = twoPointMaxMarginSplit(X,Y,bReg,tol)
 % This should only be done if X has exactly 2 unique rows in which case it
 % produces the optimal split
 bType1 = all(abs(bsxfun(@minus,X,X(1,:)))<tol,2);
-if size(Y,2)==1
+if size(Y,2)==1 && ~bReg
     YLeft = Y;
     YRight = ~Y;
 else
@@ -10,8 +10,7 @@ else
     YRight = Y(~bType1,:);
 end
 if all(sum(YLeft,1)==sum(YRight,1))
-    % Here the two unique points have identical sets of class
-    % labels and so we can't split
+    % Here the two unique points are identical and so we can't split
     bSp = false;
     rmm = [];
     cmm = [];
@@ -27,6 +26,6 @@ iType2 = find(~bType1,1);
 rmm = (X(iType2,:)-X(1,:))';
 cmm = 0.5*(X(iType2,:)*rmm+X(1,:)*rmm);
 if any(isnan(cmm(:))) || any(isinf(cmm(:)))
-    error('Suggested split point at infitity / nan');
+    error('Suggested split point at infitity or NaN');
 end
 end

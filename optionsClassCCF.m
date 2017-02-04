@@ -48,16 +48,17 @@ classdef optionsClassCCF
         bProjBoot = 'default';
                 
         % Number of features to subsample at each node.  Should be positive
-        % integer or 'log' (equating to ceil(log2(D)+1)) or 'sqrt'
-        % (equating to ceil(sqrt(D))).  This is lambda in the paper.
+        % integer or 'log' (equating to ceil(log2(D)+1)), 'sqrt'
+        % (equating to ceil(sqrt(D))) or 'all'.  This is lambda in the paper.
         lambda = 'log';       
                 
         % Criterion for choosing the best split.  Valid options are are
-        % 'gini' and 'info'
-        splitCriterion = 'info';      
+        % 'gini' and 'info' for classification and 'mse' for regression
+        splitCriterion = 'info';      % Default = 'mse' for regression
+        %TODO add alternatives for regression (e.g. curvature)
                 
         % Minimum number of points at which a node is allowed to split 
-        minPointsForSplit = 2;
+        minPointsForSplit = 2; % Default = 10 for regression
         
         % When multiple projection vectors can give equivalent split
         % criterion scores, one can either choose which to use randomly
@@ -75,6 +76,11 @@ classdef optionsClassCCF
         
         % Tolerance parameter for rank reduction during the CCA
         epsilonCCA = 1e-4;
+        
+        % When doing regression with mse splits, the node is made into a
+        % leaf if the mse (i.e. variance) of the data is less than this
+        % tolerance times the mse of the full data set.  
+        mseErrorTolerance = 1e-6;
         
         %% COMMON FOREST OPTIONS
         
@@ -153,25 +159,23 @@ classdef optionsClassCCF
         
         %% Properties that are not set but used as a place to store info
         
-        ancestralProbs
-        classNames
+        ancestralProbs % Used for tie breaking by defaulting to parent node
+        classNames     % Used to convert the predictors back to their class names
+        
+        org_muY        % Used in regression for converting the Z scores back 
+        org_stdY       % to original values when creating the leaf model
+        
+        mseTotal       % Used as a baseline in regression with 
+                       % mseErrorTolerance for early termination when
+                       % there is negiligable variation in the outputs.
+                       % Terminates if mse<mseTotal*mseErrorTolerance
          
     end
 
 %%
 
     methods    
-        function obj = optionsClassCCF(D,baseCounts)
-            
-            if exist('D','var') && ~isempty(D)
-                obj = obj.updateForD(D);
-            end
-            
-            if exist('baseCounts','var') && ~isempty(baseCounts)
-                obj = obj.updateForBaseCounts(baseCounts);
-            end
-        end
-                
+                        
         function obj = updateForD(obj,D)            
             % Updates the options for a particular D when lambda
             % has been set to 'sqrt' or 'log'
@@ -180,6 +184,8 @@ classdef optionsClassCCF
                 obj.lambda = ceil(sqrt(D));
             elseif strcmpi(obj.lambda,'log')
                 obj.lambda = ceil(log2(D)+1);
+            elseif strcmpi(obj.lambda,'all')
+                obj.lambda = D;
             elseif ~isnumeric(obj.lambda)
                 error('Invalid option set for nIncludeCC');
             end
@@ -240,15 +246,48 @@ classdef optionsClassCCF
             obj.bBagTrees = true;
         end
         
-        function obj = defaultOptionsForSingleCCTUsage(D,baseCounts)
+        function obj = defaultOptionsForSingleCCTUsage
            % Allows easy calling of a default options set for when growing
            % a single CCT tree for individual use rather than as part of a
            % forest.  First input is number of features prior to expansion
            % D and second is the total number of each counts for each class           
            
-            obj = optionsClassCCF(D,baseCounts);
+            obj = optionsClassCCF;
             obj.bProjBoot = false;
-            obj.lambda = D;
+            obj.lambda = 'all';
+            obj.minPointsForSplit = 10;
+            obj.bBagTrees = false;
+        end
+        
+        function obj = defaultOptionsReg
+            % Constructs default options for regression
+            
+            obj = optionsClassCCF;
+            obj.splitCriterion = 'mse';
+            obj.minPointsForSplit = 10;
+        end
+        
+        function obj = defaultOptionsRegCCFBag
+            % Constructs default options for regression and CCFBag
+            
+            obj = optionsClassCCF;
+            obj.splitCriterion = 'mse';
+            obj.minPointsForSplit = 10;
+            obj.bProjBoot = false;
+            obj.bBagTrees = true;
+        end
+        
+        function obj = defaultOptionsRegForSingleCCTUsage
+           % Allows easy calling of a default options set for when growing
+           % a single CCT tree for individual use rather than as part of a
+           % forest.  First input is number of features prior to expansion
+           % D and second is the total number of each counts for each class           
+           
+            obj = optionsClassCCF;
+            obj.splitCriterion = 'mse';
+            obj.minPointsForSplit = 10;
+            obj.bProjBoot = false;
+            obj.lambda = 'all';
             obj.minPointsForSplit = 10;
             obj.bBagTrees = false;
         end

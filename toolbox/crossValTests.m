@@ -72,7 +72,7 @@ yPredsRF = cell(nFolds,1);
 
 for n=1:nFolds
     tCCF = tic;
-    CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),optionsFor,[],[],[],bOrdinal);
+    CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],optionsFor,[],[],[],bOrdinal);
     yPreds = predictFromCCF(CCF,X(iTest{n},:));
     yPredsCCF{n} = yPreds;
     if iscell(Y)

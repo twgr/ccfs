@@ -1,5 +1,5 @@
 function OutStruct = ccfFromFile(inputLocation, outputLocation, nTrees, ...
-    propTrain, bRandTrainTestSplit, bKeepTrees, nOutputsToStore, varargin)
+    propTrain, bReg, bRandTrainTestSplit, bKeepTrees, nOutputsToStore, varargin)
 %ccfFromFile Wrapper function to call genCCF using csvs directly
 %
 % Allows a CCF to be generated and predictions to be made directly from a
@@ -28,7 +28,7 @@ function OutStruct = ccfFromFile(inputLocation, outputLocation, nTrees, ...
 %                      then the results are not saved.
 %
 % Optional Inputs
-%             nTrees = Number of trees to train (default = 100)
+%             nTrees = Number of trees to train (default = 500)
 %          propTrain = Proportion of data to use for training (default =
 %                      0.7)
 % bRandTrainTestSplit = If true (default) then the samples used for
@@ -57,7 +57,7 @@ function OutStruct = ccfFromFile(inputLocation, outputLocation, nTrees, ...
 
 %% Sort out inputs
 if ~exist('nTrees','var') || isempty(nTrees)
-    nTrees = 100;
+    nTrees = 500;
 elseif ischar(nTrees)
     nTrees = str2double(nTrees);
 end
@@ -66,6 +66,12 @@ if ~exist('propTrain','var') || isempty(propTrain)
     propTrain = 0.7;
 elseif ischar(propTrain)
     propTrain = str2double(propTrain);
+end
+
+if ~exist('bReg','var') || isempty(bReg)
+    bReg = false;
+elseif ischar(bReg)
+    bReg = logical(str2double(bReg));
 end
 
 if ~exist('bRandTrainTestSplit','var') || isempty(bRandTrainTestSplit)
@@ -141,7 +147,7 @@ namesOut = {'CCF','forestPredictsTest','forestProbsTest','treePredictsTest','cum
 
 OutStruct = cell(nOutputsToStore,1);
 
-[OutStruct{:}] = genCCF(nTrees,XTrain,YTrain,optionsFor,XTest,bKeepTrees,[],bOrdinal);
+[OutStruct{:}] = genCCF(nTrees,XTrain,YTrain,bReg,optionsFor,XTest,bKeepTrees,[],bOrdinal);
 
 OutStruct = cell2struct(OutStruct,namesOut(1:nOutputsToStore));
 

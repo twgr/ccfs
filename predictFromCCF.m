@@ -1,8 +1,8 @@
-function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts] = predictFromCCF(CCF,X)
+function [forestPredicts, forestProbs_or_std_dev, treePredicts, cumulativePredicts] = predictFromCCF(CCF,X)
 %predictFromCCF predicts class using trained forest
 %
-% [forestPredicts, forestProbs, treePredictions, cumulativeForestPredict] ...
-%                                                   = predictFromCCF(CCF,X)
+% [forestPredicts, forestProbs_or_std_dev, treePredicts, ...
+%       cumulativeForestPredict] = predictFromCCF(CCF,X)
 %
 % Inputs:                 CCF = output from genCCF.  This is a structure
 %                               with a field Trees, giving a cell array of
@@ -17,9 +17,11 @@ function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts
 %                               strings.  Note that in the latter case, the
 %                               classes labels to which this indexes is
 %                               given by CCF.options.classes.
-%                 forestProbs = Assigned probability to each class
-%             treePredictions = Individual tree predictions
-%    cumulativeForestPredicts = Predictions of forest cumaltive with adding
+%    forestProbs_or_std_dev = Assigned probability to each class for
+%                             classification or standard deviation of mean
+%                             predictions for regression
+%             treePredicts = Individual tree predictions
+%    cumulativePredicts = Predictions of forest cumaltive with adding
 %                               trees
 %
 % 14/06/15
@@ -27,28 +29,42 @@ function [forestPredicts, forestProbs, treePredictions, cumulativeForestPredicts
 X = replicateInputProcess(X,CCF.inputProcessDetails);
 
 nTrees = numel(CCF.Trees);
-treePredictions = NaN(size(X,1),nTrees);
+treePredicts = NaN(size(X,1),nTrees);
 
 for n=1:nTrees
-    treePredictions(:,n) = predictFromCCT(CCF.Trees{n},X);
+    treePredicts(:,n) = predictFromCCT(CCF.Trees{n},X);
 end
 
-K = numel(CCF.Trees{1}.trainingCounts);
-
-if nargout>3
-   cumVotes = bsxfun(@rdivide,cumsum(bsxfun(@eq,treePredictions,reshape(1:K,[1,1,K])),2),reshape(1:nTrees,[1,nTrees,1]));
-   forestProbs = squeeze(cumVotes(:,end,:));
-   voteFactor = reshape(CCF.options.voteFactor/mean(CCF.options.voteFactor),[1,1,K]);
-   [~,cumulativeForestPredicts] = max(bsxfun(@times,cumVotes,voteFactor),[],3);
-   forestPredicts = cumulativeForestPredicts(:,end);
+if CCF.bReg
+    if nargout>2
+        cumulativePredicts = bsxfun(@rdivide,cumsum(treePredicts,2),1:nTrees);
+        forestPredicts = cumulativePredicts(:,end);
+    else
+        forestPredicts = mean(treePredicts,2);
+    end    
+    if nargout>1        
+        forestProbs_or_std_dev = std(treePredicts,[],2);
+    end
 else
-   forestProbs = squeeze(sum(bsxfun(@eq,treePredictions,reshape(1:K,[1,1,K])),2))/nTrees;
-   [~,forestPredicts] = max(bsxfun(@times,forestProbs,CCF.options.voteFactor(:)'),[],2);
-end
-
-if isnumeric(CCF.options.classNames) || islogical(CCF.options.classNames)
-    forestPredicts = CCF.options.classNames(forestPredicts);
-    treePredictions = CCF.options.classNames(treePredictions);
+    
+    K = numel(CCF.Trees{1}.trainingCounts);
+    
+    if nargout>3
+        cumVotes = bsxfun(@rdivide,cumsum(bsxfun(@eq,treePredicts,reshape(1:K,[1,1,K])),2),reshape(1:nTrees,[1,nTrees,1]));
+        forestProbs_or_std_dev = squeeze(cumVotes(:,end,:));
+        voteFactor = reshape(CCF.options.voteFactor/mean(CCF.options.voteFactor),[1,1,K]);
+        [~,cumulativePredicts] = max(bsxfun(@times,cumVotes,voteFactor),[],3);
+        forestPredicts = cumulativePredicts(:,end);
+    else
+        forestProbs_or_std_dev = squeeze(sum(bsxfun(@eq,treePredicts,reshape(1:K,[1,1,K])),2))/nTrees;
+        [~,forestPredicts] = max(bsxfun(@times,forestProbs_or_std_dev,CCF.options.voteFactor(:)'),[],2);
+    end
+    
+    if isnumeric(CCF.options.classNames) || islogical(CCF.options.classNames)
+        forestPredicts = CCF.options.classNames(forestPredicts);
+        treePredicts = CCF.options.classNames(treePredicts);
+    end
+    
 end
 
 end

@@ -66,7 +66,7 @@ rf_LDA = NaN(nFolds,1);
 
 parfor n=1:nFolds
     tC = tic;
-    CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),optionsFor,[],[],[],bOrdinal);
+    CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),false,optionsFor,[],[],[],bOrdinal);
     yPreds = predictFromCCF(CCF,X(iTest{n},:));
     percentTestMissClassfiedCCF(n) = 100*(1-mean(yPreds==Y(iTest{n},:)));
     timeC = toc(tC);
@@ -83,7 +83,7 @@ parfor n=1:nFolds
    timeR = toc(tR);
     
 %    % if nargout==3
-%         CCFdef = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],[],[],[],bOrdinal);
+%         CCFdef = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],[],[],[],[],bOrdinal);
 %         yPredsCCFdef = predictFromCCF(CCFdef,X(iTest{n},:));
 %         percentTestMissClassfiedCCFDefault(n) = 100*(1-mean(yPredsCCFdef==Y(iTest{n},:)));
 %         dispMessage = [dispMessage ' CCFDef = ' ...

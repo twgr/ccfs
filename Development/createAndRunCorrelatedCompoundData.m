@@ -74,7 +74,7 @@ end
 % %optionsFor.bUseParallel = true;
 % optionsFor.epsilonCCA = 1e-12;
 % optionsFor.XVariationTol = 1e-12;
-% tic; [CCF,locPreds,probs,treePreds,cumForPreds] = genCCF(100,XTrain,YTrain,optionsFor,XTest,true); toc
+% tic; [CCF,locPreds,probs,treePreds,cumForPreds] = genCCF(100,XTrain,YTrain,false,optionsFor,XTest,true); toc
 % tic; Bag = TreeBagger(100,XTrain,YTrain,'NVarToSample',3); ypreds = predict(Bag,XTest); ypreds = cellfun(@str2double,ypreds); toc
 % mean(locPreds==YTest)
 % mean(ypreds==YTest)

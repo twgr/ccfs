@@ -1,7 +1,7 @@
-function tree = growCCT(XTrain,YTrain,options,iFeatureNum,depth)
+function tree = growCCT(XTrain,YTrain,bReg,options,iFeatureNum,depth)
 %growTree grows a CCT, recursively calling itself until leaves are reached
 %
-% function CCT = growCCT(XTrain,YTrain,options,iFeatureNum,depth)
+% function CCT = growCCT(XTrain,YTrain,bReg,options,iFeatureNum,depth)
 %
 % Function applies greedy splitting according to the CCT algorithm and the
 % provided options structure.  This is equivalent to alogrithm 2 in the
@@ -14,6 +14,8 @@ function tree = growCCT(XTrain,YTrain,options,iFeatureNum,depth)
 %                  processed using processInputData before being passed to
 %                  CCT
 %    YTrain      = Class data formatted as per output of classExpansion
+%    bReg        = Whether to perform regression instead of classification.
+%                  Default = false (i.e. classification).
 %    options     = Options class of type optionsClassCCF.  Some fields are
 %                  updated during recursion
 %    iFeatureNum = Grouping of features as per processInputData.  During
@@ -21,12 +23,19 @@ function tree = growCCT(XTrain,YTrain,options,iFeatureNum,depth)
 %                  data points, the corresponding values in iFeatureNum are
 %                  replaced with NaNs.
 %    depth       = Current tree depth (zero based)
+%    bReg        = Whether the tree is a regression tree
 %
 % Outputs
 %   tree         = Structure containing learnt tree.  Prediction can be
 %                  made using predictFromCCT
 %
 % Tom Rainforth 22/06/15
+
+% Set any missing required variables
+
+if isempty(options.mseTotal)
+    options.mseTotal = var(YTrain,[],1);
+end
 
 %% First do checks for whether we should immediately terminate
 
@@ -35,15 +44,15 @@ N = size(XTrain,1);
 % fulfilled.  A little case to deal with a binary YTrain is required.
 bStop = (N<(max(2,options.minPointsForSplit))) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit);
 if bStop
-    tree = setupLeaf(YTrain,options);
+    tree = setupLeaf(YTrain,bReg,options);
     return
 elseif size(YTrain,2)>1
     if (sum(abs(sum(YTrain,1))>1e-12)<2)
-        tree = setupLeaf(YTrain,options);
+        tree = setupLeaf(YTrain,bReg,options);
         return
     end
-elseif any(sum(YTrain)==[0,size(YTrain,1)])
-    tree = setupLeaf(YTrain,options);
+elseif ~bReg && any(sum(YTrain)==[0,size(YTrain,1)])
+    tree = setupLeaf(YTrain,bReg,options);
     return
 end
 
@@ -94,7 +103,7 @@ end
 if isempty(iIn)
     % This means that there was no variation along any feature, therefore
     % exit.
-    tree = setupLeaf(YTrain,options);
+    tree = setupLeaf(YTrain,bReg,options);
     return
 end
 
@@ -111,9 +120,11 @@ else
 end
 
 bXBagVaries = queryIfColumnsVary(XTrainBag,options.XVariationTol);
-if ~any(bXBagVaries) || (size(YTrainBag,2)>1 && (sum(abs(sum(YTrainBag,1))>1e-12)<2)) || (size(YTrainBag,2)==1 && any(sum(YTrainBag)==[0,size(YTrainBag,1)]))
+if ~any(bXBagVaries) || ...
+        (size(YTrainBag,2)>1 && (sum(abs(sum(YTrainBag,1))>1e-12)<2)) || ...
+        (~bReg && size(YTrainBag,2)==1 && any(sum(YTrainBag)==[0,size(YTrainBag,1)]))
     if ~options.bContinueProjBootDegenerate
-        tree = setupLeaf(YTrain,options);
+        tree = setupLeaf(YTrain,bReg,options);
         return
     else
         XTrainBag = XTrain(:,iIn);
@@ -127,9 +138,9 @@ end
 if ~isempty(options.projections) && ((size(XTrainBag,1)==2) || queryIfOnlyTwoUniqueRows(XTrainBag))
     % If there are only two points setup a maximum marginal split between the points
     
-    [bSplit,projMat,partitionPoint] = twoPointMaxMarginSplit(XTrainBag,YTrainBag,options.XVariationTol);
+    [bSplit,projMat,partitionPoint] = twoPointMaxMarginSplit(XTrainBag,YTrainBag,bReg,options.XVariationTol);
     if ~bSplit
-        tree = setupLeaf(YTrain,options);
+        tree = setupLeaf(YTrain,bReg,options);
         return
     else
         bLessThanTrain = (XTrain(:,iIn)*projMat)<=partitionPoint;
@@ -178,7 +189,7 @@ else
     bUTrainVaries = queryIfColumnsVary(UTrain,options.XVariationTol);
     
     if ~any(bUTrainVaries)
-        tree = setupLeaf(YTrain,options);
+        tree = setupLeaf(YTrain,bReg,options);
         return
     end
     
@@ -197,16 +208,20 @@ else
         % nodes based on proportion of training data for each of possible
         % splits using current projection
         [UTrainSort,iUTrainSort] = sort(UTrain(:,nVarAtt));
-        YTrainSort = YTrain(iUTrainSort,:);
-        if size(YTrain,2)==1
-            LeftCumCounts = [(1:numel(YTrainSort))'-cumsum(YTrainSort),cumsum(YTrainSort)];
-        else
-            LeftCumCounts = cumsum(YTrainSort,1);
-        end
-        RightCumCounts = bsxfun(@minus,LeftCumCounts(end,:),LeftCumCounts);
         bUniquePoints = [diff(UTrainSort,[],1)>options.XVariationTol;false];
-        pL = bsxfun(@rdivide,LeftCumCounts,sum(LeftCumCounts,2));
-        pR = bsxfun(@rdivide,RightCumCounts,sum(RightCumCounts,2));
+        YTrainSort = YTrain(iUTrainSort,:);
+        
+        if size(YTrain,2)==1 && ~bReg
+            leftCum = [(1:numel(YTrainSort))'-cumsum(YTrainSort),cumsum(YTrainSort)];
+        else
+            leftCum = cumsum(YTrainSort,1);
+        end
+        rightCum = bsxfun(@minus,leftCum(end,:),leftCum);
+        
+        if ~bReg
+           pL = bsxfun(@rdivide,leftCum,sum(leftCum,2));
+           pR = bsxfun(@rdivide,rightCum,sum(rightCum,2));
+        end
         
         % Calculate the metric values of the current node and two child nodes
         if strcmpi(options.splitCriterion,'gini')
@@ -219,10 +234,26 @@ else
             pRProd = pR.*log2(pR);
             pRProd(pR==0) = 0;
             metricRight = -sum(pRProd,2);
+        elseif strcmpi(options.splitCriterion,'mse')
+            cumSqLeft = cumsum(YTrainSort.^2);
+            if ((cumSqLeft(end)/N)-(leftCum(end)/N)^2)<(options.mseTotal*options.mseErrorTolerance)
+                % Total variation is less then the allowed tolerance so
+                % terminate and construct a leaf
+                tree = setupLeaf(YTrain,bReg,options);
+                return
+            end
+            metricLeft = calc_mse([zeros(size(YTrainSort,2));leftCum],cumSqLeft,YTrainSort);
+            % For calculating the right need to go in additive order again
+            % so go from other end and then flip
+            metricRight = [0;calc_mse(rightCum(end:-1:1,:),...
+                                      cumSqLeft(end)-cumSqLeft(end-1:-1:1),...
+                                      YTrainSort(end:-1:2,:))];
+            metricRight = metricRight(end:-1:1);
         else
             error('Invalid split criterion');
         end
-        metricCurrent = metricLeft(end);
+        
+        metricCurrent = metricLeft(end); 
         metricLeft(~bUniquePoints) = inf;
         metricRight(~bUniquePoints) = inf;
         
@@ -243,7 +274,7 @@ else
     
     % If no split gives a positive gain then stop
     if max(splitGains)<0
-        tree = setupLeaf(YTrain,options);
+        tree = setupLeaf(YTrain,bReg,options);
         return
     end
     
@@ -284,24 +315,26 @@ end
 %% Recur tree growth to child nodes and constructs tree struct
 % to return
 
-% Update ancestral counts for breaking ties if needed
-if size(YTrain,2)==1
-    countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
-else
-    countsNode = sum(YTrain,1);
-end
-nNonZeroCounts = sum(countsNode>0);
-nUniqueNonZeroCounts = numel(fastUnique(countsNode));
-if nUniqueNonZeroCounts==nNonZeroCounts
-    options.ancestralProbs = countsNode/sum(countsNode);
-else
-    options.ancestralProbs = [options.ancestralProbs;countsNode/sum(countsNode)];
+if ~bReg
+    % Update ancestral counts for breaking ties if needed
+    if size(YTrain,2)==1
+        countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
+    else
+        countsNode = sum(YTrain,1);
+    end
+    nNonZeroCounts = sum(countsNode>0);
+    nUniqueNonZeroCounts = numel(fastUnique(countsNode));
+    if nUniqueNonZeroCounts==nNonZeroCounts
+        options.ancestralProbs = countsNode/sum(countsNode);
+    else
+        options.ancestralProbs = [options.ancestralProbs;countsNode/sum(countsNode)];
+    end
+    tree.trainingCounts = countsNode;
 end
 
-treeLeft = growCCT(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),options,iFeatureNum,depth+1);
-treeRight = growCCT(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),options,iFeatureNum,depth+1);
+treeLeft = growCCT(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),bReg,options,iFeatureNum,depth+1);
+treeRight = growCCT(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),bReg,options,iFeatureNum,depth+1);
 tree.bLeaf = false;
-tree.trainingCounts = countsNode;
 tree.iIn = iIn;
 if options.bRCCA && exist('fExp','var')
     tree.featureExpansion = fExp;
@@ -313,38 +346,57 @@ tree.greaterthanChild = treeRight;
 
 end
 
-function tree = setupLeaf(YTrain,options)
+function tree = setupLeaf(YTrain,bReg,options)
 % Update tree struct to make node a leaf
 
-if size(YTrain,2)==1
-    countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
+tree.bLeaf = true;
+
+if bReg
+    % TODO add other possible leaf models
+    
+    tree.mean = mean(YTrain,1);
+    tree.std_dev = std(YTrain,[],1);
+    
+    % If a mapping has been applied, invert it
+    if ~isempty(options.org_stdY)
+        tree.mean = tree.mean.*options.org_stdY;
+        tree.std_dev = tree.std_dev.*options.org_stdY;
+    end
+    if ~isempty(options.org_muY)
+        tree.mean = tree.mean+options.org_muY;
+    end
 else
-    countsNode = sum(YTrain,1);
-end
-maxCounts = max(countsNode);
-bEqualMaxCounts = maxCounts == countsNode;
-if sum(bEqualMaxCounts)==1
-    label = find(bEqualMaxCounts);
-else
-    nRecur = size(options.ancestralProbs,1);
-    while nRecur>0
-        countsTieBreak = countsNode+options.ancestralProbs(nRecur,:)/1e9;
-        maxCounts = max(countsTieBreak);
-        bEqualMaxCounts = maxCounts == countsTieBreak;
-        if sum(bEqualMaxCounts)==1
-            label = find(bEqualMaxCounts);
-            break
-        else
-            nRecur = nRecur-1;
-        end
-        if nRecur==0
-            [~,label] = max(countsNode+rand(size(countsNode))/1e9);
+    
+    if size(YTrain,2)==1
+        countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
+    else
+        countsNode = sum(YTrain,1);
+    end
+    maxCounts = max(countsNode);
+    bEqualMaxCounts = maxCounts == countsNode;
+    if sum(bEqualMaxCounts)==1
+        label = find(bEqualMaxCounts);
+    else
+        nRecur = size(options.ancestralProbs,1);
+        while nRecur>0
+            countsTieBreak = countsNode+options.ancestralProbs(nRecur,:)/1e9;
+            maxCounts = max(countsTieBreak);
+            bEqualMaxCounts = maxCounts == countsTieBreak;
+            if sum(bEqualMaxCounts)==1
+                label = find(bEqualMaxCounts);
+                break
+            else
+                nRecur = nRecur-1;
+            end
+            if nRecur==0
+                [~,label] = max(countsNode+rand(size(countsNode))/1e9);
+            end
         end
     end
+    tree.labelClassId = label;
+    tree.trainingCounts = countsNode;
 end
-tree.bLeaf = true;
-tree.labelClassId = label;
-tree.trainingCounts = countsNode;
+
 end
 
 function f = makeExpansionFunc(wZ,bZ,bIncOrig)
@@ -353,4 +405,17 @@ function f = makeExpansionFunc(wZ,bZ,bIncOrig)
     else
         f = @(x) featureExpansion(x,wZ,bZ);
     end
+end
+
+function value = calc_mse(cumtotal,cumsq,YTrainSort)
+% CMSE(j)=sigma(j)/j-(1/j^2)(mu(j-1)^2+Y(j)^2+2mu(j-1)Y(j))
+%   where sigma(j) = sum_{i=1}^j Y(j)^2 i.e. cumsq(j)
+%   and      mu(j) = sum_{i=1}^j Y(j) i.e. cumtotal(j+1)
+% The mean 2 is to then take the average over the variances
+% for multi-output regression
+
+value = mean(bsxfun(@rdivide,cumsq,(1:size(YTrainSort,1))')-...
+             bsxfun(@rdivide, cumtotal(1:end-1,:).^2+YTrainSort.^2+2*cumtotal(1:end-1,:).*YTrainSort...
+                            , ((1:size(YTrainSort,1)).^2)'),2);
+                                            
 end
