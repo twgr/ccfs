@@ -18,6 +18,10 @@ foldSize = round(nDataPoints/nFolds);
 fold{1} = randperm(nDataPoints,foldSize);
 left = setdiff(1:nDataPoints,fold{1});
 for nF=2:(nFolds-1)
+    if numel(left)<foldSize
+        extraForFold = datasample(setdiff(1:nDataPoints,left),foldSize-numel(left),2,'Replace',false);
+        left = [left,extraForFold];
+    end
     fold{nF} = datasample(left,foldSize,2,'Replace',false);
     left = setdiff(left,fold{nF});
 end
