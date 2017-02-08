@@ -1,4 +1,4 @@
-function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation,bNamed)
+function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation,bConvertCat,bNamed)
 %loadCSVDataSet Loads a formatted csv to give features and classes
 %
 % function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation)
@@ -25,6 +25,11 @@ function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation,bNamed)
 %     with values '1' '2' '?' '4' 'a'.
 %
 % Inputs: inputLocation = String giving location of an input csv file.
+%       bConvertCat = Whether to convert categorical features to numerical
+%                  ones.  They will still be marked a ordinal by bOrdinal
+%                  but this allows them to be passed to TreeBagger without
+%                  causing issue as it doesn't allow cell inputs. Default =
+%                  true.
 %         bNamed = Whether the csv contains names for the variables.  If so
 %                  these should come after the bOrdinal header line (if
 %                  this exists).  False by default
@@ -41,6 +46,10 @@ function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation,bNamed)
 %               ordinal (true) or an unordered categorical (false).
 %
 % Tom Rainforth 04/08/15
+
+if ~exist('bConvertCat','var') || isempty(bConvertCat)
+    bConvertCat = true;
+end
 
 if ~exist('bNamed','var') || isempty(bNamed)
     bNamed = false;
@@ -75,6 +84,7 @@ else
     InputTable = readtable(inputLocation,'ReadVariableNames',bNamed,'Delimiter',delimiter);
     try
         X = table2array(InputTable(:,1:end-1));
+        assert(~iscell(X));
         bOrdinal = true(1,size(X,2));
     catch
         X = table2cell(InputTable(:,1:end-1));
@@ -99,4 +109,12 @@ else
     catch
         Y = table2cell(InputTable(:,end));
     end
+end
+
+if bConvertCat && iscell(X)
+   for n=find(~bOrdinal)
+      [~,~,iC] = unique(X(:,n));
+      X(:,n) = num2cell(iC);
+   end
+   X = cell2mat(X);
 end
