@@ -58,7 +58,10 @@ classdef optionsClassCCF
         %TODO add alternatives for regression (e.g. curvature)
                 
         % Minimum number of points at which a node is allowed to split 
-        minPointsForSplit = 2; % Default = 10 for regression
+        minPointsForSplit = 2; % Default = 6 for regression
+        
+        % Minimum number of points allowed in a leaf.
+        minPointsLeaf = 1; % Default = 3 for regression
         
         % When multiple projection vectors can give equivalent split
         % criterion scores, one can either choose which to use randomly
@@ -99,7 +102,8 @@ classdef optionsClassCCF
         % case of Fisher's LDA.  'Rand' will randomly select from the the
         % indices of its input, e.g. 'Rand' = [1,2] will randomly select
         % wether to do 'CCA' or 'PCA'.  Note this over-rides the values for
-        % the corresponding random fields.
+        % the corresponding random fields.  If empty no projections are
+        % made
         projections = struct('CCA',true,'PCA',false,'CCAclasswise',false,'Rand',zeros(1,0));
         
         % Allows original axes to also be considered for splitting in
@@ -255,7 +259,6 @@ classdef optionsClassCCF
             obj = optionsClassCCF;
             obj.bProjBoot = false;
             obj.lambda = 'all';
-            obj.minPointsForSplit = 10;
             obj.bBagTrees = false;
         end
         
@@ -264,15 +267,14 @@ classdef optionsClassCCF
             
             obj = optionsClassCCF;
             obj.splitCriterion = 'mse';
-            obj.minPointsForSplit = 10;
+            obj.minPointsForSplit = 6;
+            obj.minPointsLeaf = 3;
         end
         
         function obj = defaultOptionsRegCCFBag
             % Constructs default options for regression and CCFBag
             
-            obj = optionsClassCCF;
-            obj.splitCriterion = 'mse';
-            obj.minPointsForSplit = 10;
+            obj = optionsClassCCF.defaultOptionsReg;
             obj.bProjBoot = false;
             obj.bBagTrees = true;
         end
@@ -283,15 +285,34 @@ classdef optionsClassCCF
            % forest.  First input is number of features prior to expansion
            % D and second is the total number of each counts for each class           
            
-            obj = optionsClassCCF;
-            obj.splitCriterion = 'mse';
-            obj.minPointsForSplit = 10;
+            obj = optionsClassCCF.defaultOptionsReg;
             obj.bProjBoot = false;
             obj.lambda = 'all';
-            obj.minPointsForSplit = 10;
             obj.bBagTrees = false;
         end
         
+        function obj = defaultOptionsRF
+            % Sets up options for running the package as a random forest
+            % package.  This is not recommended as general usage (as more
+            % efficient implementation exist), but is a useful debugger to
+            % check that the differences come from the CCF extension rather
+            % than unexpected options variations
+           
+            obj = optionsClassCCF;
+            obj.bBagTrees = true;
+            obj.bProjBoot = false;
+            obj.includeOriginalAxes = 'sampled';
+            obj.projections = [];
+        end
+        
+        function obj = defaultOptionsRFReg
+           % As optionsClassCCF.defaultOptionsRF but for regression
+           
+           obj = optionsClassCCF.defaultOptionsRF;
+           obj.splitCriterion = 'mse';
+           obj.minPointsForSplit = 6;
+           obj.minPointsLeaf = 3;
+        end        
     end
     
 end

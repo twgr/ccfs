@@ -46,12 +46,15 @@ bStop = (N<(max(2,options.minPointsForSplit))) || (isnumeric(options.maxDepthSpl
 if bStop
     tree = setupLeaf(YTrain,bReg,options);
     return
-elseif size(YTrain,2)>1
+elseif ~bReg && size(YTrain,2)>1
     if (sum(abs(sum(YTrain,1))>1e-12)<2)
         tree = setupLeaf(YTrain,bReg,options);
         return
     end
 elseif ~bReg && any(sum(YTrain)==[0,size(YTrain,1)])
+    tree = setupLeaf(YTrain,bReg,options);
+    return
+elseif bReg && all(var(YTrain)<(options.mseTotal*options.mseErrorTolerance))
     tree = setupLeaf(YTrain,bReg,options);
     return
 end
@@ -159,6 +162,8 @@ else
         end
     elseif ~isempty(options.projections)
         projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections,options.epsilonCCA);
+    else
+        projMat = NaN(size(XTrainBag,2),0);
     end
     
     
@@ -262,6 +267,10 @@ else
         % in each child
         metricGain = metricCurrent-((1:N)'.*metricLeft+(N-1:-1:0)'.*metricRight)/N;
         
+        % Disallow splits that violate the minimum number of leaf points
+        metricGain(1:(options.minPointsLeaf-1)) = -inf;
+        metricGain((end-(options.minPointsLeaf-1)):end) = -inf; % Note that end is never chosen anyway
+        
         % Randomly sample from equally best splits
         [splitGains(nVarAtt),iSplits(nVarAtt)] = max(metricGain(1:end-1));
         iEqualMax = find(abs(metricGain(1:end-1)-splitGains(nVarAtt))<(10*eps));
@@ -343,6 +352,7 @@ tree.decisionProjection = projMat(:,iDir);
 tree.paritionPoint = partitionPoint;
 tree.lessthanChild = treeLeft;
 tree.greaterthanChild = treeRight;
+tree.Npoints = N;
 
 end
 
@@ -396,6 +406,8 @@ else
     tree.labelClassId = label;
     tree.trainingCounts = countsNode;
 end
+
+tree.Npoints = size(YTrain,1);
 
 end
 
