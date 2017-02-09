@@ -6,7 +6,7 @@ options.bUseParallel = false;
 [X,Y,bOrdinal] = loadCSVDataSet(csvfile);
 N = size(X,1);
 Nkeep = round(N*propDataToUse);
-iKeep = datasample(1:N,Nkeep)';
+iKeep = datasample(1:N,Nkeep,'Replace',false)';
 X = X(iKeep,:);
 Y = Y(iKeep,:);
 
