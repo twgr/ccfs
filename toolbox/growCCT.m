@@ -125,7 +125,8 @@ end
 bXBagVaries = queryIfColumnsVary(XTrainBag,options.XVariationTol);
 if ~any(bXBagVaries) || ...
         (size(YTrainBag,2)>1 && (sum(abs(sum(YTrainBag,1))>1e-12)<2)) || ...
-        (~bReg && size(YTrainBag,2)==1 && any(sum(YTrainBag)==[0,size(YTrainBag,1)]))
+        (~bReg && size(YTrainBag,2)==1 && any(sum(YTrainBag)==[0,size(YTrainBag,1)])) || ...
+        (bReg && all(var(YTrainBag)<(options.mseTotal*options.mseErrorTolerance)))
     if ~options.bContinueProjBootDegenerate
         tree = setupLeaf(YTrain,bReg,options);
         return

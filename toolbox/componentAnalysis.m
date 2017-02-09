@@ -30,7 +30,9 @@ if ~isempty(processes.Rand)
     toDo(notSelected) = false;
 end
 
-bYpresent = any(Y,1);
+% FIXME yprojMat a bit of a mess.  In particular won't be the correct size
+% when we eliminate things below
+bYpresent = (max(Y,[],1)-min(Y,[],1))>1e-12;
 Y = Y(:,bYpresent);
 
 muX = sum(X,1)/size(X,1);
