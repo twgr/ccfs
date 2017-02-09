@@ -260,8 +260,15 @@ if ~bReg
         end
     end
 else
-    warning('Curently no internal prediction for regreesion case');
-    % FIXME do prediction for regression case
+    if nargout>3
+        cumulativeForestPredictsTest = bsxfun(@rdivide,cumsum(treePredicts,2),1:nTrees);
+        forestPredictsTest = cumulativeForestPredictsTest(:,end);
+    else
+        forestPredictsTest = mean(treePredictsTest,2);
+    end
+    if nargout>2
+        forestProbsTest = std(treePredictsTest,[],2);
+    end
 end
 
 end

@@ -93,7 +93,7 @@ classdef optionsClassCCF
         bBagTrees = 'default';
         
         % If true then trees are learnt in parallel      
-        bUseParallel = false;
+        bUseParallel = true;
         
         %% OPTIONS FOR POSSIBLE EXTENSIONS
         
