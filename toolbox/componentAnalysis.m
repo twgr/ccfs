@@ -69,7 +69,11 @@ if any(toDo([1,3]))
     % These require QR decomposition of X
     [q1,r1,p1] = qr(X,0);
     % Reduce to full rank within some tolerance
-    rankX = sum(abs(diag(r1)) >= (epsilon*abs(r1(1))));
+    if isempty(r1)
+        rankX = 0;
+    else
+        rankX = sum(abs(diag(r1)) >= (epsilon*abs(r1(1))));
+    end
     if rankX == 0
         %warning('X doesnt vary so component analysis fails');
         projMat = [1;zeros(size(X,2)-1,1)];
@@ -78,7 +82,8 @@ if any(toDo([1,3]))
         end
         return
     elseif rankX < x2
-        q1 = q1(:,1:rankX); r1 = r1(1:rankX,1:rankX);
+        q1 = q1(:,1:rankX); 
+        r1 = r1(1:rankX,1:rankX);
     end
     
     if toDo(1)
@@ -88,7 +93,11 @@ if any(toDo([1,3]))
         
         [q2,r2,p2] = qr(Y,0);
         % Reduce to full rank within some tolerance
-        rankY = sum(abs(diag(r2)) >= (epsilon*abs(r2(1))));
+        if isempty(r2)
+            rankY = 0;
+        else
+            rankY = sum(abs(diag(r2)) >= (epsilon*abs(r2(1))));
+        end
         if rankY == 0
             %warning('Y doesnt vary so component analysis fails');
             projMat = [1;zeros(size(X,2)-1,1)];
@@ -97,7 +106,7 @@ if any(toDo([1,3]))
             end
             return
         elseif rankY < K
-            q2 = q2(:,1:rankY);
+            q2 = q2(:,1:rankY); 
         end
         
         % Solve CCA using the decompositions, taking care to use minimal
