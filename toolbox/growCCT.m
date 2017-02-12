@@ -161,36 +161,15 @@ else
         if isempty(projMat)
             projMat = ones(size(XTrainBag,2),1);
         end
-    elseif ~isempty(options.projections)
-        projMat = componentAnalysis(XTrainBag,YTrainBag,options.projections,options.epsilonCCA);
+        UTrain = fExp(XTrain(:,iIn))*projMat;
     else
-        projMat = NaN(size(XTrainBag,2),0);
+        [projMat,yprojMat] = componentAnalysis(XTrainBag,YTrainBag,options.projections,options.epsilonCCA);
+        UTrain = XTrain(:,iIn)*projMat;
     end
-    
     
     
     %% Choose the features to use
     
-    if ~ischar(options.includeOriginalAxes) && ~options.includeOriginalAxes
-        if isempty(projMat)
-            error('Must make new features to have includeOriginalAxes false');
-        end
-    elseif strcmpi(options.includeOriginalAxes,'sampled')
-        projMat = [projMat,eye(size(projMat,1))];
-    elseif strcmpi(options.includeOriginalAxes,'all')
-        projMatNew = zeros(size(XTrain,2),size(projMat,2));
-        projMatNew(iIn,:) = projMat;
-        iIn = find(~isnan(iFeatureNum));
-        projMat = [projMatNew(iIn,:),eye(numel(iIn))];
-    else
-        error('Invalid option for includeOriginalAxes');
-    end
-    
-    if options.bRCCA
-        UTrain = fExp(XTrain(:,iIn))*projMat;
-    else
-        UTrain = XTrain(:,iIn)*projMat;
-    end
     % This step catches splits based on no significant variation
     bUTrainVaries = queryIfColumnsVary(UTrain,options.XVariationTol);
     
@@ -201,6 +180,11 @@ else
     
     UTrain = UTrain(:,bUTrainVaries);
     projMat = projMat(:,bUTrainVaries);
+        
+    if options.bUseOutputComponentsMSE && bReg && size(YTrain,2)>1 && ~isempty(yprojMat) && strcmpi(options.splitCriterion,'mse')
+        VTrain = YTrain*yprojMat;
+    end
+    
     
     %% Search over splits using provided method
     
@@ -215,12 +199,17 @@ else
         % splits using current projection
         [UTrainSort,iUTrainSort] = sort(UTrain(:,nVarAtt));
         bUniquePoints = [diff(UTrainSort,[],1)>options.XVariationTol;false];
-        YTrainSort = YTrain(iUTrainSort,:);
+                
+        if options.bUseOutputComponentsMSE && bReg && size(YTrain,2)>1 && ~isempty(yprojMat) && strcmpi(options.splitCriterion,'mse')
+            VTrainSort = VTrain(iUTrainSort,:);
+        else
+            VTrainSort = YTrain(iUTrainSort,:);
+        end
         
         if size(YTrain,2)==1 && ~bReg
-            leftCum = [(1:numel(YTrainSort))'-cumsum(YTrainSort),cumsum(YTrainSort)];
+            leftCum = [(1:numel(VTrainSort))'-cumsum(VTrainSort),cumsum(VTrainSort)];
         else
-            leftCum = cumsum(YTrainSort,1);
+            leftCum = cumsum(VTrainSort,1);
         end
         rightCum = bsxfun(@minus,leftCum(end,:),leftCum);
         
@@ -244,7 +233,7 @@ else
             pRProd(pR==0) = 0;
             metricRight = -sum(pRProd,2);
         elseif strcmpi(options.splitCriterion,'mse')
-            cumSqLeft = cumsum(YTrainSort.^2);
+            cumSqLeft = cumsum(VTrainSort.^2);
             varData = (cumSqLeft(end,:)/N)-(leftCum(end,:)/N).^2;
             if all(varData<(options.mseTotal*options.mseErrorTolerance))
                 % Total variation is less then the allowed tolerance so
@@ -252,13 +241,13 @@ else
                 tree = setupLeaf(YTrain,bReg,options);
                 return
             end
-            metricLeft = calc_mse([zeros(1,size(YTrainSort,2));leftCum],cumSqLeft,YTrainSort);
+            metricLeft = calc_mse([zeros(1,size(VTrainSort,2));leftCum],cumSqLeft,VTrainSort);
             % For calculating the right need to go in additive order again
             % so go from other end and then flip
             metricRight = [0;...
                            calc_mse(rightCum(end:-1:1,:),...
                                     bsxfun(@minus,cumSqLeft(end,:),cumSqLeft(end-1:-1:1,:)),...
-                                    YTrainSort(end:-1:2,:))];
+                                    VTrainSort(end:-1:2,:))];
             metricRight = metricRight(end:-1:1,:);
         else
             error('Invalid split criterion');
@@ -347,6 +336,12 @@ if ~bReg
     tree.trainingCounts = countsNode;
 else
     tree.meanNode = mean(YTrain,1);
+    if ~isempty(options.org_stdY)
+        tree.meanNode = tree.meanNode.*options.org_stdY;
+    end
+    if ~isempty(options.org_muY)
+        tree.meanNode = tree.meanNode+options.org_muY;
+    end
 end
 
 treeLeft = growCCT(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),bReg,options,iFeatureNum,depth+1);

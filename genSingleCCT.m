@@ -77,9 +77,12 @@ options.bUseParallel = false;
 % Strange naming it to avoid wasting space by storing two instances
 [CCT,varargout{1:nargout}] = deal(genCCF(1,XTrain,YTrain,bReg,options,XTest,true,iFeatureNum,bOrdinal));
 
-inputProcessDetails = CCT.inputProcessDetails;
+% This is a bit weird to avoid duplicating the tree for reduced memory
+other_outs = rmfield(CCT,'Trees');
 CCT = CCT.Trees{1};
-CCT.inputProcessDetails = inputProcessDetails;
-CCT.options = options;
+other_fields = fields(other_outs);
+for n=1:numel(other_fields)
+    CCT.(other_fields{n}) = other_outs.(other_fields{n});
+end
 
 end

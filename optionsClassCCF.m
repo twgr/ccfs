@@ -97,21 +97,23 @@ classdef optionsClassCCF
         
         %% OPTIONS FOR POSSIBLE EXTENSIONS
         
-        % Projections to consider for splitting at each node.  Each field
-        % should be a logical.  Note 'CCA' is equivalent to the multiclass
-        % case of Fisher's LDA.  'Rand' will randomly select from the the
-        % indices of its input, e.g. 'Rand' = [1,2] will randomly select
-        % wether to do 'CCA' or 'PCA'.  Note this over-rides the values for
-        % the corresponding random fields.  If empty no projections are
-        % made
-        projections = struct('CCA',true,'PCA',false,'CCAclasswise',false,'Rand',zeros(1,0));
+        % Projections to consider for splitting at each node.  Structure
+        % with the possible fields 'CCA', 'PCA', 'CCAclasswise' 
+        % (i.e. do CCA on each output / class seperately), 'Original' and 
+        % 'Random' (i.e. random rotation).  Each field should be either be 
+        % logical or a number between 0 and 1.  When a field is true that 
+        % projection is always performed If values are reals, then a 
+        % projection is sampled with proportional probability from those 
+        % fields.  For example struct('CCA',true,'PCA',0.3,','Random',0.7)
+        % will always do a CCA and one of PCA and Random with respective
+        % probabilities 0.3 and 0.7.  Note this sampling is done
+        % independently at each projection calculation.
+        projections = struct('CCA',true);
         
-        % Allows original axes to also be considered for splitting in
-        % addition to the generated projections.  Valid options are false,
-        % 'sampled' and 'all'.  As 'all' considers all possible features in
-        % addition to the generated features, this is not recommended if X
-        % is high dimensional.
-        includeOriginalAxes = false;
+        % If true, doing regression with multiple outputs and doing CCA 
+        % projections, then the mse of the output components is calculated 
+        % instead of the original values
+        bUseOutputComponentsMSE = false;
         
         % Allows rotations of individual trees before training.  Valid
         % options are 'none' (default), 'pca', 'random' and
@@ -191,7 +193,7 @@ classdef optionsClassCCF
             elseif strcmpi(obj.lambda,'all')
                 obj.lambda = D;
             elseif ~isnumeric(obj.lambda)
-                error('Invalid option set for nIncludeCC');
+                error('Invalid option set for lambda');
             end
             
             if strcmpi(obj.bProjBoot,'default')
@@ -301,8 +303,7 @@ classdef optionsClassCCF
             obj = optionsClassCCF;
             obj.bBagTrees = true;
             obj.bProjBoot = false;
-            obj.includeOriginalAxes = 'sampled';
-            obj.projections = [];
+            obj.projections = struct('Original',true);
         end
         
         function obj = defaultOptionsRFReg

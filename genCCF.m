@@ -157,6 +157,11 @@ else
     muY = mean(YTrain);
     stdY = std(YTrain,[],1);
     
+    % TODO do something more efficient here
+    % For now just set stdY to be 1 instead of zero to prevent NaNs if a
+    % dimensions has no variation.
+    stdY(stdY==0) = 1;
+    
     YTrain = bsxfun(@rdivide,bsxfun(@minus,YTrain,muY),stdY);
     
     if ~exist('optionsFor','var') || isempty(optionsFor)
@@ -168,6 +173,14 @@ else
     optionsFor.org_stdY = stdY;
     optionsFor.mseTotal = 1;    
 end
+
+projection_fields = {'CCA','PCA','CCAclasswise','Original','Random'};
+for npf = 1:numel(projection_fields)
+    if ~isfield(optionsFor.projections,projection_fields{npf})
+        optionsFor.projections.(projection_fields{npf}) = false;
+    end
+end
+optionsFor.projections = orderfields(optionsFor.projections,projection_fields);
 
 nOut = nargout;
 
