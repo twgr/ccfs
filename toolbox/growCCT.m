@@ -124,7 +124,7 @@ end
 
 bXBagVaries = queryIfColumnsVary(XTrainBag,options.XVariationTol);
 if ~any(bXBagVaries) || ...
-        (size(YTrainBag,2)>1 && (sum(abs(sum(YTrainBag,1))>1e-12)<2)) || ...
+        (~bReg && size(YTrainBag,2)>1 && (sum(abs(sum(YTrainBag,1))>1e-12)<2)) || ...
         (~bReg && size(YTrainBag,2)==1 && any(sum(YTrainBag)==[0,size(YTrainBag,1)])) || ...
         (bReg && all(var(YTrainBag)<(options.mseTotal*options.mseErrorTolerance)))
     if ~options.bContinueProjBootDegenerate
@@ -229,6 +229,9 @@ else
            pR = bsxfun(@rdivide,rightCum,sum(rightCum,2));
         end
         
+        %FIXME add option to use canonical correlation components of Y for
+        %the splitting for multiple outputs
+        
         % Calculate the metric values of the current node and two child nodes
         if strcmpi(options.splitCriterion,'gini')
             metricLeft = 1-sum(pL.^2,2);
@@ -242,19 +245,21 @@ else
             metricRight = -sum(pRProd,2);
         elseif strcmpi(options.splitCriterion,'mse')
             cumSqLeft = cumsum(YTrainSort.^2);
-            if ((cumSqLeft(end)/N)-(leftCum(end)/N)^2)<(options.mseTotal*options.mseErrorTolerance)
+            varData = (cumSqLeft(end,:)/N)-(leftCum(end,:)/N).^2;
+            if all(varData<(options.mseTotal*options.mseErrorTolerance))
                 % Total variation is less then the allowed tolerance so
                 % terminate and construct a leaf
                 tree = setupLeaf(YTrain,bReg,options);
                 return
             end
-            metricLeft = calc_mse([zeros(size(YTrainSort,2));leftCum],cumSqLeft,YTrainSort);
+            metricLeft = calc_mse([zeros(1,size(YTrainSort,2));leftCum],cumSqLeft,YTrainSort);
             % For calculating the right need to go in additive order again
             % so go from other end and then flip
-            metricRight = [0;calc_mse(rightCum(end:-1:1,:),...
-                                      cumSqLeft(end)-cumSqLeft(end-1:-1:1),...
-                                      YTrainSort(end:-1:2,:))];
-            metricRight = metricRight(end:-1:1);
+            metricRight = [0;...
+                           calc_mse(rightCum(end:-1:1,:),...
+                                    bsxfun(@minus,cumSqLeft(end,:),cumSqLeft(end-1:-1:1,:)),...
+                                    YTrainSort(end:-1:2,:))];
+            metricRight = metricRight(end:-1:1,:);
         else
             error('Invalid split criterion');
         end
@@ -340,6 +345,8 @@ if ~bReg
         options.ancestralProbs = [options.ancestralProbs;countsNode/sum(countsNode)];
     end
     tree.trainingCounts = countsNode;
+else
+    tree.meanNode = mean(YTrain,1);
 end
 
 treeLeft = growCCT(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),bReg,options,iFeatureNum,depth+1);
@@ -427,8 +434,24 @@ function value = calc_mse(cumtotal,cumsq,YTrainSort)
 % The mean 2 is to then take the average over the variances
 % for multi-output regression
 
+%FIXME add some sort of weighting for multiple outputs
+
 value = mean(bsxfun(@rdivide,cumsq,(1:size(YTrainSort,1))')-...
              bsxfun(@rdivide, cumtotal(1:end-1,:).^2+YTrainSort.^2+2*cumtotal(1:end-1,:).*YTrainSort...
                             , ((1:size(YTrainSort,1)).^2)'),2);
+                                            
+end
+function value = calc_mse_no_mean(cumtotal,cumsq,YTrainSort)
+% CMSE(j)=sigma(j)/j-(1/j^2)(mu(j-1)^2+Y(j)^2+2mu(j-1)Y(j))
+%   where sigma(j) = sum_{i=1}^j Y(j)^2 i.e. cumsq(j)
+%   and      mu(j) = sum_{i=1}^j Y(j) i.e. cumtotal(j+1)
+% The mean 2 is to then take the average over the variances
+% for multi-output regression
+
+%FIXME add some sort of weighting for multiple outputs
+
+value = bsxfun(@rdivide,cumsq,(1:size(YTrainSort,1))')-...
+             bsxfun(@rdivide, cumtotal(1:end-1,:).^2+YTrainSort.^2+2*cumtotal(1:end-1,:).*YTrainSort...
+                            , ((1:size(YTrainSort,1)).^2)');
                                             
 end

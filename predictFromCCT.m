@@ -28,8 +28,8 @@ end
 if tree.bLeaf
     if isfield(tree, 'mean')
         % Regression
-        primary_output = tree.mean*ones(size(X,1),1);
-        secondary_output = tree.std_dev*ones(size(X,1),1);
+        primary_output = bsxfun(@times,tree.mean,ones(size(X,1),1));
+        secondary_output = bsxfun(@times,tree.std_dev,ones(size(X,1),1));
     else
         % Classification
         primary_output = tree.labelClassId*ones(size(X,1),1);
@@ -48,27 +48,31 @@ else
         bLessChild = (X(:,tree.iIn)*tree.decisionProjection)<=tree.paritionPoint;
     end
     
-    primary_output = NaN(size(X,1),1);
-    if nargout>1
-        if isfield(tree,'trainingCounts')
+    
+    if isfield(tree,'trainingCounts')
+        primary_output = NaN(size(X,1),1);
+        if nargout>1
             secondary_output = NaN(size(X,1),numel(tree.trainingCounts));
-        else
-            primary_output = NaN(size(X,1),1);
+        end
+    else
+        primary_output = NaN(size(X,1),numel(tree.meanNode));
+        if nargout>1
+            secondary_output = NaN(size(X,1),numel(tree.meanNode));
         end
     end
     
     if any(bLessChild)
         if nargout>1
-            [primary_output(bLessChild), secondary_output(bLessChild,:)] = predictFromCCT(tree.lessthanChild,X(bLessChild,:));
+            [primary_output(bLessChild,:), secondary_output(bLessChild,:)] = predictFromCCT(tree.lessthanChild,X(bLessChild,:));
         else
-            primary_output(bLessChild) = predictFromCCT(tree.lessthanChild,X(bLessChild,:));
+            primary_output(bLessChild,:) = predictFromCCT(tree.lessthanChild,X(bLessChild,:));
         end
     end
     if any(~bLessChild)
         if nargout>1
-            [primary_output(~bLessChild), secondary_output(~bLessChild,:)] = predictFromCCT(tree.greaterthanChild,X(~bLessChild,:));
+            [primary_output(~bLessChild,:), secondary_output(~bLessChild,:)] = predictFromCCT(tree.greaterthanChild,X(~bLessChild,:));
         else
-            primary_output(~bLessChild) = predictFromCCT(tree.greaterthanChild,X(~bLessChild,:));
+            primary_output(~bLessChild,:) = predictFromCCT(tree.greaterthanChild,X(~bLessChild,:));
         end
     end
 end

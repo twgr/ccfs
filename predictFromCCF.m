@@ -29,21 +29,25 @@ function [forestPredicts, forestProbs_or_std_dev, treePredicts, cumulativePredic
 X = replicateInputProcess(X,CCF.inputProcessDetails);
 
 nTrees = numel(CCF.Trees);
-treePredicts = NaN(size(X,1),nTrees);
+if CCF.bReg
+    treePredicts = NaN(size(X,1),nTrees,CCF.nOutputs);
+else
+    treePredicts = NaN(size(X,1),nTrees);
+end
 
 for n=1:nTrees
-    treePredicts(:,n) = predictFromCCT(CCF.Trees{n},X);
+    treePredicts(:,n,:) = predictFromCCT(CCF.Trees{n},X);
 end
 
 if CCF.bReg
     if nargout>2
         cumulativePredicts = bsxfun(@rdivide,cumsum(treePredicts,2),1:nTrees);
-        forestPredicts = cumulativePredicts(:,end);
+        forestPredicts = squeeze(cumulativePredicts(:,end,:));
     else
-        forestPredicts = mean(treePredicts,2);
+        forestPredicts = squeeze(mean(treePredicts,2));
     end    
     if nargout>1        
-        forestProbs_or_std_dev = std(treePredicts,[],2);
+        forestProbs_or_std_dev = squeeze(std(treePredicts,[],2));
     end
 else
     

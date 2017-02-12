@@ -158,7 +158,6 @@ else
     stdY = std(YTrain,[],1);
     
     YTrain = bsxfun(@rdivide,bsxfun(@minus,YTrain,muY),stdY);
-    YTrain(isnan(YTrain)) = 0;
     
     if ~exist('optionsFor','var') || isempty(optionsFor)
         optionsFor = optionsClassCCF.defaultOptionsReg;
@@ -187,7 +186,11 @@ end
 
 forest = cell(1,nTrees);
 if nOut>1
-    treePredictsTest = NaN(size(XTest,1),nTrees);
+    if bReg
+        treePredictsTest = NaN(size(XTest,1),nTrees,size(YTrain,2));
+    else
+        treePredictsTest = NaN(size(XTest,1),nTrees);
+    end
 end
 
 if optionsFor.bUseParallel == true
@@ -197,7 +200,9 @@ if optionsFor.bUseParallel == true
             forest{nT} = tree;
         end
         if nOut>1
-            treePredictsTest(:,nT) = predictFromCCT(tree,XTest);
+            %FIXME should take probabilities?
+            %FIXME multiple output classification
+            treePredictsTest(:,nT,:) = predictFromCCT(tree,XTest);
         end
     end
 else
@@ -207,7 +212,7 @@ else
             forest{nT} = tree;
         end
         if nOut>1
-            treePredictsTest(:,nT) = predictFromCCT(tree,XTest);
+            treePredictsTest(:,nT,:) = predictFromCCT(tree,XTest);
         end
     end
 end
@@ -216,6 +221,10 @@ CCF.Trees = forest;
 CCF.bReg = bReg;
 CCF.options = optionsFor;
 CCF.inputProcessDetails = inputProcessDetails;
+
+if bReg
+    CCF.nOutputs = size(muY,2);
+end
 
 if optionsFor.bBagTrees && bKeepTrees && ~bReg
     votesOOb = zeros(size(YTrain,1),max(2,size(YTrain,2)));
@@ -226,12 +235,18 @@ if optionsFor.bBagTrees && bKeepTrees && ~bReg
     forestProbs = bsxfun(@rdivide,votesOOb,sum(votesOOb,2));
     [~,forestPredicts] = max(bsxfun(@times,forestProbs,CCF.options.voteFactor(:)'),[],2);
     YTrainVec = sum(bsxfun(@times,YTrain,1:size(YTrain,2)),2);
-    CCF.percentageOutOfBagError = 100*(1-mean(forestPredicts==YTrainVec));
-elseif bReg
-    CCF.percentageOutOfBagError = 'Currently not supported for regression';
-    % FIXME add regression out of bag error
+    CCF.outOfBagError = (1-nanmean(forestPredicts==YTrainVec));
+elseif optionsFor.bBagTrees && bKeepTrees && bReg
+    cumOOb = zeros(size(YTrain));
+    nOOb = zeros(size(YTrain,1),1);
+    for nTO = 1:numel(CCF.Trees)
+        cumOOb(CCF.Trees{nTO}.iOutOfBag,:) = cumOOb(CCF.Trees{nTO}.iOutOfBag,:)+CCF.Trees{nTO}.predictsOutOfBag;
+        nOOb(CCF.Trees{nTO}.iOutOfBag) = nOOb(CCF.Trees{nTO}.iOutOfBag)+1;
+    end
+    oobPreds = bsxfun(@rdivide,cumOOb,nOOb);
+    CCF.outOfBagError = nanmean((bsxfun(@rdivide,bsxfun(@minus,oobPreds,muY),stdY)-YTrain).^2,1);
 else
-    CCF.percentageOutOfBagError = 'OOB error only returned if bagging used.  Please use CCF-Bag instead via options=optionsClassCCF.defaultOptionsCCFBag';
+    CCF.outOfBagError = 'OOB error only returned if bagging used.  Please use CCF-Bag instead via options=optionsClassCCF.defaultOptionsCCFBag';
 end
 
 if nOut<2
@@ -262,12 +277,12 @@ if ~bReg
 else
     if nargout>3
         cumulativeForestPredictsTest = bsxfun(@rdivide,cumsum(treePredicts,2),1:nTrees);
-        forestPredictsTest = cumulativeForestPredictsTest(:,end);
+        forestPredictsTest = squeeze(cumulativeForestPredictsTest(:,end,:));
     else
-        forestPredictsTest = mean(treePredictsTest,2);
+        forestPredictsTest = squeeze(mean(treePredictsTest,2));
     end
     if nargout>2
-        forestProbsTest = std(treePredictsTest,[],2);
+        forestProbsTest = squeeze(std(treePredictsTest,[],2));
     end
 end
 
