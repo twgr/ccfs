@@ -94,7 +94,7 @@ if processes.Original
 end
 
 if processes.Random   
-    projMat = [projMat,random_rotation_matrix(x2)];    
+    projMat = [projMat,randomRotation(x2)];    
 end
 
 if processes.PCA    
