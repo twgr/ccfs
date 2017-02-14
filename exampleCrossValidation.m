@@ -5,8 +5,8 @@
 %
 % Tom Rainforth 27/07/15
 
-clear all
-dataSetsToTest = {'balanceScale','banknote','hillValley','ILPD','ionosphere','iris','seeds','soybean','spirals','zoo'};
+%clear all
+dataSetsToTest = {'banknote','hillValley','ionosphere','iris','seeds','soybean','zoo'};
 nFolds = 10;
 nTrees = 200;
 optionsFor = [];
