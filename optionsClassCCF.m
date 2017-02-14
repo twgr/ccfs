@@ -85,6 +85,28 @@ classdef optionsClassCCF
         % tolerance times the mse of the full data set.  
         mseErrorTolerance = 1e-6;
         
+        % Whether to ensure a fixed number of classes assigned in 
+        % prediction (false, default) for classification or predict in a 
+        % seperate in-out fashion (true).  If set to false, and the outputs
+        % are provided as a single logical array, then the maximal
+        % left-to-right grouping is found, i.e. a column is moved to being
+        % a new output when there is a data point with that class and a
+        % previous class in the same output block.  If the number of
+        % present classes varies between datapoints, will be overwritten to
+        % true
+        bSepPred = false;
+        
+        % Method for combining multiple gain metrics in multi-output
+        % tasks.  Valid options are 'mean' (default) - average of the
+        % gains which for all the considered metrics is equal to the
+        % joint gain, or the 'max' gain on any of the tasks.
+        multiTaskGainCombination = 'mean';
+        
+        % Weights to apply to each output task in calculating the gain.
+        % Either 'even' or a vector of relative weights each to the number
+        % of outputs.
+        taskWeights = 'even';
+        
         %% COMMON FOREST OPTIONS
         
         % Whether to use bagging.  Should be 'default', true or false.
@@ -126,18 +148,7 @@ classdef optionsClassCCF
         
         % Option allowing random starting rotation
         bRandomRotationStart = false;
-        
-        % Option that allows non-equal weighting of votes for each class
-        % such that a prior can be placed on the classes.  Further work
-        % would be required to establish the exact nature of this prior and
-        % its consistency.  There is also likely to be better ways of apply
-        % such a prior.  By default the vote factor is constant across
-        % classes except that ties are broken by giving preference to
-        % classes that occur more commonly in training data.  For non
-        % default vector should be set to a row vector of weights for each
-        % class.
-        voteFactor = 'default';
-        
+                
         % Options that allow nonlinear features to be included in the CCA
         % in accordance with Lopez-Paz's randomized kernel cca.  Initial 
         % results suggest that this is not a useful expansion of the model
@@ -148,8 +159,6 @@ classdef optionsClassCCF
         rccaRegLambda = 1e-3;
         rccaIncludeOriginal = false;
         
-        
-        % TODO An option for the RF-Ensemble of Zhang might be useful
         
         %% NUMERICAL OPTIONS
         
@@ -165,7 +174,6 @@ classdef optionsClassCCF
         
         %% Properties that are not set but used as a place to store info
         
-        ancestralProbs % Used for tie breaking by defaulting to parent node
         classNames     % Used to convert the predictors back to their class names
         
         org_muY        % Used in regression for converting the Z scores back 
@@ -176,6 +184,10 @@ classdef optionsClassCCF
                        % there is negiligable variation in the outputs.
                        % Terminates if mse<mseTotal*mseErrorTolerance
          
+        task_ids       % Gives groupings of outputs in classification.  Is
+                       % an array where each value is the start of a new
+                       % output block.
+                       
     end
 
 %%
@@ -210,28 +222,6 @@ classdef optionsClassCCF
                 else
                     obj.bBagTrees = false;
                 end
-            end
-            
-        end
-        
-        function obj = updateForBaseCounts(obj,baseCounts)
-            % Updates field used for storing details of parents for making
-            % decisions when class assignment is a tie. Also updates the
-            % options for tie breaks 
-            
-            obj.ancestralProbs = baseCounts/sum(baseCounts);
-            
-            if strcmpi(obj.voteFactor,'default')
-                % By default use only a tie breaker based on selecting the
-                % most populous class in a tie.  The rand is to ensure we
-                % don't give unwanted to preference to earlier classes over
-                % random splitting when there is a tie in both the votes
-                % and base counts.  Note at the base counts are integers
-                % then the random factor is always smaller.  The
-                % denominator is setup such that an extra vote always
-                % predominates over the difference in the vote factors
-                % provided there is less than 1e7 trees.
-                obj.voteFactor = 1 + (baseCounts+rand(size(baseCounts)))/(1e7*sum(baseCounts));
             end
             
         end

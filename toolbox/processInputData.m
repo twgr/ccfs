@@ -129,7 +129,7 @@ end
 
 % Convert to Z-scores
 mu_XTrain = nanmean(XTrain,1);
-std_XTrain = nanstd(XTrain,[],1);
+std_XTrain = nanstd(XTrain,1,1);
 std_XTrain(abs(std_XTrain)<1e-10) = 1;
 XTrain = bsxfun(@rdivide,bsxfun(@minus,XTrain,mu_XTrain),std_XTrain);
 XTrain(isnan(XTrain)) = 0;

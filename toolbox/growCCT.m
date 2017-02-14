@@ -46,17 +46,21 @@ bStop = (N<(max(2,options.minPointsForSplit))) || (isnumeric(options.maxDepthSpl
 if bStop
     tree = setupLeaf(YTrain,bReg,options);
     return
-elseif ~bReg && size(YTrain,2)>1
-    if (sum(abs(sum(YTrain,1))>1e-12)<2)
+elseif ~bReg
+    % Check class variation
+    sumY = sum(YTrain,1);
+    bYVaries = (sumY~=0) & (sumY~=N);
+    if ~any(bYVaries)
         tree = setupLeaf(YTrain,bReg,options);
         return
     end
-elseif ~bReg && any(sum(YTrain)==[0,size(YTrain,1)])
-    tree = setupLeaf(YTrain,bReg,options);
-    return
-elseif bReg && all(var(YTrain)<(options.mseTotal*options.mseErrorTolerance))
-    tree = setupLeaf(YTrain,bReg,options);
-    return
+else
+    % Check if variance in Y is less than the cut off amount
+    varY = var(YTrain);
+    if all(varY<(options.mseTotal*options.mseErrorTolerance))
+        tree = setupLeaf(YTrain,bReg,options);
+        return
+    end
 end
 
 if depth>490 && strcmpi(options.maxDepthSplit,'stack')
@@ -74,7 +78,6 @@ iFeatIn = iCanBeSelected(indFeatIn);
 bInMat = bsxfun(@eq,iFeatureNum(:)',sort(iFeatIn(:)));
 
 iIn = find(any(bInMat,1));
-
 
 % Check for variation along selected dimensions and resample features that
 % have no variation
@@ -114,7 +117,7 @@ end
 %% Projection bootstrap if required
 
 if options.bProjBoot
-    iTrainThis = randi(size(XTrain,1),size(XTrain,1),1);
+    iTrainThis = randi(N,N,1);
     XTrainBag = XTrain(iTrainThis,iIn);
     YTrainBag = YTrain(iTrainThis,:);
 else
@@ -142,7 +145,7 @@ end
 if ~isempty(options.projections) && ((size(XTrainBag,1)==2) || queryIfOnlyTwoUniqueRows(XTrainBag))
     % If there are only two points setup a maximum marginal split between the points
     
-    [bSplit,projMat,partitionPoint] = twoPointMaxMarginSplit(XTrainBag,YTrainBag,bReg,options.XVariationTol);
+    [bSplit,projMat,partitionPoint] = twoPointMaxMarginSplit(XTrainBag,YTrainBag,options.XVariationTol);
     if ~bSplit
         tree = setupLeaf(YTrain,bReg,options);
         return
@@ -206,61 +209,107 @@ else
             VTrainSort = YTrain(iUTrainSort,:);
         end
         
-        if size(YTrain,2)==1 && ~bReg
-            leftCum = [(1:numel(VTrainSort))'-cumsum(VTrainSort),cumsum(VTrainSort)];
-        else
-            leftCum = cumsum(VTrainSort,1);
+        leftCum = cumsum(VTrainSort,1);
+        if (size(YTrain,2)==1 || options.bSepPred ) && ~bReg
+            % Convert to [class_doesnt_exist,class_exists]
+            leftCum = [bsxfun(@minus,(1:N)',leftCum),leftCum]; %#ok<AGROW>
         end
         rightCum = bsxfun(@minus,leftCum(end,:),leftCum);
-        
-        if ~bReg
-           pL = bsxfun(@rdivide,leftCum,sum(leftCum,2));
-           pR = bsxfun(@rdivide,rightCum,sum(rightCum,2));
-        end
-        
-        %FIXME add option to use canonical correlation components of Y for
-        %the splitting for multiple outputs
-        
+              
         % Calculate the metric values of the current node and two child nodes
-        if strcmpi(options.splitCriterion,'gini')
-            metricLeft = 1-sum(pL.^2,2);
-            metricRight = 1-sum(pR.^2,2);
-        elseif strcmpi(options.splitCriterion,'info')
-            pLProd = pL.*log2(pL);
-            pLProd(pL==0) = 0;
-            metricLeft = -sum(pLProd,2);
-            pRProd = pR.*log2(pR);
-            pRProd(pR==0) = 0;
-            metricRight = -sum(pRProd,2);
-        elseif strcmpi(options.splitCriterion,'mse')
-            cumSqLeft = cumsum(VTrainSort.^2);
-            varData = (cumSqLeft(end,:)/N)-(leftCum(end,:)/N).^2;
-            if all(varData<(options.mseTotal*options.mseErrorTolerance))
-                % Total variation is less then the allowed tolerance so
-                % terminate and construct a leaf
-                tree = setupLeaf(YTrain,bReg,options);
-                return
-            end
-            metricLeft = calc_mse([zeros(1,size(VTrainSort,2));leftCum],cumSqLeft,VTrainSort);
-            % For calculating the right need to go in additive order again
-            % so go from other end and then flip
-            metricRight = [0;...
-                           calc_mse(rightCum(end:-1:1,:),...
-                                    bsxfun(@minus,cumSqLeft(end,:),cumSqLeft(end-1:-1:1,:)),...
-                                    VTrainSort(end:-1:2,:))];
-            metricRight = metricRight(end:-1:1,:);
+        if ~bReg
+           pL = bsxfun(@rdivide,leftCum,(1:N)');
+           pR = bsxfun(@rdivide,rightCum,((N-1):-1:0)');
+           
+           switch options.splitCriterion
+               case 'gini'
+                   % Can ignore the 1 as this cancels in the gain
+                   lTerm = -pL.^2;
+                   rTerm = -pR.^2;
+               case 'info'
+                   lTerm = -pL.*log2(pL);
+                   lTerm(pL==0) = 0;
+                   rTerm = -pR.*log2(pR);
+                   rTerm(pR==0) = 0;
+               otherwise
+                   error('Invalid split criterion')
+           end
+                
+           if size(YTrain,2)==1 || options.bSepPred 
+               % Add grouped terms back together
+               lTerm = lTerm(:,1:end/2)+lTerm(:,end/2+1:end);
+               rTerm = rTerm(:,1:end/2)+rTerm(:,end/2+1:end);
+           end
+           
+           if ~isnumeric(options.taskWeights) && ~strcmpi(options.multiTaskGainCombination,'max')
+               % No need to do anything fancy in the metric calculation
+               metricLeft = sum(lTerm,2);
+               metricRight = sum(rTerm,2);
+           else
+               % Need to do grouped sums for each of the outputs as will be
+               % doing more than a simple averaging of there values
+               metricLeft = cumsum(lTerm,2);
+               metricLeft = metricLeft(:,[options.task_ids(2:end)-1,end])-...
+                             [zeros(size(metricLeft,1),1),metricLeft(:,options.task_ids(2:end)-1)];
+               metricRight = cumsum(rTerm,2);
+               metricRight = metricRight(:,[options.task_ids(2:end)-1,end])-...
+                   [zeros(size(metricRight,1),1),metricRight(:,options.task_ids(2:end)-1)];
+           end
         else
-            error('Invalid split criterion');
+            if strcmpi(options.splitCriterion,'mse')
+                cumSqLeft = cumsum(VTrainSort.^2);
+                varData = (cumSqLeft(end,:)/N)-(leftCum(end,:)/N).^2;
+                if all(varData<(options.mseTotal*options.mseErrorTolerance))
+                    % Total variation is less then the allowed tolerance so
+                    % terminate and construct a leaf
+                    tree = setupLeaf(YTrain,bReg,options);
+                    return
+                end
+                metricLeft = calc_mse([zeros(1,size(VTrainSort,2));leftCum],cumSqLeft,VTrainSort);
+                % For calculating the right need to go in additive order again
+                % so go from other end and then flip
+                metricRight = [zeros(1,size(VTrainSort,2));...
+                    calc_mse(rightCum(end:-1:1,:),...
+                    bsxfun(@minus,cumSqLeft(end,:),cumSqLeft(end-1:-1:1,:)),...
+                    VTrainSort(end:-1:2,:))];
+                metricRight = metricRight(end:-1:1,:);
+                % No need to do the grouping for regression as each must be
+                % a seperate output anyway.
+            else
+                error('Invalid split criterion');
+            end
         end
         
-        metricCurrent = metricLeft(end); 
-        metricLeft(~bUniquePoints) = inf;
-        metricRight(~bUniquePoints) = inf;
+        metricCurrent = metricLeft(end,:); 
+        metricLeft(~bUniquePoints,:) = inf;
+        metricRight(~bUniquePoints,:) = inf;
         
         % Calculate gain in metric for each of possible splits based on current
         % metric value minus metric value of child weighted by number of terms
         % in each child
-        metricGain = metricCurrent-((1:N)'.*metricLeft+(N-1:-1:0)'.*metricRight)/N;
+        metricGain = bsxfun(@minus,metricCurrent,...
+            (bsxfun(@times,(1:N)',metricLeft)...
+            +bsxfun(@times,(N-1:-1:0)',metricRight))/N);
+        
+        % Combine gains if there are mulitple outputs.  Note that for gini,
+        % info and mse, the joint gain is equal to the mean gain, hence
+        % taking the mean here rather than explicitly calculating joints
+        % before.
+        if size(metricGain,2)>1
+            if isnumeric(options.taskWeights)
+                % If weights provided, weight task appropriately in terms
+                % of importance.
+                metricGain = bsxfun(@times,metricGain,options.taskWeights(:)');
+            end
+            switch options.multiTaskGainCombination
+                case 'mean'
+                    metricGain = mean(metricGain,2);
+                case 'max'
+                    metricGain = max(metricGain,[],2);
+                otherwise
+                    error('Invalid option for options.multiTaskGainCombination')
+            end
+        end
         
         % Disallow splits that violate the minimum number of leaf points
         metricGain(1:(options.minPointsLeaf-1)) = -inf;
@@ -318,35 +367,21 @@ end
 
 %% Recur tree growth to child nodes and constructs tree struct
 % to return
+tree.bLeaf = false;
+tree.Npoints = N;
+tree.mean = mean(YTrain,1);
 
-if ~bReg
-    % Update ancestral counts for breaking ties if needed
-    if size(YTrain,2)==1
-        countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
-    else
-        countsNode = sum(YTrain,1);
-    end
-    nNonZeroCounts = sum(countsNode>0);
-    nUniqueNonZeroCounts = numel(fastUnique(countsNode));
-    if nUniqueNonZeroCounts==nNonZeroCounts
-        options.ancestralProbs = countsNode/sum(countsNode);
-    else
-        options.ancestralProbs = [options.ancestralProbs;countsNode/sum(countsNode)];
-    end
-    tree.trainingCounts = countsNode;
-else
-    tree.meanNode = mean(YTrain,1);
+if bReg
     if ~isempty(options.org_stdY)
-        tree.meanNode = tree.meanNode.*options.org_stdY;
+        tree.mean = tree.mean.*options.org_stdY;
     end
     if ~isempty(options.org_muY)
-        tree.meanNode = tree.meanNode+options.org_muY;
+        tree.mean = tree.mean+options.org_muY;
     end
 end
 
 treeLeft = growCCT(XTrain(bLessThanTrain,:),YTrain(bLessThanTrain,:),bReg,options,iFeatureNum,depth+1);
 treeRight = growCCT(XTrain(~bLessThanTrain,:),YTrain(~bLessThanTrain,:),bReg,options,iFeatureNum,depth+1);
-tree.bLeaf = false;
 tree.iIn = iIn;
 if options.bRCCA && exist('fExp','var')
     tree.featureExpansion = fExp;
@@ -355,7 +390,6 @@ tree.decisionProjection = projMat(:,iDir);
 tree.paritionPoint = partitionPoint;
 tree.lessthanChild = treeLeft;
 tree.greaterthanChild = treeRight;
-tree.Npoints = N;
 
 end
 
@@ -363,11 +397,12 @@ function tree = setupLeaf(YTrain,bReg,options)
 % Update tree struct to make node a leaf
 
 tree.bLeaf = true;
+tree.Npoints = size(YTrain,1);
+tree.mean = mean(YTrain,1);
 
 if bReg
     % TODO add other possible leaf models
     
-    tree.mean = mean(YTrain,1);
     tree.std_dev = std(YTrain,[],1);
     
     % If a mapping has been applied, invert it
@@ -378,39 +413,9 @@ if bReg
     if ~isempty(options.org_muY)
         tree.mean = tree.mean+options.org_muY;
     end
-else
-    
-    if size(YTrain,2)==1
-        countsNode = [numel(YTrain)-sum(YTrain),sum(YTrain)];
-    else
-        countsNode = sum(YTrain,1);
-    end
-    maxCounts = max(countsNode);
-    bEqualMaxCounts = maxCounts == countsNode;
-    if sum(bEqualMaxCounts)==1
-        label = find(bEqualMaxCounts);
-    else
-        nRecur = size(options.ancestralProbs,1);
-        while nRecur>0
-            countsTieBreak = countsNode+options.ancestralProbs(nRecur,:)/1e9;
-            maxCounts = max(countsTieBreak);
-            bEqualMaxCounts = maxCounts == countsTieBreak;
-            if sum(bEqualMaxCounts)==1
-                label = find(bEqualMaxCounts);
-                break
-            else
-                nRecur = nRecur-1;
-            end
-            if nRecur==0
-                [~,label] = max(countsNode+rand(size(countsNode))/1e9);
-            end
-        end
-    end
-    tree.labelClassId = label;
-    tree.trainingCounts = countsNode;
 end
 
-tree.Npoints = size(YTrain,1);
+
 
 end
 
@@ -426,27 +431,7 @@ function value = calc_mse(cumtotal,cumsq,YTrainSort)
 % CMSE(j)=sigma(j)/j-(1/j^2)(mu(j-1)^2+Y(j)^2+2mu(j-1)Y(j))
 %   where sigma(j) = sum_{i=1}^j Y(j)^2 i.e. cumsq(j)
 %   and      mu(j) = sum_{i=1}^j Y(j) i.e. cumtotal(j+1)
-% The mean 2 is to then take the average over the variances
-% for multi-output regression
-
-%FIXME add some sort of weighting for multiple outputs
-
-value = mean(bsxfun(@rdivide,cumsq,(1:size(YTrainSort,1))')-...
-             bsxfun(@rdivide, cumtotal(1:end-1,:).^2+YTrainSort.^2+2*cumtotal(1:end-1,:).*YTrainSort...
-                            , ((1:size(YTrainSort,1)).^2)'),2);
-                                            
-end
-function value = calc_mse_no_mean(cumtotal,cumsq,YTrainSort)
-% CMSE(j)=sigma(j)/j-(1/j^2)(mu(j-1)^2+Y(j)^2+2mu(j-1)Y(j))
-%   where sigma(j) = sum_{i=1}^j Y(j)^2 i.e. cumsq(j)
-%   and      mu(j) = sum_{i=1}^j Y(j) i.e. cumtotal(j+1)
-% The mean 2 is to then take the average over the variances
-% for multi-output regression
-
-%FIXME add some sort of weighting for multiple outputs
-
 value = bsxfun(@rdivide,cumsq,(1:size(YTrainSort,1))')-...
-             bsxfun(@rdivide, cumtotal(1:end-1,:).^2+YTrainSort.^2+2*cumtotal(1:end-1,:).*YTrainSort...
-                            , ((1:size(YTrainSort,1)).^2)');
-                                            
+        bsxfun(@rdivide, cumtotal(1:end-1,:).^2+YTrainSort.^2+2*cumtotal(1:end-1,:).*YTrainSort...
+                       , ((1:size(YTrainSort,1)).^2)');                                            
 end

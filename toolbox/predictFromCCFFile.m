@@ -69,7 +69,7 @@ if ~isempty(YTest)
     end
 end
 
-OutStruct.classNames = CCF.options.classNames;
+OutStruct.classNames = CCF.classNames;
 
 if bSave
     mkdir(outputLocation);

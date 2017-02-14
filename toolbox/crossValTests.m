@@ -76,7 +76,7 @@ for n=1:nFolds
     yPreds = predictFromCCF(CCF,X(iTest{n},:));
     yPredsCCF{n} = yPreds;
     if iscell(Y)
-        percentTestMissClassfiedCCF(n) = 100*(1-mean(cellfun(@strcmpi,CCF.options.classNames(yPreds),Y(iTest{n}))));
+        percentTestMissClassfiedCCF(n) = 100*(1-mean(cellfun(@strcmpi,CCF.classNames(yPreds),Y(iTest{n}))));
     else
         percentTestMissClassfiedCCF(n) = 100*(1-mean(yPreds==Y(iTest{n},:)));
     end

@@ -1,4 +1,4 @@
-function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeForestPredictsTest] = ...
+function [CCF,forestPredictsTest,forestProbsTest,treeOutputTest] = ...
     genCCF(nTrees,XTrain,YTrain,bReg,optionsFor,XTest,bKeepTrees,iFeatureNum,bOrdinal)
 %genCCF Generate a canonical correlation forest
 %
@@ -59,16 +59,11 @@ function [CCF,forestPredictsTest,forestProbsTest,treePredictsTest,cumulativeFore
 %                  made using optionsClassCCF.defaultOptionsCCFBag.
 %                  Forest prediction can be made using predictFromCCF
 %                  function or  individual trees using the predictFromCCT
-%                  function. Note that some of options, e.g. voteFactor,
-%                  are used in prediction and some options are changed
-%                  during the generation if they are initially set to
-%                  'default' values.  Note predictFromCCF applies the
+%                  function. Note predictFromCCF applies the
 %                  inputProcess so this does not need to be done manually.
 %        forPred = Forest predictions for XTest
 %       forProbs = Forest probabilities for XTest
 %       treePred = Individual tree predictiosn for XTest
-%     cumForPred = Predictions of forest for XTest cumulative in the
-%                  individual trees.  cumForPred(:,end)==forPred
 %
 % Tom Rainforth 09/10/15
 
@@ -128,30 +123,23 @@ D = numel(fastUnique(iFeatureNum)); % Note that setting of number of features to
 
 if ~bReg
     
-    [YTrain, classes] = classExpansion(YTrain);
-    
-    if numel(classes)==1
-        warning('Only 1 class present in training data!');
-    end
-    
-    if size(YTrain,2)==1
-        baseCounts = [sum(~YTrain),sum(YTrain)];
-    else
-        baseCounts = sum(YTrain,1);
-    end
     
     if ~exist('optionsFor','var') || isempty(optionsFor)
         optionsFor = optionsClassCCF;
     end
+    
+    [YTrain, classes, optionsFor] = classExpansion(YTrain,N,optionsFor);
+        
+    if numel(classes)==1
+        warning('Only 1 class present in training data!');
+    end
+    
     optionsFor = optionsFor.updateForD(D);
-    optionsFor = optionsFor.updateForBaseCounts(baseCounts);
     
     % Stored class names can be used to link the ids given in the CCT to the
     % actual class names
     optionsFor.classNames = classes;
-        
-    % Number of classes
-    K = max(2,size(YTrain,2));
+      
 else
     
     muY = mean(YTrain);
@@ -199,11 +187,7 @@ end
 
 forest = cell(1,nTrees);
 if nOut>1
-    if bReg
-        treePredictsTest = NaN(size(XTest,1),nTrees,size(YTrain,2));
-    else
-        treePredictsTest = NaN(size(XTest,1),nTrees);
-    end
+    treeOutputTest = NaN(size(XTest,1),nTrees,size(YTrain,2));
 end
 
 if optionsFor.bUseParallel == true
@@ -213,9 +197,7 @@ if optionsFor.bUseParallel == true
             forest{nT} = tree;
         end
         if nOut>1
-            %FIXME should take probabilities?
-            %FIXME multiple output classification
-            treePredictsTest(:,nT,:) = predictFromCCT(tree,XTest);
+            treeOutputTest(:,nT,:) = predictFromCCT(tree,XTest);
         end
     end
 else
@@ -225,7 +207,7 @@ else
             forest{nT} = tree;
         end
         if nOut>1
-            treePredictsTest(:,nT,:) = predictFromCCT(tree,XTest);
+            treeOutputTest(:,nT,:) = predictFromCCT(tree,XTest);
         end
     end
 end
@@ -234,70 +216,47 @@ CCF.Trees = forest;
 CCF.bReg = bReg;
 CCF.options = optionsFor;
 CCF.inputProcessDetails = inputProcessDetails;
+CCF.classNames = optionsFor.classNames;
 
 if bReg
     CCF.nOutputs = size(muY,2);
+else
+    CCF.bSepPred = optionsFor.bSepPred;
+    CCF.task_ids = optionsFor.task_ids;
 end
 
-if optionsFor.bBagTrees && bKeepTrees && ~bReg
-    votesOOb = zeros(size(YTrain,1),max(2,size(YTrain,2)));
-    for nTO=1:numel(CCF.Trees)
-        indAdd = sub2ind(size(votesOOb),CCF.Trees{nTO}.iOutOfBag,CCF.Trees{nTO}.predictsOutOfBag);
-        votesOOb(indAdd) = votesOOb(indAdd)+1;
-    end
-    forestProbs = bsxfun(@rdivide,votesOOb,sum(votesOOb,2));
-    [~,forestPredicts] = max(bsxfun(@times,forestProbs,CCF.options.voteFactor(:)'),[],2);
-    YTrainVec = sum(bsxfun(@times,YTrain,1:size(YTrain,2)),2);
-    CCF.outOfBagError = (1-nanmean(forestPredicts==YTrainVec));
-elseif optionsFor.bBagTrees && bKeepTrees && bReg
-    cumOOb = zeros(size(YTrain));
+if optionsFor.bBagTrees && bKeepTrees
+    cumOOb = zeros(size(YTrain,1),size(CCF.Trees{1}.predictsOutOfBag,2));
     nOOb = zeros(size(YTrain,1),1);
     for nTO = 1:numel(CCF.Trees)
         cumOOb(CCF.Trees{nTO}.iOutOfBag,:) = cumOOb(CCF.Trees{nTO}.iOutOfBag,:)+CCF.Trees{nTO}.predictsOutOfBag;
         nOOb(CCF.Trees{nTO}.iOutOfBag) = nOOb(CCF.Trees{nTO}.iOutOfBag)+1;
     end
     oobPreds = bsxfun(@rdivide,cumOOb,nOOb);
-    CCF.outOfBagError = nanmean((bsxfun(@rdivide,bsxfun(@minus,oobPreds,muY),stdY)-YTrain).^2,1);
+    if bReg
+        CCF.outOfBagError = nanmean((bsxfun(@rdivide,bsxfun(@minus,oobPreds,muY),stdY)-YTrain).^2,1);
+    elseif CCF.bSepPred
+        CCF.outOfBagError = (1-nanmean((oobPreds>0.5)==YTrain,1));
+    else
+        forPreds = NaN(size(XTrain,1),numel(optionsFor.task_ids));
+        YTrainCollapsed = NaN(size(XTrain,1),numel(optionsFor.task_ids));
+        for nO = 1:(numel(optionsFor.task_ids)-1)
+            [~,forPreds(:,nO)] = max(oobPreds(:,optionsFor.task_ids(nO):optionsFor.task_ids(nO+1)-1),[],2);
+            [~,YTrainCollapsed(:,nO)] = max(YTrain(:,optionsFor.task_ids(nO):optionsFor.task_ids(nO+1)-1),[],2);
+        end
+        [~,forPreds(:,end)] = max(oobPreds(:,optionsFor.task_ids(end):end),[],2);
+        [~,YTrainCollapsed(:,end)] = max(YTrain(:,optionsFor.task_ids(end):end),[],2);
+        CCF.outOfBagError = (1-nanmean(forPreds==YTrainCollapsed,1));
+    end
 else
-    CCF.outOfBagError = 'OOB error only returned if bagging used.  Please use CCF-Bag instead via options=optionsClassCCF.defaultOptionsCCFBag';
+    CCF.outOfBagError = 'OOB error only returned if bagging used and trees kept.  Please use CCF-Bag instead via options=optionsClassCCF.defaultOptionsCCFBag';
 end
 
 if nOut<2
     return
 end
 
-
-% Use equal voting to make predictions
-if ~bReg
-    if nargout>4
-        cumVotes = bsxfun(@rdivide,cumsum(bsxfun(@eq,treePredictsTest,reshape(1:K,[1,1,K])),2),reshape(1:nTrees,[1,nTrees,1]));
-        forestProbsTest = squeeze(cumVotes(:,end,:));
-        voteFactor = reshape(optionsFor.voteFactor/mean(optionsFor.voteFactor),[1,1,K]);
-        [~,cumulativeForestPredictsTest] = max(bsxfun(@times,cumVotes,voteFactor),[],3);
-        forestPredictsTest = cumulativeForestPredictsTest(:,end);
-    else
-        forestProbsTest = squeeze(sum(bsxfun(@eq,treePredictsTest,reshape(1:K,[1,1,K])),2))/nTrees;
-        [~,forestPredictsTest] = max(bsxfun(@times,forestProbsTest,optionsFor.voteFactor(:)'),[],2);
-    end
-    
-    forestPredictsTest = reshape(optionsFor.classNames(forestPredictsTest),[],1);
-    if nargout>3
-        treePredictsTest = optionsFor.classNames(treePredictsTest);
-        if nargout>4
-            cumulativeForestPredictsTest= optionsFor.classNames(cumulativeForestPredictsTest);
-        end
-    end
-else
-    if nargout>3
-        cumulativeForestPredictsTest = bsxfun(@rdivide,cumsum(treePredicts,2),1:nTrees);
-        forestPredictsTest = squeeze(cumulativeForestPredictsTest(:,end,:));
-    else
-        forestPredictsTest = squeeze(mean(treePredictsTest,2));
-    end
-    if nargout>2
-        forestProbsTest = squeeze(std(treePredictsTest,[],2));
-    end
-end
+[forestPredictsTest, forestProbsTest] = treeOutputsToForestPredicts(CCF,treeOutputTest);
 
 end
 
@@ -339,9 +298,4 @@ if ~strcmpi(optionsFor.treeRotation,'none')
     tree.rotDetails = struct('R',R,'muX',muX);
 end
 
-end
-
-function x = converToZScores(x,mu,std)
-x = bsxfun(@rdivide,bsxfun(@minus,x,mu),std);
-x(isnan(x)) = 0;
 end

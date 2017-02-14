@@ -1,16 +1,11 @@
-function [bSp, rmm, cmm] = twoPointMaxMarginSplit(X,Y,bReg,tol)
+function [bSp, rmm, cmm] = twoPointMaxMarginSplit(X,Y,tol)
 % This should only be done if X has exactly 2 unique rows in which case it
 % produces the optimal split
 bType1 = all(abs(bsxfun(@minus,X,X(1,:)))<tol,2);
-if size(Y,2)==1 && ~bReg
-    YLeft = Y;
-    YRight = ~Y;
-else
-    YLeft = Y(bType1,:);
-    YRight = Y(~bType1,:);
-end
+YLeft = Y(bType1,:);
+YRight = Y(~bType1,:);
 if all(sum(YLeft,1)==sum(YRight,1))
-    % Here the two unique points are identical and so we can't split
+    % Here the two unique points are identical and so we can't helpfully split
     bSp = false;
     rmm = [];
     cmm = [];

@@ -175,7 +175,7 @@ OutStruct.CCF.options = struct(OutStruct.CCF.options);
 OutStruct.nTrees = nTrees;
 OutStruct.iTest = iTest;
 if ~isnumeric(YTest)
-    OutStruct.classNames = OutStruct.CCF.options.classNames;
+    OutStruct.classNames = OutStruct.CCF.classNames;
 end
 OutStruct.sizeXTrain = size(XTrain);
 
