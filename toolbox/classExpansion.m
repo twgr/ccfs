@@ -62,3 +62,7 @@ else
     Y = cell2mat(Ycell);
     optionsFor.task_ids = 1+[0,cumsum(y_sizes(1:end-1))];
 end
+
+if size(classes,1)>(N-2)
+    error('More than n_data_points-2 classes appear to be present.  Make sure to datapoints with missing output!');
+end

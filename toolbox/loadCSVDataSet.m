@@ -24,6 +24,13 @@ function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation,bConvertCat,bNamed)
 %     1 2 NaN 4 NaN, but 1 2 ? 4 a will be treated as a non-ordinal feature
 %     with values '1' '2' '?' '4' 'a'.
 %
+%     Multiple targets can be specified by using a header line
+%              n_targets%T
+%     where T is the number of targets.
+%
+%     Header lines can be in any order, but should be before the variable
+%     name line, if present.
+%
 % Inputs: inputLocation = String giving location of an input csv file.
 %       bConvertCat = Whether to convert categorical features to numerical
 %                  ones.  They will still be marked a ordinal by bOrdinal
@@ -31,9 +38,9 @@ function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation,bConvertCat,bNamed)
 %                  causing issue as it doesn't allow cell inputs. Default =
 %                  true.
 %         bNamed = Whether the csv contains names for the variables.  If so
-%                  these should come after the bOrdinal header line (if
-%                  this exists).  False by default
-%     
+%                  these should come after the header lines (if
+%                  they exists).  False by default
+%
 %
 % Outpus:   X = Features, this will be a numeric array if possible and
 %               otherwise a cell array.  When a cell array, cell values
@@ -57,64 +64,101 @@ end
 
 fid = fopen(inputLocation,'r');
 firstLine = fgets(fid);
+secondLine = fgets(fid);
+bOrdSpec = [strcmpi(firstLine(1:min(8,end)),'bOrdinal'),strcmpi(secondLine(1:min(8,end)),'bOrdinal')];
+bNTSpec = [strcmpi(firstLine(1:min(9,end)),'n_targets'),strcmpi(secondLine(1:min(9,end)),'n_targets')];
 
-if strcmpi(firstLine(1:8),'bOrdinal')
-    iNum = regexp(firstLine,'\d');
-    delimiter = firstLine(9:(iNum(1)-1));
-    bOrdinal = arrayfun(@(x) logical(str2double(firstLine(x))), iNum);
-    fclose(fid);
-    InputTable = readtable(inputLocation,'HeaderLines',1,'ReadVariableNames',bNamed,'Delimiter',delimiter);
-    try
-        X = table2array(InputTable(:,1:end-1));
-    catch
-        X = table2cell(InputTable(:,1:end-1));
-    end
-    try
-        Y = table2array(InputTable(:,end));
-    catch
-        Y = table2cell(InputTable(:,end));
-    end
+if bOrdSpec(1)
+    ordSpecLine = firstLine;
+elseif bOrdSpec(2)
+    ordSpecLine = secondLine;
 else
-    fclose(fid);
-    iDel = regexp(firstLine,'[\s , \| ; \t]');
-    if isempty(iDel)
-        error('Invalid delimiter');
-    end
-    delimiter = firstLine(iDel(1));
-    InputTable = readtable(inputLocation,'ReadVariableNames',bNamed,'Delimiter',delimiter);
-    try
-        X = table2array(InputTable(:,1:end-1));
-        assert(~iscell(X));
+    ordSpecLine = [];
+end
+
+if bNTSpec(1)
+    ntSpecLine = firstLine;
+elseif bNTSpec(2)
+    ntSpecLine = secondLine;
+else
+    ntSpecLine = [];
+end
+
+if ~isempty(ordSpecLine)
+    iNum = regexp(ordSpecLine,'\d');
+    bOrdinal = arrayfun(@(x) logical(str2double(ordSpecLine(x))), iNum);
+else
+    bOrdinal = [];
+end
+
+if ~isempty(ntSpecLine)
+    n_out = str2double(ntSpecLine(regexp(ntSpecLine,'\d')));
+else
+    n_out = 1;
+end
+
+third_line = fgets(fid);
+iDel = regexp(third_line,'[\s , \| ; \t]');
+if isempty(iDel)
+    error('Invalid delimiter');
+end
+delimiter = third_line(iDel(1));
+
+fclose(fid);
+
+InputTable = readtable(inputLocation,'HeaderLines',any(ordSpecLine)+any(bNTSpec),'ReadVariableNames',bNamed,'Delimiter',delimiter);
+
+try
+    Y = table2array(InputTable(:,(end-n_out+1):end));
+catch
+    Y = table2cell(InputTable(:,(end-n_out+1):end));
+end
+
+try
+    X = table2array(InputTable(:,1:end-n_out));
+    assert(~iscell(X));
+    if isempty(bOrdinal)
         bOrdinal = true(1,size(X,2));
-    catch
-        X = table2cell(InputTable(:,1:end-1));
-        bNumeric = cellfun(@isnumeric,X);
+    end
+catch
+    X = table2cell(InputTable(:,1:end-n_out));
+    bNumeric = cellfun(@isnumeric,X);
+    
+    if isempty(bOrdinal)
         bOrdinal = sum(~bNumeric,1)==0;
         iContainsString = find(~bOrdinal);
-        for n=1:numel(iContainsString)
-            Xnum = cellfun(@str2double,X(~bNumeric(:,iContainsString(n)),iContainsString(n)));
-            bNotNum = isnan(Xnum);            
-            nUniqueStrings = numel(unique(X(bNotNum,iContainsString(n))));
-            if nUniqueStrings<=1
-                X(~bNumeric(:,iContainsString(n)),iContainsString(n)) = num2cell(Xnum);
-                bOrdinal(iContainsString(n)) = true;
-            end
-        end
-        if all(bOrdinal)
-            X = cell2mat(X);
+        dubiously_marked = false(size(bOrdinal));
+    else
+        % Check if something marked as ordinal is not
+        apparently_numeric = sum(~bNumeric,1)==0;
+        dubiously_marked = bOrdinal&~apparently_numeric;
+        iContainsString = find(dubiously_marked);
+    end
+        
+    for n=1:numel(iContainsString)
+        Xnum = cellfun(@str2double,X(~bNumeric(:,iContainsString(n)),iContainsString(n)));
+        bNotNum = isnan(Xnum);
+        nUniqueStrings = numel(unique(X(bNotNum,iContainsString(n))));
+        if nUniqueStrings<=1
+            X(~bNumeric(:,iContainsString(n)),iContainsString(n)) = num2cell(Xnum);
+            bOrdinal(iContainsString(n)) = true;
+            dubiously_marked(iContainsString(n)) = false;
         end
     end
-    try
-        Y = table2array(InputTable(:,end));
-    catch
-        Y = table2cell(InputTable(:,end));
+    
+    if any(dubiously_marked)
+        warning('Fields marked as ordinal contain more than one unique string, cannot treat as ordinal!');
+    end
+    
+    if all(bOrdinal)
+        X = cell2mat(X);
     end
 end
 
 if bConvertCat && iscell(X)
-   for n=find(~bOrdinal)
-      [~,~,iC] = unique(X(:,n));
-      X(:,n) = num2cell(iC);
-   end
-   X = cell2mat(X);
+    for n=find(~bOrdinal)
+        [~,~,iC] = unique(X(:,n));
+        X(:,n) = num2cell(iC);
+    end
+    X = cell2mat(X);
 end
