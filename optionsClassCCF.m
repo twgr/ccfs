@@ -304,6 +304,24 @@ classdef optionsClassCCF
            obj.minPointsForSplit = 6;
            obj.minPointsLeaf = 3;
         end        
+        
+        function obj = defaultOptionsRandomRotation
+           % Allows for use of random rotation instead of CCA.  By default
+           % does not use bagging
+           
+           obj = optionsClassCCF;
+           obj.projections = struct('Random',true);            
+        end
+        
+        function obj = defaultOptionsRandomRotationReg
+           % Allows for use of random rotation instead of CCA.  By default
+           % does not use bagging
+           
+           obj = optionsClassCCF.defaultOptionsRandomRotation;
+           obj.splitCriterion = 'mse';
+           obj.minPointsForSplit = 6;
+           obj.minPointsLeaf = 3; 
+        end
     end
     
 end
