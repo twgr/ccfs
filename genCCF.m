@@ -89,6 +89,16 @@ if ~bInPath
     addpath(locToolbox);
 end
 
+if ~exist('optionsFor','var') || isempty(optionsFor)
+    if bReg
+        optionsFor = optionsClassCCF.defaultOptionsReg;
+    else
+        optionsFor = optionsClassCCF;
+    end
+end
+
+    
+bNaNtoMean = strcmpi(optionsFor.missingValuesMethod,'mean');
 
 if ~isnumeric(XTrain) || ~exist('iFeatureNum','var') || isempty(iFeatureNum)
     % If XTrain not in numeric form or if a grouping of features is not
@@ -97,9 +107,9 @@ if ~isnumeric(XTrain) || ~exist('iFeatureNum','var') || isempty(iFeatureNum)
         warning('iFeatureNum provided but XTrain not in array format, over-riding');
     end
     if ~exist('XTest','var') || isempty(XTest)
-        [XTrain, iFeatureNum, inputProcessDetails] = processInputData(XTrain,bOrdinal);
+        [XTrain, iFeatureNum, inputProcessDetails] = processInputData(XTrain,bOrdinal,[],bNaNtoMean);
     else
-        [XTrain, iFeatureNum, inputProcessDetails, XTest] = processInputData(XTrain,bOrdinal,XTest);
+        [XTrain, iFeatureNum, inputProcessDetails, XTest] = processInputData(XTrain,bOrdinal,XTest,bNaNtoMean);
     end
 else
     mu_XTrain = nanmean(XTrain,1);
@@ -122,11 +132,6 @@ D = numel(fastUnique(iFeatureNum)); % Note that setting of number of features to
 
 
 if ~bReg
-    
-    
-    if ~exist('optionsFor','var') || isempty(optionsFor)
-        optionsFor = optionsClassCCF;
-    end
     
     [YTrain, classes, optionsFor] = classExpansion(YTrain,N,optionsFor);
         
@@ -151,10 +156,6 @@ else
     stdY(stdY==0) = 1;
     
     YTrain = bsxfun(@rdivide,bsxfun(@minus,YTrain,muY),stdY);
-    
-    if ~exist('optionsFor','var') || isempty(optionsFor)
-        optionsFor = optionsClassCCF.defaultOptionsReg;
-    end
     
     optionsFor = optionsFor.updateForD(D);    
     optionsFor.org_muY = muY;
@@ -263,6 +264,12 @@ end
 function tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,N)
 % A sub-function is used so that it can be shared between the for and
 % parfor loops
+
+if strcmpi(optionsFor.missingValuesMethod,'random')
+    % Randomly set the missing values.  This will be different for each
+    % tree
+    XTrain = random_missing_vals(XTrain);
+end
 
 if optionsFor.bBagTrees
     iTrainThis = datasample(1:N,N);

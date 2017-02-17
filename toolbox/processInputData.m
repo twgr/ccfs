@@ -1,4 +1,4 @@
-function [XTrain, iFeatureNum, inputProcessDetails, XTest, featureNames] = processInputData(XTrainRC,bOrdinal,XTestRC)
+function [XTrain, iFeatureNum, inputProcessDetails, XTest, featureNames] = processInputData(XTrainRC,bOrdinal,XTestRC,bNaNtoMean)
 %processInputData Process input features, expanding categoricals and
 %converting to zScores
 %
@@ -20,6 +20,7 @@ function [XTrain, iFeatureNum, inputProcessDetails, XTest, featureNames] = proce
 %              training data for the purpose of Z-scores and to avoid using
 %              any features / categories that do not appear in the training
 %              data.
+%   bNaNtoMean = Replace NaNs with the mean, default false;
 % Outputs
 %  XTrain        = Processed input features
 %  iFeatureNum   = Array idenitifying groups of expanded features.
@@ -34,6 +35,10 @@ function [XTrain, iFeatureNum, inputProcessDetails, XTest, featureNames] = proce
 %                  category is also included.
 %
 % Tom Rainforth 22/06/15
+
+if ~exist('bNaNtoMean','var') || isempty(bNaNtoMean)
+    bNaNtoMean = false;
+end
 
 D = size(XTrainRC,2);
 
@@ -132,12 +137,15 @@ mu_XTrain = nanmean(XTrain,1);
 std_XTrain = nanstd(XTrain,1,1);
 std_XTrain(abs(std_XTrain)<1e-10) = 1;
 XTrain = bsxfun(@rdivide,bsxfun(@minus,XTrain,mu_XTrain),std_XTrain);
-XTrain(isnan(XTrain)) = 0;
+
+if bNaNtoMean
+    XTrain(isnan(XTrain)) = 0;
+end
 
 % If required, generate function for converting additional data and
 % calculate conversion for any test data provided.
 if nargout>2
-    inputProcessDetails = struct('bOrdinal',bOrdinal,'mu_XTrain',mu_XTrain,'std_XTrain',std_XTrain);
+    inputProcessDetails = struct('bOrdinal',bOrdinal,'mu_XTrain',mu_XTrain,'std_XTrain',std_XTrain,'bNaNtoMean',bNaNtoMean);
     inputProcessDetails.Cats = Cats;
     if nargout>3
         XTest = replicateInputProcess(XTestRC,inputProcessDetails);

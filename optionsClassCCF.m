@@ -107,6 +107,12 @@ classdef optionsClassCCF
         % of outputs.
         taskWeights = 'even';
         
+        % Method for dealing with missing values.  Should be either
+        % 'random' which sets the missing value randomly to one of the
+        % other values for each tree seperately or 'mean' which sets
+        % missing values to the mean.
+        missingValuesMethod = 'random';
+        
         %% COMMON FOREST OPTIONS
         
         % Whether to use bagging.  Should be 'default', true or false.

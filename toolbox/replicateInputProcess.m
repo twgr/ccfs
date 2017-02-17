@@ -56,6 +56,9 @@ for n=1:size(XCat,2)
 end
 
 X = bsxfun(@rdivide,bsxfun(@minus,X,InputProcessDetails.mu_XTrain),InputProcessDetails.std_XTrain);
-X(isnan(X)) = 0;
+
+if InputProcessDetails.bNaNtoMean
+    X(isnan(X)) = 0;
+end
 
 end

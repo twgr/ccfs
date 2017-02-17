@@ -8,7 +8,7 @@ function [forestPredicts, forestProbs, treeOutputs] = predictFromCCF(CCF,X)
 %                               with a field Trees, giving a cell array of
 %                               tree structures, and options which is an
 %                               object of type optionsClassCCF
-%                           X = input features, each row should be a 
+%                           X = input features, each row should be a
 %                               seperate data point
 % Outputs:     forestPredicts = Array of numeric predictions corresponding
 %                               to the class label if the labels where
@@ -31,8 +31,14 @@ X = replicateInputProcess(X,CCF.inputProcessDetails);
 nTrees = numel(CCF.Trees);
 % Preallocate output space
 treeOutputs = repmat(reshape(predictFromCCT(CCF.Trees{1},X),size(X,1),1,[]),1,nTrees,1);
-for n=2:nTrees
-    treeOutputs(:,n,:) = predictFromCCT(CCF.Trees{n},X);
+if CCF.options.bUseParallel
+    parfor n=2:nTrees
+        treeOutputs(:,n,:) = predictFromCCT(CCF.Trees{n},X);
+    end
+else
+    for n=2:nTrees
+        treeOutputs(:,n,:) = predictFromCCT(CCF.Trees{n},X);
+    end
 end
 
 [forestPredicts, forestProbs] = treeOutputsToForestPredicts(CCF,treeOutputs);
