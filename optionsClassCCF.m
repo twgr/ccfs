@@ -207,7 +207,11 @@ classdef optionsClassCCF
             if strcmpi(obj.lambda,'sqrt')
                 obj.lambda = ceil(sqrt(D));
             elseif strcmpi(obj.lambda,'log')
-                obj.lambda = ceil(log2(D)+1);
+                if D==3
+                    obj.lambda = 2;
+                else
+                    obj.lambda = ceil(log2(D)+1);
+                end
             elseif strcmpi(obj.lambda,'all')
                 obj.lambda = D;
             elseif ~isnumeric(obj.lambda)
