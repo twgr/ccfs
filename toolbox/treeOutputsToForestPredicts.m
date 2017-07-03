@@ -33,6 +33,8 @@ else
               end
            end
         end
+    elseif islogical(CCF.classNames) && numel(CCF.classNames)
+        forestPredicts = forestPredicts==2;
     end
 end
 

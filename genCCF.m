@@ -235,7 +235,7 @@ if optionsFor.bBagTrees && bKeepTrees
     end
     oobPreds = bsxfun(@rdivide,cumOOb,nOOb);
     if bReg
-        CCF.outOfBagError = nanmean((bsxfun(@rdivide,bsxfun(@minus,oobPreds,muY),stdY)-YTrain).^2,1);
+        CCF.outOfBagError = nanmean((oobPreds-bsxfun(@plus,bsxfun(@times,YTrain,stdY),muY)).^2,1);
     elseif CCF.bSepPred
         CCF.outOfBagError = (1-nanmean((oobPreds>0.5)==YTrain,1));
     else
