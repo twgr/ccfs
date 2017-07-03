@@ -151,7 +151,7 @@ classdef optionsClassCCF
         % Rotation forest options
         RotForM = 3; % Size of feature subsets taken for each rotation
         RotForpS = 0.5; % Proportion of points to subsample for calculating each PCA projection
-        RotForpClassLeaveOut = 0.5; % Proportion of classes to randomly eliminate for each
+        RotForpClassLeaveOut = 0; % Proportion of classes to randomly eliminate for each
         % PCA projection.  Though this is mentioned in the paper,
         % their is no actually strategy or parameter values given
         % and subsequent work / WEKA implementation does not
@@ -172,6 +172,11 @@ classdef optionsClassCCF
         rccaRegLambda = 1e-3;
         rccaIncludeOriginal = false;
         
+        % Option for calculating timing stats.  Stores total wall time,
+        % tree training times, number of nodes for each tree, and if appropriate
+        % the tree test times.  When running in parallel, the tree timings
+        % will sum up to a larger value then the overall wall time.
+        bCalcTimingStats = true;
         
         %% NUMERICAL OPTIONS
         

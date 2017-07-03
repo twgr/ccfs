@@ -97,7 +97,8 @@ if ~exist('optionsFor','var') || isempty(optionsFor)
     end
 end
 
-    
+tStartAll = tic;
+
 bNaNtoMean = strcmpi(optionsFor.missingValuesMethod,'mean');
 
 if ~isnumeric(XTrain) || ~exist('iFeatureNum','var') || isempty(iFeatureNum)
@@ -134,7 +135,7 @@ D = numel(fastUnique(iFeatureNum)); % Note that setting of number of features to
 if ~bReg
     
     [YTrain, classes, optionsFor] = classExpansion(YTrain,N,optionsFor);
-        
+    
     if numel(classes)==1
         warning('Only 1 class present in training data!');
     end
@@ -144,7 +145,7 @@ if ~bReg
     % Stored class names can be used to link the ids given in the CCT to the
     % actual class names
     optionsFor.classNames = classes;
-      
+    
 else
     
     muY = mean(YTrain);
@@ -157,10 +158,10 @@ else
     
     YTrain = bsxfun(@rdivide,bsxfun(@minus,YTrain,muY),stdY);
     
-    optionsFor = optionsFor.updateForD(D);    
+    optionsFor = optionsFor.updateForD(D);
     optionsFor.org_muY = muY;
     optionsFor.org_stdY = stdY;
-    optionsFor.mseTotal = 1;    
+    optionsFor.mseTotal = 1;
 end
 
 projection_fields = {'CCA','PCA','CCAclasswise','Original','Random'};
@@ -191,24 +192,46 @@ if nOut>1
     treeOutputTest = NaN(size(XTest,1),nTrees,size(YTrain,2));
 end
 
+n_nodes_trees = NaN(nTrees,1);
+tree_train_times = NaN(nTrees,1);
+if nOut>1
+    tree_test_times = NaN(nTrees,1);
+end
+
 if optionsFor.bUseParallel == true
     parfor nT = 1:nTrees
+        tStartTrainThis = tic;
         tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,N);
+        if optionsFor.bCalcTimingStats
+            % Avoid some calculations if not doing the timing stats
+            tree_train_times(nT) = toc(tStartTrainThis);
+            n_nodes_trees(nT) = get_number_of_nodes(tree);
+        end
         if bKeepTrees
             forest{nT} = tree;
         end
         if nOut>1
+            tStartTestThis = tic;
             treeOutputTest(:,nT,:) = predictFromCCT(tree,XTest);
+            tree_test_times(nT) = toc(tStartTestThis);
         end
     end
 else
     for nT = 1:nTrees
+        tStartTrainThis = tic;
         tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,N);
+        if optionsFor.bCalcTimingStats
+            % Avoid some calculations if not doing the timing stats
+            tree_train_times(nT) = toc(tStartTrainThis);
+            n_nodes_trees(nT) = get_number_of_nodes(tree);
+        end
         if bKeepTrees
             forest{nT} = tree;
         end
         if nOut>1
+            tStartTestThis = tic;
             treeOutputTest(:,nT,:) = predictFromCCT(tree,XTest);
+            tree_test_times(nT) = toc(tStartTestThis);
         end
     end
 end
@@ -253,11 +276,21 @@ else
     CCF.outOfBagError = 'OOB error only returned if bagging used and trees kept.  Please use CCF-Bag instead via options=optionsClassCCF.defaultOptionsCCFBag';
 end
 
-if nOut<2
-    return
+if nOut>1
+    [forestPredictsTest, forestProbsTest] = treeOutputsToForestPredicts(CCF,treeOutputTest);
 end
 
-[forestPredictsTest, forestProbsTest] = treeOutputsToForestPredicts(CCF,treeOutputTest);
+if optionsFor.bCalcTimingStats
+    total_time = toc(tStartAll);
+    CCF.timing_stats.total_wall_time = total_time;
+    CCF.timing_stats.cpu_train_time = sum(tree_train_times);
+    CCF.timing_stats.cpu_tree_trains = tree_train_times;
+    if nOut>1
+        CCF.timing_stats.cpu_test_time = sum(tree_test_times);
+        CCF.timing_stats.cpu_tree_test_times = tree_test_times;
+    end
+    CCF.timing_stats.n_nodes_trees = n_nodes_trees;
+end
 
 end
 
@@ -289,7 +322,7 @@ if strcmpi(optionsFor.treeRotation,'rotationForest')
         prop_classes_eliminate = 0;
     end
     [R,muX,XTrainBag] = rotationForestDataProcess(XTrainBag,YTrainBag,optionsFor.RotForM,...
-                                optionsFor.RotForpS,prop_classes_eliminate);
+        optionsFor.RotForpS,prop_classes_eliminate);
 elseif strcmpi(optionsFor.treeRotation,'random')
     R = randomRotation(size(XTrain,2));
     muX = mean(XTrain,1);
