@@ -284,8 +284,12 @@ YTrainBag = YTrain(iTrainThis,:);
 if strcmpi(optionsFor.treeRotation,'rotationForest')
     % This allows functionality to use the Rotation Forest algorithm as a
     % meta method for individual CCTs
-    [R,muX,XTrainBag] = rotationForestDataProcess(XTrainBag,optionsFor.RotForM,...
-                                optionsFor.RotForpS,optionsFor.RotForpClassLeaveOut);
+    prop_classes_eliminate = optionsFor.RotForpClassLeaveOut;
+    if bReg
+        prop_classes_eliminate = 0;
+    end
+    [R,muX,XTrainBag] = rotationForestDataProcess(XTrainBag,YTrainBag,optionsFor.RotForM,...
+                                optionsFor.RotForpS,prop_classes_eliminate);
 elseif strcmpi(optionsFor.treeRotation,'random')
     R = randomRotation(size(XTrain,2));
     muX = mean(XTrain,1);
