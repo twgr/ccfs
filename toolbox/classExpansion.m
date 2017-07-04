@@ -38,7 +38,7 @@ elseif iscell(Y)
     y_sizes = cellfun(@(x) size(x,2), Ycell);
     Y = cell2mat(Ycell);
     optionsFor.task_ids = 1+[0,cumsum(y_sizes(1:end-1))];
-elseif islogical(Y) 
+elseif islogical(Y) || (max(Y(:))==1 && min(Y(:))==0)
     N_c_present = cumsum(Y,2); 
     if all(N_c_present(:,end)==1) && ~optionsFor.bSepPred
         optionsFor.task_ids = 1;
