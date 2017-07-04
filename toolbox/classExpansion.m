@@ -64,5 +64,5 @@ else
 end
 
 if size(classes,1)>(N-2)
-    error('More than n_data_points-2 classes appear to be present.  Make sure to datapoints with missing output!');
+    error('More than n_data_points-2 classes appear to be present.  Make sure no datapoints with missing output or regression option on!');
 end

@@ -17,11 +17,11 @@ RF = TreeBagger(200,XTrain,YTrain);
 disp(['RF Test missclassification rate (lower better) ' num2str(100*(1-mean(YTest==(cellfun(@str2double, predict(RF,XTest)))))) '%']);
 disp('Plotting the decision surface (this can be a bit slow ...)');
 plotCCFDecisionSurface(CCF,[round(min(XTrain(:,1))-1),round(max(XTrain(:,1))+1)],...
-    [round(min(XTrain(:,2))-1),round(max(XTrain(:,2))+1)],1000,1000);
+    [round(min(XTrain(:,2))-1),round(max(XTrain(:,2))+1)],400,400);
 hold on
 plotClasses(XTest,YTest,false);
 
 plotTreebaggerDecisionSurface(RF,[round(min(XTrain(:,1))-1),round(max(XTrain(:,1))+1)],...
-    [round(min(XTrain(:,2))-1),round(max(XTrain(:,2))+1)],1000,1000);
+    [round(min(XTrain(:,2))-1),round(max(XTrain(:,2))+1)],400,400);
 hold on
 plotClasses(XTest,YTest,false);
