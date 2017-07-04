@@ -1,4 +1,4 @@
-function [starts,ends,x,y,labels] = CATTreeToLines(CCT,bStructured,inputProcessDetails)
+function [starts,ends,x,y,labels] = CTT_TreeToLines(CCT,bStructured,inputProcessDetails)
 
 if ~exist('bStructured','var') || isempty(bStructured)
     bStructured = false;
@@ -11,7 +11,7 @@ end
 if CCT.bLeaf
     starts = {};
     ends = {};
-    labels = CCT.labelClassId;
+    [~,labels] = max(CCT.mean);
     x = {};
     y = {};
     return
@@ -37,11 +37,11 @@ yT = [startPoint(2), endPoint(2)];
 labelT = [];
 
 if CCT.decisionProjection(2)>0
-    [startLeft, endLeft, xLeft, yLeft, labelsLeft] = CATTreeToLines(CCT.lessthanChild,bStructured,inputProcessDetails);
-    [startRight, endRight, xRight, yRight, labelsRight] = CATTreeToLines(CCT.greaterthanChild,bStructured,inputProcessDetails);
+    [startLeft, endLeft, xLeft, yLeft, labelsLeft] = CTT_TreeToLines(CCT.lessthanChild,bStructured,inputProcessDetails);
+    [startRight, endRight, xRight, yRight, labelsRight] = CTT_TreeToLines(CCT.greaterthanChild,bStructured,inputProcessDetails);
 else
-    [startLeft, endLeft, xLeft, yLeft, labelsLeft] = CATTreeToLines(CCT.greaterthanChild,bStructured,inputProcessDetails);
-    [startRight, endRight, xRight, yRight, labelsRight] = CATTreeToLines(CCT.lessthanChild,bStructured,inputProcessDetails);
+    [startLeft, endLeft, xLeft, yLeft, labelsLeft] = CTT_TreeToLines(CCT.greaterthanChild,bStructured,inputProcessDetails);
+    [startRight, endRight, xRight, yRight, labelsRight] = CTT_TreeToLines(CCT.lessthanChild,bStructured,inputProcessDetails);
 end
 
 if bStructured

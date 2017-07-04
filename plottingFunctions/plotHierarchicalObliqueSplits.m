@@ -1,5 +1,5 @@
 function plotHierarchicalObliqueSplits(starts,ends,labels,minX,maxX,bPlotEdges,colors,alpha)
-% Works on output of CATTreeToLines
+% Works on output of CTT_TreeToLines
 
 figure
 
