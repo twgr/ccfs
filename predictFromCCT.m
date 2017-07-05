@@ -22,4 +22,8 @@ end
 % Any values left as NaN now need to be randomly assigned
 X = random_missing_vals(X);
 
-[leaf_mean, leaf_node] = traverse_tree_predict(tree,X);
+if nargout>1
+    [leaf_mean, leaf_node] = traverse_tree_predict(tree,X);
+else
+    leaf_mean = traverse_tree_predict(tree,X);
+end
