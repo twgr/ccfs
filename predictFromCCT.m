@@ -1,7 +1,7 @@
 function [leaf_mean, leaf_node] = predictFromCCT(tree,X)
 %predictFromCCT predicts output using trained tree
 %
-% leaf_mean = predictFromCCT(tree,X)
+% [leaf_mean, leaf_node] = predictFromCCT(tree,X)
 %
 % Inputs:   tree = output strcut from growTree
 %              X = processed input features

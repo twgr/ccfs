@@ -25,7 +25,7 @@ function [CCF,forestPredictsTest,forestProbsTest,treeOutputTest] = ...
 %
 % Advanced usage:
 %
-% [CCF, forPred, forProbs, treePred, cumForPred] =
+% [CCF, forPred, forProbs, treeOutputs] =
 %  genCCF(nTrees,XTrain,YTrain,bReg,options,XTest,bKeepTrees,iFeatureNum,bOrdinal)
 %
 % Options Inputs:
@@ -48,29 +48,35 @@ function [CCF,forestPredictsTest,forestProbsTest,treeOutputTest] = ...
 %                  behaviour see processInputData.m
 %
 % Outputs:
-%            CCF = Structure with four fields, trees giving a Cell array of
-%                  CCTs, options giving the options structure,
-%                  inputProcessDetails giving details required to replicate
-%                  input feature transform as done during the training and
-%                  if bagging has been used (i.e. running CCF-BAG) then an
-%                  out of bag error is also provided. Thus if trying to use
-%                  the out of bag error for parameter selection, CCF-BAG
-%                  must be used, an options structure for which can be
-%                  made using optionsClassCCF.defaultOptionsCCFBag.
-%                  Forest prediction can be made using predictFromCCF
-%                  function or  individual trees using the predictFromCCT
-%                  function. Note predictFromCCF applies the
-%                  inputProcess so this does not need to be done manually.
-%        forPred = Forest predictions for XTest
-%       forProbs = Forest probabilities for XTest
-%       treePred = Individual tree predictiosn for XTest
+%            CCF = Structure with following fields
+%                    - Trees = Cell array of CCTs
+%                    - bReg = Whether a regression CCF
+%                    - options = The used options structure (after
+%                       processing for things like task_ids based on the
+%                       data)
+%                    - inputProcessDetails = Details required to replicate
+%                       the input feature transforms (e.g. converting to
+%                       z-scores) done during training
+%                    - outOfBagError = if bagging was used, gives the
+%                       average out of bag error.  Otherwise empty.
+%                    - timing_stats = see bCalcTimingStats option in
+%                       optionsClassCCF.m
+%        forPred = Forest predictions for XTest if provided
+%       forProbs = Forest probabilities for XTest if provided
+%    treeOutputs = Individual tree predictiosn for XTest if provided, see
+%                  predictFromCCF
 %
-% Tom Rainforth 09/10/15
+% Tom Rainforth 23/07/17
 
+% Add required paths
 mypath = path;
 locToolbox = [regexprep(mfilename('fullpath'),'genCCF',''), 'toolbox'];
-bInPath = ~isempty(strfind(mypath,locToolbox));
+bInPath = contains(mypath,locToolbox);
+if ~bInPath
+    addpath(locToolbox);
+end
 
+% Set ommited options
 if ~exist('nTrees','var') || isempty(nTrees)
     nTrees = 500;
 end
@@ -83,10 +89,6 @@ if ~exist('bOrdinal','var')
     bOrdinal = [];
 elseif ~isempty(bOrdinal)
     bOrdinal = logical(bOrdinal);
-end
-
-if ~bInPath
-    addpath(locToolbox);
 end
 
 if ~exist('optionsFor','var') || isempty(optionsFor)
@@ -113,6 +115,8 @@ if ~isnumeric(XTrain) || ~exist('iFeatureNum','var') || isempty(iFeatureNum)
         [XTrain, iFeatureNum, inputProcessDetails, XTest] = processInputData(XTrain,bOrdinal,XTest,bNaNtoMean);
     end
 else
+    % Process inputs, e.g. converting categoricals and converting to
+    % z-scores
     mu_XTrain = nanmean(XTrain,1);
     std_XTrain = nanstd(XTrain,[],1);
     inputProcessDetails = struct('bOrdinal',true(1,size(XTrain,2)),'mu_XTrain',mu_XTrain,'std_XTrain',std_XTrain);
@@ -133,6 +137,7 @@ D = numel(fastUnique(iFeatureNum)); % Note that setting of number of features to
 
 
 if ~bReg
+    % Process provided classes
     
     [YTrain, classes, optionsFor] = classExpansion(YTrain,N,optionsFor);
     
@@ -147,6 +152,8 @@ if ~bReg
     optionsFor.classNames = classes;
     
 else
+    % Center and normalize the outputs for regression for numerical
+    % reasons, this is undone in the predictors
     
     muY = mean(YTrain);
     stdY = std(YTrain,[],1);
@@ -164,12 +171,14 @@ else
     optionsFor.mseTotal = 1;
 end
 
+% Fill in any unset projection fields and set to false
 projection_fields = {'CCA','PCA','CCAclasswise','Original','Random'};
 for npf = 1:numel(projection_fields)
     if ~isfield(optionsFor.projections,projection_fields{npf})
         optionsFor.projections.(projection_fields{npf}) = false;
     end
 end
+% Ensure consistent order
 optionsFor.projections = orderfields(optionsFor.projections,projection_fields);
 
 nOut = nargout;
@@ -198,6 +207,7 @@ if nOut>1
     tree_test_times = NaN(nTrees,1);
 end
 
+% Train the trees
 if optionsFor.bUseParallel == true
     parfor nT = 1:nTrees
         tStartTrainThis = tic;
@@ -236,20 +246,15 @@ else
     end
 end
 
+% Setup outputs
 CCF.Trees = forest;
 CCF.bReg = bReg;
 CCF.options = optionsFor;
 CCF.inputProcessDetails = inputProcessDetails;
 CCF.classNames = optionsFor.classNames;
 
-if bReg
-    CCF.nOutputs = size(muY,2);
-else
-    CCF.bSepPred = optionsFor.bSepPred;
-    CCF.task_ids = optionsFor.task_ids;
-end
-
 if optionsFor.bBagTrees && bKeepTrees
+    % Calculate the out of back error if relevant
     cumOOb = zeros(size(YTrain,1),size(CCF.Trees{1}.predictsOutOfBag,2));
     nOOb = zeros(size(YTrain,1),1);
     for nTO = 1:numel(CCF.Trees)
@@ -259,7 +264,7 @@ if optionsFor.bBagTrees && bKeepTrees
     oobPreds = bsxfun(@rdivide,cumOOb,nOOb);
     if bReg
         CCF.outOfBagError = nanmean((oobPreds-bsxfun(@plus,bsxfun(@times,YTrain,stdY),muY)).^2,1);
-    elseif CCF.bSepPred
+    elseif optionsFor.bSepPred
         CCF.outOfBagError = (1-nanmean((oobPreds>0.5)==YTrain,1));
     else
         forPreds = NaN(size(XTrain,1),numel(optionsFor.task_ids));
@@ -277,6 +282,7 @@ else
 end
 
 if nOut>1
+    % Do predictions if requested
     [forestPredictsTest, forestProbsTest] = treeOutputsToForestPredicts(CCF,treeOutputTest);
 end
 
@@ -296,7 +302,10 @@ end
 
 function tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,N)
 % A sub-function is used so that it can be shared between the for and
-% parfor loops
+% parfor loops.  Does required preprocessing such as randomly setting
+% missing values, then calls the tree training function
+
+muX = nanmean(XTrain,1);
 
 if strcmpi(optionsFor.missingValuesMethod,'random')
     % Randomly set the missing values.  This will be different for each
@@ -304,16 +313,16 @@ if strcmpi(optionsFor.missingValuesMethod,'random')
     XTrain = random_missing_vals(XTrain);
 end
 
+% Bag if required
 if optionsFor.bBagTrees
     iTrainThis = datasample(1:N,N);
     iOob = setdiff(1:N,iTrainThis)';
-else
-    iTrainThis = 1:N;
+    XTrainOrig = XTrain;
+    XTrain = XTrain(iTrainThis,:);
+    YTrain = YTrain(iTrainThis,:);
 end
 
-XTrainBag = XTrain(iTrainThis,:);
-YTrainBag = YTrain(iTrainThis,:);
-
+% Apply pre rotations if any requested
 if strcmpi(optionsFor.treeRotation,'rotationForest')
     % This allows functionality to use the Rotation Forest algorithm as a
     % meta method for individual CCTs
@@ -321,23 +330,25 @@ if strcmpi(optionsFor.treeRotation,'rotationForest')
     if bReg
         prop_classes_eliminate = 0;
     end
-    [R,muX,XTrainBag] = rotationForestDataProcess(XTrainBag,YTrainBag,optionsFor.RotForM,...
+    [R,muX,XTrain] = rotationForestDataProcess(XTrain,YTrain,optionsFor.RotForM,...
         optionsFor.RotForpS,prop_classes_eliminate);
 elseif strcmpi(optionsFor.treeRotation,'random')
     R = randomRotation(size(XTrain,2));
-    muX = mean(XTrain,1);
-    XTrainBag = bsxfun(@minus,XTrainBag,muX)*R;
+    XTrain = bsxfun(@minus,XTrain,muX)*R;
 elseif strcmpi(optionsFor.treeRotation,'pca')
-    [R,muX,XTrainBag] = pcaLite(XTrainBag,false,false);
+    [R,muX,XTrain] = pcaLite(XTrain,false,false);
 end
 
-tree = growCCT(XTrainBag,YTrainBag,bReg,optionsFor,iFeatureNum,0);
+% Train the tree
+tree = growCCT(XTrain,YTrain,bReg,optionsFor,iFeatureNum,0);
 
+% Calculate out of bag error if relevant
 if optionsFor.bBagTrees
     tree.iOutOfBag = iOob;
-    tree.predictsOutOfBag = predictFromCCT(tree,XTrain(iOob,:));
+    tree.predictsOutOfBag = predictFromCCT(tree,XTrainOrig(iOob,:));
 end
 
+% Store rotation deatils if necessary
 if ~strcmpi(optionsFor.treeRotation,'none')
     tree.rotDetails = struct('R',R,'muX',muX);
 end

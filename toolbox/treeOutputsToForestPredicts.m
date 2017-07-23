@@ -15,14 +15,14 @@ if CCF.bReg
     forestProbs = [];
 else
     forestProbs = squeeze(mean(treeOutputs,2));
-    if CCF.bSepPred
+    if CCF.options.bSepPred
         forestPredicts = forestProbs>0.5;
     else
-        forestPredicts = NaN(size(forestProbs,1),numel(CCF.task_ids));
-        for nO = 1:(numel(CCF.task_ids)-1)
-            [~,forestPredicts(:,nO)] = max(forestProbs(:,CCF.task_ids(nO):CCF.task_ids(nO+1)-1),[],2);
+        forestPredicts = NaN(size(forestProbs,1),numel(CCF.options.task_ids));
+        for nO = 1:(numel(CCF.options.task_ids)-1)
+            [~,forestPredicts(:,nO)] = max(forestProbs(:,CCF.options.task_ids(nO):CCF.options.task_ids(nO+1)-1),[],2);
         end
-        [~,forestPredicts(:,end)] = max(forestProbs(:,CCF.task_ids(end):end),[],2);
+        [~,forestPredicts(:,end)] = max(forestProbs(:,CCF.options.task_ids(end):end),[],2);
     end
     if isnumeric(CCF.classNames)
         if islogical(forestPredicts)

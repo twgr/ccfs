@@ -82,7 +82,7 @@ for d=1:D+1
     end
     if bReg
         errors{d} = mean(nanmean((overall_est-Y).^2,1));
-    elseif CCF.bSepPred
+    elseif CCF.options.bSepPred
         errors{d} = mean((1-nanmean((overall_est>0.5)==Y,1)));
     else    
         Y_preds = treeOutputsToForestPredicts(CCF,reshape(overall_est,size(overall_est,1),1,[]));      
