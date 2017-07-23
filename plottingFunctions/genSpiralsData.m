@@ -1,6 +1,9 @@
 function [XTrain,YTrain,XTest,YTest] = genSpiralsData(NTrain,NTest,nClasses,startRadius,endRadius,sigR,bPlot,dims)
 % Allows generation of the spirals dataset from the paper.  The original
-% plot uses NTrain = 10000 and NTest = 10000
+% plot uses NTrain = 10000 and NTest = 10000, all other variables have as
+% defaults the values from the paper.  The suggestsed call is thus
+%
+% [XTrain,YTrain,XTest,YTest] = genSpiralsData(NTrain,NTest);
 
 if ~exist('NTrain','var') || isempty(NTrain)
     NTrain = 1000;

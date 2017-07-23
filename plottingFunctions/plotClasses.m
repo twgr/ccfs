@@ -1,5 +1,11 @@
 function plotClasses(X,Y,bNewPlot)
-% Plots data into seperate classes
+% Plots data into seperate classes.
+%
+% Inputs:
+%   X = matrix of features (only plots first two dimensions)
+%   Y = matrix of logicals or vector of class indices
+%   bNewPlot = Where to add to currently active plot or make a new plots
+%              (default = true)
 
 if ~exist('bNewPlot','var')
     bNewPlot = true;
