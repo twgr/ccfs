@@ -151,7 +151,7 @@ classdef optionsClassCCF
         % Rotation forest options
         RotForM = 3; % Size of feature subsets taken for each rotation
         RotForpS = 0.5; % Proportion of points to subsample for calculating each PCA projection
-        RotForpClassLeaveOut = 0; % Proportion of classes to randomly eliminate for each
+        RotForpClassLeaveOut = 0.5; % Proportion of classes to randomly eliminate for each
         % PCA projection.  Though this is mentioned in the paper,
         % their is no actually strategy or parameter values given
         % and subsequent work / WEKA implementation does not
@@ -346,7 +346,9 @@ classdef optionsClassCCF
         end
         
         function obj = defaultOptionsRotationForest
-            
+            warning(['Results often vary significantly compared to Weka (for '...
+                     'both better and worse) for rotation forest, details that '...
+                     'are missing from the paper appear to be important.']);
             obj = optionsClassCCF;
             obj.bProjBoot = false;
             obj.projections = struct('Original',true);

@@ -6,7 +6,7 @@
 %
 % Tom Rainforth 27/07/15
 
-%clear all
+clear all
 disp('Generating data')
 [XTrain,YTrain,XTest,YTest] = genSpiralsData;
 disp('Training CCF')
