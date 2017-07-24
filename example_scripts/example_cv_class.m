@@ -1,14 +1,12 @@
-% Runs a set of cross validations for the provided datasets and provided
-% comparisons to random forests.  Note that in the paper 15 of these cross
-% validations are run rather than the single 1 below which is for
-% demonstration purposes.
+% Runs a set of cross validations for selection of classification datasets
+% providing comparison to RF.
 %
 % Tom Rainforth 24/07/15
 
 %clear all
 dataSetsToTest = {'banknote','hillValley','ionosphere','iris','seeds','soybean','zoo'};
 nFolds = 10;
-nTrees = 200;
+nTrees = 100;
 optionsFor = [];
 [percentTestMissClassfiedCCF,percentTestMissClassfiedRF] = deal(cell(numel(dataSetsToTest),1));
 

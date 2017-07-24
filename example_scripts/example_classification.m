@@ -10,16 +10,17 @@
 clear all
 disp('Generating data')
 [XTrain,YTrain,XTest,YTest] = genSpiralsData;
+nTrees = 100;
 
 %% Train and test CCF
 disp('Training CCF')
-CCF = genCCF(200,XTrain,YTrain);
+CCF = genCCF(nTrees,XTrain,YTrain);
 YpredCCF = predictFromCCF(CCF,XTest);
 disp(['CCF Test missclassification rate (lower better) ' num2str(100*(1-mean(YTest==(YpredCCF)))) '%']);
 
 %% Train and test RF
 disp('Training RF');
-RF = TreeBagger(200,XTrain,YTrain);
+RF = TreeBagger(nTrees,XTrain,YTrain);
 YpredRF = cellfun(@str2double, predict(RF,XTest));
 disp(['RF Test missclassification rate (lower better) ' num2str(100*(1-mean(YTest==(YpredRF)))) '%']);
 

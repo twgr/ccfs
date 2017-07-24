@@ -14,11 +14,20 @@ loc = [regexprep(mfilename('fullpath'),mfilename,''),'..',filesep(),'..',filesep
 validNames = {'ILPD';'balanceScale';'banknote';'breastTissue';'hillValleyNoisy';...
     'hillValley';'ionosphere';'iris';'letter';'libras';'magic04';'nursery';...
     'optDigitsHandwritten';'pendDigits';'satimage';'seeds';'skinSeg';'soybean';...
-    'spirals';'splice';'vowelc';'voweln';'waveformNoise';'waveform';'yeast';'zoo'};
+    'spirals';'splice';'vowelc';'voweln';'waveformNoise';'waveform';'yeast';'zoo';'solarFlare';'flags';'jura'};
 
 if ~any(strcmp(name,validNames))
     disp(validNames)
     error('Invalid name, valid names shown above');
 end
 
-[X,Y,bOrdinal] = loadCSVDataSet([loc 'Datasets' filesep() name '.csv']);
+% FIXME this is a bit disgusting
+try
+    [X,Y,bOrdinal] = loadCSVDataSet([loc 'Datasets' filesep() 'classification' filesep() name '.csv']);
+catch
+    try
+        [X,Y,bOrdinal] = loadCSVDataSet([loc 'Datasets' filesep() 'regression' filesep() name '.csv']);
+    catch
+        [X,Y,bOrdinal] = loadCSVDataSet([loc 'Datasets' filesep() 'multi_output' filesep() name '.csv']);
+    end
+end

@@ -8,16 +8,17 @@
 clear all
 disp('Generating data')
 [XTrain,YTrain,XTest,YTest] = genCamel6Data;
+nTrees = 100;
 
 %% Train and test CCF
 disp('Training CCF')
-CCF = genCCF(200,XTrain,YTrain,true);
+CCF = genCCF(nTrees,XTrain,YTrain,true);
 YpredCCF = predictFromCCF(CCF,XTest);
 disp(['CCF Mean squared error (lower better) ' num2str(mean((YpredCCF-YTest).^2))]);
 
 %% Train and test RF
 disp('Training RF');
-RF = TreeBagger(200,XTrain,YTrain,'method','regression');
+RF = TreeBagger(nTrees,XTrain,YTrain,'method','regression');
 YpredRF = predict(RF,XTest);
 disp(['RF Mean squared error (lower better) ' num2str(mean((YpredRF-YTest).^2))]);
 
