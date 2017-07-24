@@ -25,7 +25,7 @@ function [c,h] = plotDecisionSurface(x1,x2,preds,n_contours_or_vals)
     if ~exist('n_contours_or_vals','var') || isempty(n_contours_or_vals)
         if nVals >= size(preds,1)/2
             % Presumably regression
-            n_contours_or_vals = [];
+            n_contours_or_vals = 50;
         else
             n_contours_or_vals = 1.5:1:(nVals-0.5);
         end
