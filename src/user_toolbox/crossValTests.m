@@ -74,14 +74,14 @@ errorRF = cell(nFolds,1);
 
 yPredsCCF = cell(nFolds,1);
 yPredsRF = cell(nFolds,1);
-
-if ~bReg
-    if isempty(optionsFor)
-        Y = classExpansion(Y,size(X,1),optionsClassCCF.defaultOptions);
-    else
-        Y = classExpansion(Y,size(X,1),optionsFor);
-    end
-end
+% 
+% if ~bReg
+%     if isempty(optionsFor)
+%         Y = classExpansion(Y,size(X,1),optionsClassCCF.defaultOptions);
+%     else
+%         Y = classExpansion(Y,size(X,1),optionsFor);
+%     end
+% end
 
 if isempty(optionsFor)
     if bReg
@@ -100,16 +100,16 @@ else
     end
 end
 
-scaling = std(Y)';
+scaling = var(Y);
 
 for n=1:nFolds
     tC = tic;
-    CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],optionsFor,[],[],[],bOrdinal);
+    CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),bReg,optionsFor,[],[],[],bOrdinal);
     timeCCFtrain(n) = toc(tC);
     tC = tic;
     yPreds = predictFromCCF(CCF,X(iTest{n},:));
     timeCCFtest(n) = toc(tC);
-    if size(Y,2)~=size(yPreds,2) && max(Y(:))==1
+    if ~iscell(Y) && size(Y,2)~=size(yPreds,2) && max(Y(:))==1
         Y = sum(bsxfun(@times,Y,1:size(Y,2)),2);
     end
     yPredsCCF{n} = yPreds;
@@ -121,15 +121,15 @@ for n=1:nFolds
             errorCCF{n} = 100*(1-mean(yPreds==Y(iTest{n},:)))';
         end
         dispMessage = ['Fold ' num2str(n) ', test misclassifcation rate (lower is better): CCF = ' ...
-            num2str(errorCCF{n},4) '%'];
+            num2str(errorCCF{n}',4) '%'];
     else
-        errorCCF{n} = sqrt(mean((yPreds-Y(iTest{n},:)).^2,1));
-        dispMessage = ['Fold ' num2str(n) ', rmse scaled by std dev of Y (lower is better): CCF  = ' ...
-            num2str(100*mean(errorCCF{n}./scaling),4) '%'];
+        errorCCF{n} = 100*mean(((yPreds-Y(iTest{n},:)).^2)./scaling,1)';
+        dispMessage = ['Fold ' num2str(n) ', mse scaled by std dev of Y (lower is better): CCF  = ' ...
+            num2str(errorCCF{n}',4) '%'];
     end
     if bDoRF
         tC = tic;
-        CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],optionsRF,[],[],[],bOrdinal);
+        CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),bReg,optionsRF,[],[],[],bOrdinal);
         timeRFtrain(n) = toc(tC);
         tC = tic;
         yPreds = predictFromCCF(CCF,X(iTest{n},:));
@@ -143,11 +143,11 @@ for n=1:nFolds
                 errorRF{n} = 100*(1-mean(yPreds==Y(iTest{n},:)))';
             end
             dispMessage = [dispMessage, ', RF = ' ...
-                num2str(errorRF{n},4) '%'];
+                num2str(errorRF{n}',4) '%'];
         else
-            errorRF{n} = sqrt(mean((yPreds-Y(iTest{n},:)).^2,1));
+            errorRF{n} = 100*mean(((yPreds-Y(iTest{n},:)).^2)./scaling,1)';
             dispMessage = [dispMessage, ', RF  = ' ...
-                num2str(100*mean(errorRF{n}./scaling),4) '%'];
+                num2str(errorRF{n}',4) '%'];
         end
         %         timeMessage = ['Train time: CCF  = ' num2str(timeCCFtrain,4) 's, RF = ' num2str(timeRFtrain,4) 's\n'...
         %             'Test time: CCF  = ' num2str(timeCCFtest,4) 's, RF = ' num2str(timeRFtest,4) 's'];
@@ -168,10 +168,10 @@ if bDoRF
 end
 
 if bPrint
-    disp(sprintf(['Average train time: CCF  = ' num2str(mean(timeCCFtrain),4) 's, RF = ' num2str(mean(timeRFtrain),4) 's\n'...
-        'Average test time: CCF  = ' num2str(mean(timeCCFtest),4) 's, RF = ' num2str(mean(timeRFtest),4) 's'])); %#ok<DSPS>
+    disp(sprintf(['Average CCF train time = ' num2str(mean(timeCCFtrain),4) 's, test time = ' num2str(mean(timeCCFtest),4) 's\n'...
+        'Average RF train time = ' num2str(mean(timeRFtrain),4) 's, test time = ' num2str(mean(timeRFtest),4) 's'])); %#ok<DSPS>
     if bReg
-        common_message = 'Scaled root mean squared error';
+        common_message = 'Scaled mean squared error';
     else
         common_message = 'Missclassfication rate';
     end
