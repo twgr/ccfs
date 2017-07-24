@@ -11,7 +11,7 @@ function [A, B, U, V, r] = componentAnalysis(X,Y,processes,epsilon)
 % Inputs:
 %          X = Input features, must be numeric.  Each row is a datapoint
 %              and each column a feature (categoricals should have been
-%              converted to their binary expansion
+%              converted to their binary expansion)
 %          Y = Classes in binary expansion format.
 %  processes = Component analyses to carry out. This should be a structure
 %              of the form of the projections field in optionsClassCCF
@@ -24,9 +24,9 @@ function [A, B, U, V, r] = componentAnalysis(X,Y,processes,epsilon)
 %          V = Y Components = (Y-mean(Y))*B
 %          r = Canonical correlations, only provided for CCA process
 %
-% Tom Rainforth 12/02/15
+% Tom Rainforth 25/06/17
 
-% Sample projects if should
+% Sample projections to use if some set to be probabilistically used
 probs = struct2array(processes);
 bToSample = (probs>0)&(probs<1);
 if any(bToSample)
@@ -43,14 +43,14 @@ end
 
 % Eliminate any columns that don't vary.  We will add these back into the
 % projection matrices at the end
-
 bXVaries = queryIfColumnsVary(X,1e-12);
 bYvaries = queryIfColumnsVary(Y,1e-12);
 nXorg = numel(bXVaries);
 nYorg = numel(bYvaries);
 
 if ~any(bXVaries) || ~any(bYvaries)
-    % One of X or Y doesn't vary so component analysis fails
+    % One of X or Y doesn't vary so component analysis fails.  Return
+    % projection corresponding to first columns of X and Y
     A = [1;zeros(nXorg-1,1)];
     if nargout>1
         B = [1;zeros(nYorg-1,1)];
@@ -66,6 +66,7 @@ end
 X = X(:,bXVaries);
 Y = Y(:,bYvaries);
 
+% Checks and sizes
 [x1,x2] = size(X);
 if size(Y,1) ~= x1
     error('Input sizes do not match');
@@ -74,35 +75,40 @@ elseif x1 == 1
 end
 K = size(Y,2);
 
-muX = sum(X,1)/size(X,1);
-muY = sum(Y,1)/size(Y,1);
-
 % Subtraction of the mean is common to the process of calculating the
 % projection matrices for both CCA and PCA but for computational
 % effificently we don't make this translation when actually applying the
-% projections
-
+% projections to choose the splits as it is the same effect on all points.
+% In other words, we don't split in canonical component space exactly, but
+% in a constant translation of this space.
+muX = sum(X,1)/size(X,1);
+muY = sum(Y,1)/size(Y,1);
 X = bsxfun(@minus,X,muX);
 Y = bsxfun(@minus,Y,muY);
 
+% Initialize the project matrices
 projMat = NaN(size(X,2),0);
 yprojMat = NaN(size(Y,2),0);
 r = [];
 
-if processes.Original        
+if processes.Original
+    % Include original axes in projection
     projMat = [projMat,eye(x2)];    
 end
 
 if processes.Random   
+    % Random projection matrix
     projMat = [projMat,randomRotation(x2)];    
 end
 
 if processes.PCA    
+    % PCA projection
     pcaCoeff = pcaLite(X);
     projMat = [projMat,pcaCoeff];    
 end
 
 if processes.CCA || processes.CCAclasswise
+    % CCA based projections
     
     % These require QR decomposition of X
     [q1,r1,p1] = qr(X,0);

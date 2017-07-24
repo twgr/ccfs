@@ -305,8 +305,6 @@ function tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,N)
 % parfor loops.  Does required preprocessing such as randomly setting
 % missing values, then calls the tree training function
 
-muX = nanmean(XTrain,1);
-
 if strcmpi(optionsFor.missingValuesMethod,'random')
     % Randomly set the missing values.  This will be different for each
     % tree
@@ -322,7 +320,9 @@ if optionsFor.bBagTrees
     YTrain = YTrain(iTrainThis,:);
 end
 
-% Apply pre rotations if any requested
+% Apply pre rotations if any requested.  Note that these all include a
+% subtracting a the mean prior to the projection (because this is a natural
+% part of pca) and this is therefore replicated at test time
 if strcmpi(optionsFor.treeRotation,'rotationForest')
     % This allows functionality to use the Rotation Forest algorithm as a
     % meta method for individual CCTs
@@ -333,6 +333,7 @@ if strcmpi(optionsFor.treeRotation,'rotationForest')
     [R,muX,XTrain] = rotationForestDataProcess(XTrain,YTrain,optionsFor.RotForM,...
         optionsFor.RotForpS,prop_classes_eliminate);
 elseif strcmpi(optionsFor.treeRotation,'random')
+    muX = nanmean(XTrain,1);
     R = randomRotation(size(XTrain,2));
     XTrain = bsxfun(@minus,XTrain,muX)*R;
 elseif strcmpi(optionsFor.treeRotation,'pca')

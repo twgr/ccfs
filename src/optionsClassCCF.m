@@ -102,10 +102,12 @@ classdef optionsClassCCF
     % (mostly rotation forests)
     %
     %   RotForM = 3 | +ve integer; 
-    %             Size of feature subsets taken for each rotation
+    %             Size of feature subsets taken for each rotation.  Default
+    %             as per WEKA and rotation forest paper
     %   RotForpS = 0.5; 
     %             Proportion of points to subsample for calculating each 
-    %             PCA projection
+    %             PCA projection.  Default as per WEKA but not rotation 
+    %             forest paper (which takes RotForpS = 0.75)
     %   RotForpClassLeaveOut = 0.5; 
     %             Proportion of classes to randomly eliminate for each
     %             PCA projection.  Though this is mentioned in the paper,
@@ -186,7 +188,7 @@ classdef optionsClassCCF
         
         % Rotation forest options
         RotForM = 3;
-        RotForpS = 0.5;
+        RotForpS = 0.75;
         RotForpClassLeaveOut = 0.5;
         
         %% Properties that can be set but should generally be avoided

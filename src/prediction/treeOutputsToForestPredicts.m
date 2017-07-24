@@ -8,6 +8,8 @@ function [forestPredicts, forestProbs] = treeOutputsToForestPredicts(CCF,treeOut
 %         provided in doc string of predictCCF as it is provided as an
 %         output.
 %
+% Outputs: forestPredicts, forestProbs as per predictFromCCF
+%
 % 23/07/17
 
 if CCF.bReg

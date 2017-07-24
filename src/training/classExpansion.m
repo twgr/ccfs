@@ -1,17 +1,23 @@
 function [Y, classes, optionsFor] = classExpansion(Y,N,optionsFor)
 %classExpansion Ensures that class data is in its binary expansion format
 %
-% function [Yb, classes] = classExpansion(Y)
+% [Y, classes, optionsFor] = classExpansion(Y,N,optionsFor)
 %
 % Inputs: 
 %    Y       = Class information, can be a binary expansion, a numerical
 %              vector of labels or a cell array of numerical or string 
-%              labels
+%              labels.  For multiple inputs, should instead be a 1xV cell
+%              array where each cell is of a type required for single
+%              input.
+%    N       = Number of datapoints.
+%    optionsFor = Forest options
 %            
 % Outpus: 
-%    Yb      = Input in binary expansion format
+%    Y       = Y in binary expansion format
 %    classes = Names of classes.  In CCT only the class index is stored and
 %              so this is used to convert to the original name.
+%    optionsFor = Updated forest options, e.g. because bSepPred has been
+%              switched on because non-mutually exclusive classes.
 %
 % Tom Rainforth 22/06/15
 
