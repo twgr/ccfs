@@ -68,14 +68,6 @@ function [CCF,forestPredictsTest,forestProbsTest,treeOutputTest] = ...
 %
 % Tom Rainforth 23/07/17
 
-% Add required paths
-mypath = path;
-locToolbox = regexprep(mfilename('fullpath'),'genCCF','');
-bInPath = contains(mypath,locToolbox);
-if ~bInPath
-    addpath(locToolbox);
-end
-
 % Set ommited options
 if ~exist('nTrees','var') || isempty(nTrees)
     nTrees = 500;
