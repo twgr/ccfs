@@ -7,7 +7,8 @@ function tree = growCCT(XTrain,YTrain,bReg,options,iFeatureNum,depth)
 % provided options structure.  This is equivalent to alogrithm 2 in the
 % paper if the options structure is default.  Algorithm either returns a
 % leaf or forms an internal splitting node in which case the function
-% recursively calls itself for each of the children.
+% recursively calls itself for each of the children, eventually returning
+% the corresponding subtree.
 %
 % Inputs:
 %    XTrain      = Array giving training features.  Data should be
@@ -23,13 +24,12 @@ function tree = growCCT(XTrain,YTrain,bReg,options,iFeatureNum,depth)
 %                  data points, the corresponding values in iFeatureNum are
 %                  replaced with NaNs.
 %    depth       = Current tree depth (zero based)
-%    bReg        = Whether the tree is a regression tree
 %
 % Outputs
 %   tree         = Structure containing learnt tree.  Prediction can be
 %                  made using predictFromCCT
 %
-% Tom Rainforth 22/06/15
+% Tom Rainforth 23/07/17
 
 % Set any missing required variables
 
