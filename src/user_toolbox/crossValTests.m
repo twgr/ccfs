@@ -1,22 +1,19 @@
-function [percentTestMissClassfiedCCF, percentTestMissClassfiedRF,yPredsCCF,yPredsRF] = ...
-    crossValTests(X,Y,bOrdinal,nFolds,nTrees,optionsFor,bPrint,bDoRF,iTrain,iTest)
-%crossValMissClassifications Performs crossvalidation tests using CCFs
+function [errorCCF, errorRF,yPredsCCF,yPredsRF,iTrain,iTest] = ...
+    crossValTests(X,Y,bReg,bOrdinal,nFolds,nTrees,optionsFor,bPrint,bDoRF,iTrain,iTest)
+%crossValTests Performs crossvalidation tests using CCFs
 %
-% percentTestMissClassfiedCCF = crossValTests(X,Y)
+% errorCCF = crossValTests(X,Y,bReg)
 %
 % Required inputs:
 %       X = Feature array
 %       Y = Class labels
+%       bReg = Whether regression (including multivariate regression)
+%              problem or classification
 %
-% [percentTestMissClassfiedCCF, percentTestMissClassfiedRF,...
-%                                  yPredsCCF,yPredsRF] = crossValTests(X,Y)
-% Also provides the miss classification rates for matlab's tree bagger
-% algorithm (note this is slightly different to the random forest
-% implementation in the paper) and a cell array of the predictions.
 %
 % Optional Inputs:
 %
-% [percentTestMissClassfiedCCF] = ...
+% [errorCCF, errorRF,yPredsCCF,yPredsRF,iTrain,iTest] = ...
 %    crossValTests(X,Y,bOrdinal,nFolds,nTrees,optionsFor,bPrint,bDoRF,...
 %                                                         iTrain,iTest)
 %
@@ -24,17 +21,25 @@ function [percentTestMissClassfiedCCF, percentTestMissClassfiedRF,yPredsCCF,yPre
 %              ordinal (true) or an unordered categorical requiring
 %              expansion (false).  Default is all true
 %     nFolds = Number of folds to carry out.  Default = 10
-%     nTrees = Number of trees.  Default = 100
+%     nTrees = Number of trees.  Default = 500
 % optionsFor = An options object from optionsClassCCF.m
 %     bPrint = Prints out accuracies if true. Default = true
-%      bDoRF = Toggles whether to also carry out the RF calculation. 
+%      bDoRF = Toggles whether to also carry out the RF calculation.
 %              Default = true;
 %     iTrain = Cell array of training indices for each fold.  If not
 %              provided then these are sampled using a standard cross
 %              validation
 %      iTest = As iTrain but corresponding to test indices
 %
-% Tom Rainforth 12/04/15
+% Outputs:
+%    errorCCF = Errors for CCF.  Rows are different folds, columns are
+%               different outputs.
+%    errorRF = Errors for RF if requested.
+%   yPredsCCF,yPredsRF = corresponding raw predicts, cell array where each
+%              cell is a different fold
+%   iTrain,iTest = Generated train / test indices
+%
+% Tom Rainforth 24/07/17
 
 if ~exist('bOrdinal','var') || isempty(bOrdinal)
     bOrdinal = true(1,size(X,2));
@@ -45,7 +50,7 @@ if ~exist('nFolds','var') || isempty(nFolds)
 end
 
 if ~exist('nTrees','var') || isempty(nTrees)
-    nTrees = 100;
+    nTrees = 500;
 end
 
 if ~exist('optionsFor','var')
@@ -64,54 +69,122 @@ if ~exist('iTrain','var') || ~exist('iTest','var') || isempty(iTrain) || isempty
     [iTrain, iTest] = setupCrossValSampleIds(size(X,1),nFolds);
 end
 
-percentTestMissClassfiedCCF = NaN(nFolds,1);
-percentTestMissClassfiedRF = NaN(nFolds,1);
+errorCCF = cell(nFolds,1);
+errorRF = cell(nFolds,1);
 
 yPredsCCF = cell(nFolds,1);
 yPredsRF = cell(nFolds,1);
 
-for n=1:nFolds
-    tCCF = tic;
-    CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],optionsFor,[],[],[],bOrdinal);
-    yPreds = predictFromCCF(CCF,X(iTest{n},:));
-    yPredsCCF{n} = yPreds;
-    if iscell(Y)
-        percentTestMissClassfiedCCF(n) = 100*(1-mean(cellfun(@strcmpi,CCF.classNames(yPreds),Y(iTest{n}))));
+if ~bReg
+    if isempty(optionsFor)
+        Y = classExpansion(Y,size(X,1),optionsClassCCF.defaultOptions);
     else
-        percentTestMissClassfiedCCF(n) = 100*(1-mean(yPreds==Y(iTest{n},:)));
-    end
-    timeCCF = toc(tCCF);
-    dispMessage = ['Fold ' num2str(n) ', test error (lower is better): CCF = ' ...
-        num2str(percentTestMissClassfiedCCF(n),6) '%'];
-    
-    if nargout>1 && bDoRF
-        if isempty(optionsFor) || strcmpi(optionsFor.lambda,'log')
-            mtry = ceil(log2(size(X(iTrain{n},:),2))+1);
-        elseif strcmpi(optionsFor.lambda,'sqrt')
-            mtry = ceil(sqrt(size(X(iTrain{n},:),2)));
-        else
-            mtry = optionsFor.lambda;
-        end
-        tRF = tic;
-        RF = TreeBagger(nTrees,X(iTrain{n},:),Y(iTrain{n},:),'CategoricalPredictors',~bOrdinal,'nvartosample',mtry);
-        ypredsRF = predict(RF,X(iTest{n},:));
-        if iscell(Y)
-            percentTestMissClassfiedRF(n) = 100*(1-mean(cellfun(@strcmpi,ypredsRF,Y(iTest{n}))));
-        else
-            ypredsRF = cellfun(@str2double,ypredsRF);
-            percentTestMissClassfiedRF(n) = 100*(1-(mean(ypredsRF==Y(iTest{n},:))));
-        end
-        
-        yPredsRF{n} = ypredsRF;
-        timeRF = toc(tRF);
-        dispMessage = [dispMessage, ' RF = ' num2str(percentTestMissClassfiedRF(n),6) '%']; %#ok<AGROW>
-    end
-        
-    %dispMessage = [dispMessage, '.     Timings CCF ' num2str(timeCCF) ' sec, RF ' num2str(timeRF) ' sec']; %#ok<AGROW>
-    
-    if bPrint
-        disp(dispMessage);
+        Y = classExpansion(Y,size(X,1),optionsFor);
     end
 end
 
+if isempty(optionsFor)
+    if bReg
+        optionsRF = optionsClassCCF.defaultOptionsRFReg;
+    else
+        optionsRF = optionsClassCCF.defaultOptionsRF;
+    end
+else
+    optionsRF = optionsFor;
+    optionsRF.bBagTrees = true;
+    optionsRF.bProjBoot = false;
+    optionsRF.projections = struct('Original',true);
+    optionsRF.treeRotation = 'none';
+    if ischar(optionsRF.lambda) && strcmpi(optionsRF.lambda,'all')
+        optionsRF.lambda = 'log';
+    end
+end
+
+scaling = std(Y)';
+
+for n=1:nFolds
+    tC = tic;
+    CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],optionsFor,[],[],[],bOrdinal);
+    timeCCFtrain(n) = toc(tC);
+    tC = tic;
+    yPreds = predictFromCCF(CCF,X(iTest{n},:));
+    timeCCFtest(n) = toc(tC);
+    if size(Y,2)~=size(yPreds,2) && max(Y(:))==1
+        Y = sum(bsxfun(@times,Y,1:size(Y,2)),2);
+    end
+    yPredsCCF{n} = yPreds;
+    if ~bReg
+        if iscell(Y)
+            % FIXME multiple output case not supported here
+            errorCCF{n} = 100*(1-mean(cellfun(@strcmpi,CCF.classNames(yPreds),Y(iTest{n}))))';
+        else
+            errorCCF{n} = 100*(1-mean(yPreds==Y(iTest{n},:)))';
+        end
+        dispMessage = ['Fold ' num2str(n) ', test misclassifcation rate (lower is better): CCF = ' ...
+            num2str(errorCCF{n},4) '%'];
+    else
+        errorCCF{n} = sqrt(mean((yPreds-Y(iTest{n},:)).^2,1));
+        dispMessage = ['Fold ' num2str(n) ', rmse scaled by std dev of Y (lower is better): CCF  = ' ...
+            num2str(100*mean(errorCCF{n}./scaling),4) '%'];
+    end
+    if bDoRF
+        tC = tic;
+        CCF = genCCF(nTrees,X(iTrain{n},:),Y(iTrain{n},:),[],optionsRF,[],[],[],bOrdinal);
+        timeRFtrain(n) = toc(tC);
+        tC = tic;
+        yPreds = predictFromCCF(CCF,X(iTest{n},:));
+        timeRFtest(n) = toc(tC);
+        yPredsRF{n} = yPreds;
+        if ~bReg
+            if iscell(Y)
+                % FIXME multiple output case not supported here
+                errorRF{n} = 100*(1-mean(cellfun(@strcmpi,CCF.classNames(yPreds),Y(iTest{n}))))';
+            else
+                errorRF{n} = 100*(1-mean(yPreds==Y(iTest{n},:)))';
+            end
+            dispMessage = [dispMessage, ', RF = ' ...
+                num2str(errorRF{n},4) '%'];
+        else
+            errorRF{n} = sqrt(mean((yPreds-Y(iTest{n},:)).^2,1));
+            dispMessage = [dispMessage, ', RF  = ' ...
+                num2str(100*mean(errorRF{n}./scaling),4) '%'];
+        end
+        %         timeMessage = ['Train time: CCF  = ' num2str(timeCCFtrain,4) 's, RF = ' num2str(timeRFtrain,4) 's\n'...
+        %             'Test time: CCF  = ' num2str(timeCCFtest,4) 's, RF = ' num2str(timeRFtest,4) 's'];
+    elseif bPrint
+        timeMessage = ['CCF train time = ' num2str(timeCCFtrain,4) 's, CCF test time = ' ...
+            num2str(timeCCFtest,4) 's'];
+    end
+    
+    if bPrint
+        disp(dispMessage);
+        %disp(sprintf(timeMessage));
+    end
+end
+
+errorCCF = [errorCCF{:}]';
+if bDoRF
+    errorRF = [errorRF{:}]';
+end
+
+if bPrint
+    disp(sprintf(['Average train time: CCF  = ' num2str(mean(timeCCFtrain),4) 's, RF = ' num2str(mean(timeRFtrain),4) 's\n'...
+        'Average test time: CCF  = ' num2str(mean(timeCCFtest),4) 's, RF = ' num2str(mean(timeRFtest),4) 's'])); %#ok<DSPS>
+    if bReg
+        common_message = 'Scaled root mean squared error';
+    else
+        common_message = 'Missclassfication rate';
+    end
+    disp([common_message ' CCF = ' num2str(mean(errorCCF)) ' +/- ' num2str(std(errorCCF))]);
+    if bDoRF
+        disp([common_message ' RF = ' num2str(mean(errorRF)) ' +/- ' num2str(std(errorRF))]);
+    end
+    if size(errorCCF,2)~=1
+        disp(['Output average ' common_message ' CCF = ' num2str(mean(mean(errorCCF))) ' +/- ' num2str(mean(std(errorCCF,[],1)))]);
+        if bDoRF
+            disp(['Output average ' common_message ' RF = ' num2str(mean(mean(errorRF))) ' +/- ' num2str(mean(std(errorRF,[],1)))]);
+        end
+    end
+    disp(' ');
+end
 end

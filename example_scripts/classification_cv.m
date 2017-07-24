@@ -14,9 +14,6 @@ for n=1:numel(dataSetsToTest)
     name = dataSetsToTest{n};
     disp(['Doing cross validation for ' name]);
     [X,Y,bOrdinal] = loadProvidedDataset(name);
-    [percentTestMissClassfiedCCF{n}, percentTestMissClassfiedRF{n}] = ...
-        crossValTests(X,Y,bOrdinal,nFolds,nTrees,optionsFor);
-    disp(['Missclassfication CCF = ' num2str(mean(percentTestMissClassfiedCCF{n})) ' +/- ' num2str(std(percentTestMissClassfiedCCF{n}))]);
-    disp(['Missclassfication RF = ' num2str(mean(percentTestMissClassfiedRF{n})) ' +/- ' num2str(std(percentTestMissClassfiedRF{n}))]);
-    disp(' ');
+    [percentTestMissClassfiedCCF{n}, percentTestMissClassfiedRF{n},ypCCF,ypRF] = ...
+        crossValTests(X,Y,false,bOrdinal,nFolds,nTrees,optionsFor);
 end
