@@ -1,1 +1,5 @@
-Tom Rainforth
+Code: Tom Rainforth
+Algorithm: Tom Rainforth and Frank Wood
+Please reference this paper if you use the code:
+    Rainforth, Tom, and Frank Wood. "Canonical correlation forests." arXiv 
+    preprint arXiv:1507.05444 (2015).
