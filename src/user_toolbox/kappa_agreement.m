@@ -1,4 +1,17 @@
 function [kappas,avg_error] = kappa_agreement(tree_outputs,Y_true)
+%[kappas,avg_error] = kappa_agreement(tree_outputs,Y_true)
+% Calculates the kappa agreement (Cohen's kappa) for a selection of trees.  
+% Classification only
+%
+% Inputs:
+%       tree_outputs = Taken from predictFromCCF
+%       Y_true = True classes
+%
+% Outputs:
+%       kappas = matrix of kappa agreement for pairs of trees
+%       avg_errors = matrix of average errors for pairs of trees
+%
+% 24/07/17
 
 N = size(tree_outputs,1);
 T = size(tree_outputs,2);

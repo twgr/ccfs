@@ -2,7 +2,8 @@ function [CCF,forestPredictsTest,forestProbsTest,treeOutputTest] = ...
     genCCF(nTrees,XTrain,YTrain,bReg,optionsFor,XTest,bKeepTrees,iFeatureNum,bOrdinal)
 %genCCF Generate a canonical correlation forest
 %
-% CCF = genCCF(nTrees,XTrain,YTrain)
+% Typical usage:
+%   CCF = genCCF(nTrees,XTrain,YTrain,bReg)
 %
 % Creates a canonical correlation forest (CCF) comprising of nTrees
 % canonical correlation trees (CCT) containing splits based on the a CCA
@@ -16,12 +17,28 @@ function [CCF,forestPredictsTest,forestProbsTest,treeOutputTest] = ...
 %                  Must be numerical array with missing values marked as
 %                  NaN if iFeatureNum is provided, otherwise can be any
 %                  format accepted by processInputData function
-%         YTrain = Class data.  Three formats are accepted: a binary
-%                  represenetation where each row is a seperate data point
-%                  and contains only a single non zero term the column of
-%                  which indicates the class, a numeric vector with unique
-%                  values taken as seperate class labels or a cell array of
-%                  strings giving the name.
+%         YTrain = Output data. Accepted formats as follows (note that
+%                  loadCSVDataSet and loadProvidedDataset automatically
+%                  give correct format).
+%                  Regression:
+%                       Column vector of outputs
+%                  Multivariate regression:
+%                       Matrix where each column is a different output
+%                  Classification:
+%                       There three excepted formats: a column vector of
+%                       integers representing class labels, a cell column
+%                       vector of strings giving the class name, or a NxK
+%                       logical array representing a 1-of-K encoding of the
+%                       class labels.  For binary classification a logical
+%                       column vector is also accepted.
+%                   Multi-output classification:
+%                       Two accepted formats: a NxNout array of numeric
+%                       class labels where each column is a different
+%                       output or a 1xNout cell array where each cell is a
+%                       seperate input satisfying the requirements for a
+%                       single classification.
+%           bReg = Whether to perform regression instead of classification.
+%                  Default = false (i.e. classification).
 %
 % Advanced usage:
 %
@@ -29,8 +46,6 @@ function [CCF,forestPredictsTest,forestProbsTest,treeOutputTest] = ...
 %  genCCF(nTrees,XTrain,YTrain,bReg,options,XTest,bKeepTrees,iFeatureNum,bOrdinal)
 %
 % Options Inputs:
-%           bReg = Whether to perform regression instead of classification.
-%                  Default = false (i.e. classification).
 %        options = Options object created by optionsClassCCF.  If left
 %                  blank then a default set of options corresponding to the
 %                  method detailed in the paper is used.

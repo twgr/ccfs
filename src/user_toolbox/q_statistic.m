@@ -1,5 +1,5 @@
 function [Q,avg_error] = q_statistic(tree_outputs,Y_true)
-%[Q_av,avg_error] = q_statistic(tree_outputs,Y_true)
+%[Q,avg_error] = q_statistic(tree_outputs,Y_true)
 % Calculates the q statistic for a selection of trees.  Classification only
 %
 % Inputs:

@@ -1,10 +1,11 @@
 function [X,Y,bOrdinal] = loadProvidedDataset(name)
-%loadProvidedDataset calls in datasets from \Datasets folder
+%loadProvidedDataset calls in datasets from Datasets folder
 %
 % [X,Y,bOrdinal] = loadProvidedDataset(name)
 % 
-% Valid names are the names of any csv files in this folder.  For details
-% on the formatting then see loadCSVDataSet.m
+% Valid names are the names of any csv files in this folder (these will 
+% also be print to screen if you try and call an incorrect dataset).  
+% For details on the formatting then see loadCSVDataSet.m
 %
 % Tom Rainforth 04/08/15
 

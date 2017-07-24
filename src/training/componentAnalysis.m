@@ -12,7 +12,8 @@ function [A, B, U, V, r] = componentAnalysis(X,Y,processes,epsilon)
 %          X = Input features, must be numeric.  Each row is a datapoint
 %              and each column a feature (categoricals should have been
 %              converted to their binary expansion)
-%          Y = Classes in binary expansion format.
+%          Y = Output matrix.  For classification then must be in 1-of-K
+%              expansion format
 %  processes = Component analyses to carry out. This should be a structure
 %              of the form of the projections field in optionsClassCCF
 %    epsilon = Tolerance parameter for rank reduction of QR decompositions

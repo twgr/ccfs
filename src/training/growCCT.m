@@ -14,7 +14,7 @@ function tree = growCCT(XTrain,YTrain,bReg,options,iFeatureNum,depth)
 %    XTrain      = Array giving training features.  Data should be
 %                  processed using processInputData before being passed to
 %                  CCT
-%    YTrain      = Class data formatted as per output of classExpansion
+%    YTrain      = Output data after formatting carried out by genCCF 
 %    bReg        = Whether to perform regression instead of classification.
 %                  Default = false (i.e. classification).
 %    options     = Options class of type optionsClassCCF.  Some fields are

@@ -2,7 +2,7 @@ function [importance,errors,errors_unperm] = feature_importance(CCF, X, Y, bOutO
 % Estimate for the relative feature importances.
 %
 % Can use with a single trained forest when using CCF-Bag for which we 
-% exploit the out of bag estimates.  Alternative can do a cross-
+% exploit the out of bag estimates.  Alternatively can do a cross-
 % validation where the variable importance is averaged over doing this
 % calculation provided X and Y as one fold and the CCF is trained on the
 % other folds.

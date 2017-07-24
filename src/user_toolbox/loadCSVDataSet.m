@@ -3,10 +3,12 @@ function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation,bConvertCat,bNamed)
 %
 % function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation)
 %
-% Loads a CSV to produce X, Y and bOrdinal.  The CSV should be formatted as
-% follows:
-%     The last column gives the target Y with featuers X in the other
-%     columns.  The following delimiters are supported:
+% Loads a CSV to produce X, Y and bOrdinal.
+%
+% The CSV should be formatted as follows:
+%     The last column gives the target Y (for multiple targets see below)
+%     with featuers X in the other columns.  The following delimiters are 
+%     supported:
 %               [' ' ',' '|' ';' tab].
 %     Classes can either be numerical or strings.  If the dataset contains
 %     non-ordinal features then these should either be specified using
@@ -47,7 +49,7 @@ function [X,Y,bOrdinal] = loadCSVDataSet(inputLocation,bConvertCat,bNamed)
 %               will be numeric if all non-missing values of that feature
 %               are numeric, otherwise all values in column will be
 %               strings.
-%           Y = Class labels returned as a a numeric column vector when
+%           Y = Outputs returned as a a numeric column vector when
 %               possible and a column vector of cells otherwise.
 %    bOrdinal = Row vector of logicals indicating whether a feature is
 %               ordinal (true) or an unordered categorical (false).
