@@ -3,7 +3,7 @@
 % validations are run rather than the single 1 below which is for
 % demonstration purposes.
 %
-% Tom Rainforth 27/07/15
+% Tom Rainforth 24/07/15
 
 %clear all
 dataSetsToTest = {'banknote','hillValley','ionosphere','iris','seeds','soybean','zoo'};

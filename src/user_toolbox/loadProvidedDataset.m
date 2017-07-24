@@ -8,9 +8,7 @@ function [X,Y,bOrdinal] = loadProvidedDataset(name)
 %
 % Tom Rainforth 04/08/15
 
-loc = mfilename('fullpath');
-iSeps = regexp(loc,filesep());
-loc = loc(1:(iSeps(end-1)));
+loc = [regexprep(mfilename('fullpath'),mfilename,''),'..',filesep(),'..',filesep()];
 
 validNames = {'ILPD';'balanceScale';'banknote';'breastTissue';'hillValleyNoisy';...
     'hillValley';'ionosphere';'iris';'letter';'libras';'magic04';'nursery';...
