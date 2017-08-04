@@ -1,4 +1,6 @@
-# README #
+# Canonical Correlation Forests #
+
+Paper: https://arxiv.org/abs/1507.05444
 
 ### Updates 25/07/17 ###
 
