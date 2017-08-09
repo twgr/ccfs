@@ -9,7 +9,6 @@ Paper: https://arxiv.org/abs/1507.05444
 - Added implementations for other algorithms such as rotation forests and random roation forests
 - Minor changes to call structure of genCCF - there is an additional input after the ouputs (i.e. the fourth input) that specifies whether the problem tackled is a regression or classification problem
 - General clean up and improvements
-- Unfortunately no longer provide stand-alone applications.  Limited versions of these are availible at commit 91c8ca2 on the master branch.
 
 ### How do I get set up? ###
 
