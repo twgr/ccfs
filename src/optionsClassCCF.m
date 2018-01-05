@@ -41,6 +41,11 @@ classdef optionsClassCCF
     %            be permitted.  Default is 1 for classification and 3 for
     %            regression.  Setting larger can guard against overfitting,
     %            particularly in the regression case.
+    %   propTrain = (1) | (0,1]
+    %            Proportion of the data to train each tree on.  Generally
+    %            wants to be set to 1, but for large datasets it may be
+    %            possible to only use a subset of the data for training
+    %            each tree.
     %
     % Common computational options  
     %
@@ -98,8 +103,8 @@ classdef optionsClassCCF
     %            Pre-rotation to be applied to each tree seperately before
     %            rotating.
     %
-    % Options that may want to be set if using algorithms over than CCF
-    % (mostly rotation forests)
+    % Options that may want to be set if using algorithms building on CCFs
+    % (mostly rotation forest stuff)
     %
     %   RotForM = 3 | +ve integer; 
     %             Size of feature subsets taken for each rotation.  Default
@@ -174,6 +179,7 @@ classdef optionsClassCCF
         bBagTrees = 'default';
         projections = struct('CCA',true);
         treeRotation = 'none';
+        propTrain = 1;
         
         %% Properties relating to numerical stability
         % Might want to set in certain scenarios explained in the doc

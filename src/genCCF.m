@@ -214,11 +214,13 @@ if nOut>1
     tree_test_times = NaN(nTrees,1);
 end
 
+Ntrain = round(N*optionsFor.propTrain);
+
 % Train the trees
 if optionsFor.bUseParallel == true
     parfor nT = 1:nTrees
         tStartTrainThis = tic;
-        tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,N);
+        tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,Ntrain);
         if optionsFor.bCalcTimingStats
             % Avoid some calculations if not doing the timing stats
             tree_train_times(nT) = toc(tStartTrainThis);
@@ -236,7 +238,7 @@ if optionsFor.bUseParallel == true
 else
     for nT = 1:nTrees
         tStartTrainThis = tic;
-        tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,N);
+        tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,Ntrain);
         if optionsFor.bCalcTimingStats
             % Avoid some calculations if not doing the timing stats
             tree_train_times(nT) = toc(tStartTrainThis);
@@ -307,7 +309,7 @@ end
 
 end
 
-function tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,N)
+function tree = genTree(XTrain,YTrain,bReg,optionsFor,iFeatureNum,Ntrain)
 % A sub-function is used so that it can be shared between the for and
 % parfor loops.  Does required preprocessing such as randomly setting
 % missing values, then calls the tree training function
@@ -318,9 +320,11 @@ if strcmpi(optionsFor.missingValuesMethod,'random')
     XTrain = random_missing_vals(XTrain);
 end
 
+N = size(XTrain,1);
+
 % Bag if required
-if optionsFor.bBagTrees
-    iTrainThis = datasample(1:N,N);
+if optionsFor.bBagTrees || Ntrain~=N
+    iTrainThis = datasample(1:N,Ntrain,'Replace',optionsFor.bBagTrees);
     iOob = setdiff(1:N,iTrainThis)';
     XTrainOrig = XTrain;
     XTrain = XTrain(iTrainThis,:);
