@@ -42,7 +42,14 @@ end
 N = size(XTrain,1);
 % Return if one training point, pure node or if options for returning
 % fulfilled.  A little case to deal with a binary YTrain is required.
-bStop = (N<(max(2,options.minPointsForSplit))) || (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit);
+bStop = (N<(max([2,options.minPointsForSplit,2*options.minPointsLeaf]))) || ...
+            (isnumeric(options.maxDepthSplit) && depth>options.maxDepthSplit);
+
+if depth>490 && strcmpi(options.maxDepthSplit,'stack')
+    bStop = true;
+    warning('Reached maximum depth imposed by stack limitations');
+end
+
 if bStop
     tree = setupLeaf(YTrain,bReg,options);
     return
@@ -61,10 +68,6 @@ else
         tree = setupLeaf(YTrain,bReg,options);
         return
     end
-end
-
-if depth>490 && strcmpi(options.maxDepthSplit,'stack')
-    error('Tree is too deep and causing stack issues');
 end
 
 %% Subsample features as required for hyperplane sampling
