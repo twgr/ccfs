@@ -168,8 +168,12 @@ if bDoRF
 end
 
 if bPrint
-    disp(sprintf(['Average CCF train time = ' num2str(mean(timeCCFtrain),4) 's, test time = ' num2str(mean(timeCCFtest),4) 's\n'...
-        'Average RF train time = ' num2str(mean(timeRFtrain),4) 's, test time = ' num2str(mean(timeRFtest),4) 's'])); %#ok<DSPS>
+    if bDoRF
+        disp(sprintf(['Average CCF train time = ' num2str(mean(timeCCFtrain),4) 's, test time = ' num2str(mean(timeCCFtest),4) 's\n'...
+            'Average RF train time = ' num2str(mean(timeRFtrain),4) 's, test time = ' num2str(mean(timeRFtest),4) 's'])); %#ok<DSPS>
+    else
+        disp(sprintf(['Average CCF train time = ' num2str(mean(timeCCFtrain),4) 's, test time = ' num2str(mean(timeCCFtest),4) 's'])); %#ok<DSPS>
+    end
     if bReg
         common_message = 'Scaled mean squared error';
     else
